@@ -65,7 +65,7 @@ export default function EquipmentManagement() {
       <div className="p-4 md:p-8 max-w-7xl mx-auto">
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-20 bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 rounded-lg animate-pulse"></div>
+            <div key={i} className="h-20 bg-linear-to-r from-slate-200 via-slate-100 to-slate-200 rounded-lg animate-pulse"></div>
           ))}
         </div>
       </div>
@@ -102,7 +102,7 @@ export default function EquipmentManagement() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 flex-shrink-0">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 shrink-0">
                       <div>
                         <p className="text-xs text-slate-600">Hall</p>
                         <p className="font-semibold text-slate-900 truncate">{eq.hall.name}</p>

@@ -77,7 +77,7 @@ export default function HODDashboard() {
       <div className="p-4 md:p-8 max-w-7xl mx-auto">
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-32 bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 rounded-lg animate-pulse"></div>
+            <div key={i} className="h-32 bg-linear-to-r from-slate-200 via-slate-100 to-slate-200 rounded-lg animate-pulse"></div>
           ))}
         </div>
       </div>

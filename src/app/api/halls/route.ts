@@ -10,9 +10,6 @@ export async function GET(req: NextRequest) {
     }
 
     const halls = await prisma.seminarHall.findMany({
-      where: {
-        department_id: profile.department_id,
-      },
       include: {
         equipment: { select: { id: true, name: true, condition: true } },
         tech_staff: { select: { tech_staff: { select: { name: true, phone: true } } } },

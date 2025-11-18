@@ -63,7 +63,7 @@ export default function MyBookings() {
       <div className="p-4 md:p-8 max-w-4xl mx-auto">
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-40 bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 rounded-lg animate-pulse"></div>
+            <div key={i} className="h-40 bg-linear-to-r from-slate-200 via-slate-100 to-slate-200 rounded-lg animate-pulse"></div>
           ))}
         </div>
       </div>
@@ -137,7 +137,7 @@ export default function MyBookings() {
 
               {booking.rejection_reason && (
                 <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg flex gap-3">
-                  <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                  <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
                   <div>
                     <p className="text-sm font-semibold text-red-900">Rejection Reason</p>
                     <p className="text-sm text-red-700">{booking.rejection_reason}</p>

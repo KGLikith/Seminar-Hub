@@ -225,7 +225,7 @@
 
 @layer components {
   .shimmer-loading {
-    @apply animate-[shimmer_2s_infinite] bg-linear-to-r from-slate-100 via-slate-200 to-slate-100 bg-[length:1000px_100%];
+    @apply animate-[shimmer_2s_infinite] bg-linear-to-r from-slate-100 via-slate-200 to-slate-100 bg-size-[1000px_100%];
   }
 
   .heading-1 {

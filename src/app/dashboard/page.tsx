@@ -94,7 +94,6 @@ export default function DashboardHome() {
 
   return (
     <div className="p-6 md:p-8 max-w-7xl mx-auto">
-      {/* Header */}
       <div className="mb-8 animate-fade-in">
         <h1 className="heading-1 mb-2">Welcome back, {profile?.name}! 👋</h1>
         <p className="text-base md:text-lg text-slate-600">
@@ -112,7 +111,6 @@ export default function DashboardHome() {
               className={`group relative overflow-hidden rounded-xl border-2 ${card.borderColor} bg-linear-to-br ${card.bgGradient} p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-opacity-100`}
               style={{ animationDelay: `${idx * 100}ms` }}
             >
-              {/* Background gradient overlay */}
               <div className={`absolute inset-0 bg-linear-to-br ${card.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
               
               <div className="relative z-10">
@@ -129,7 +127,6 @@ export default function DashboardHome() {
         })}
       </div>
 
-      {/* Info Section */}
       <div className="relative overflow-hidden rounded-xl border-2 border-blue-200 bg-linear-to-r from-blue-50 to-indigo-50 p-6 md:p-8 animate-fade-in transition-all duration-300 hover:shadow-md">
         <div className="absolute inset-0 bg-linear-to-r from-blue-600 to-indigo-600 opacity-0 hover:opacity-5 transition-opacity duration-300" />
         <div className="relative z-10">

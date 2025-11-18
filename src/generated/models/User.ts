@@ -241,7 +241,7 @@ export type UserScalarWhereWithAggregatesInput = {
 }
 
 export type UserCreateInput = {
-  id: string
+  id?: string
   email: string
   clerkId: string
   image_url?: string | null
@@ -251,7 +251,7 @@ export type UserCreateInput = {
 }
 
 export type UserUncheckedCreateInput = {
-  id: string
+  id?: string
   email: string
   clerkId: string
   image_url?: string | null
@@ -281,7 +281,7 @@ export type UserUncheckedUpdateInput = {
 }
 
 export type UserCreateManyInput = {
-  id: string
+  id?: string
   email: string
   clerkId: string
   image_url?: string | null
@@ -356,7 +356,7 @@ export type UserUpdateOneWithoutProfileNestedInput = {
 }
 
 export type UserCreateWithoutProfileInput = {
-  id: string
+  id?: string
   email: string
   clerkId: string
   image_url?: string | null
@@ -365,7 +365,7 @@ export type UserCreateWithoutProfileInput = {
 }
 
 export type UserUncheckedCreateWithoutProfileInput = {
-  id: string
+  id?: string
   email: string
   clerkId: string
   image_url?: string | null

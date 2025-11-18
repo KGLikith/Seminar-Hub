@@ -3,9 +3,12 @@
 import { SignInButton, SignUpButton, UserButton, useAuth } from "@clerk/nextjs";
 import Link from "next/link";
 import { Zap, CheckCircle, Users, BarChart3 } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function HomePage() {
   const { isSignedIn, isLoaded } = useAuth();
+  const router = useRouter();
 
   if (!isLoaded) return (
     <div className="flex items-center justify-center h-screen">
@@ -33,18 +36,22 @@ export default function HomePage() {
             </div>
           ) : (
             <div className="flex items-center gap-3">
-              <SignInButton mode="modal">
-                <button className="inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-slate-100 text-slate-900 font-semibold hover:bg-slate-200 transition-all duration-200 active:scale-95">Sign In</button>
-              </SignInButton>
-              <SignUpButton mode="modal">
-                <button className="inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-all duration-200 hover:shadow-lg active:scale-95">Sign Up</button>
-              </SignUpButton>
+              <Button
+                onClick={() => {
+                  console.log('Sign In clicked');
+                  router.push('/auth/sign-in')
+                }}
+                className="inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-slate-100 text-slate-900 font-semibold hover:bg-slate-200 transition-all duration-200 active:scale-95">
+                Sign In
+              </Button>
+              <Button
+                onClick={() => router.push('/auth/sign-up')}
+                className="inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-all duration-200 hover:shadow-lg active:scale-95">Sign Up</Button>
             </div>
           )}
         </div>
       </nav>
 
-      {/* Hero Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center slide-up">
           <h1 className="heading-1 mb-6">College Seminar Hall Management</h1>
@@ -53,18 +60,19 @@ export default function HomePage() {
           </p>
 
           {!isSignedIn && (
-            <div className="flex items-center gap-4 justify-center">
-              <SignUpButton mode="modal">
-                <button className="inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-all duration-200 hover:shadow-lg active:scale-95">Get Started</button>
-              </SignUpButton>
-              <SignInButton mode="modal">
-                <button className="inline-flex items-center justify-center px-4 py-2.5 rounded-lg border-2 border-blue-600 text-blue-600 font-semibold hover:bg-blue-50 transition-all duration-200">Sign In</button>
-              </SignInButton>
+            <div className="flex items-center gap-3 justify-center">
+              <Button
+                onClick={() => router.push('/auth/sign-in')}
+                className="inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-slate-100 text-slate-900 font-semibold hover:bg-slate-200 transition-all duration-200 active:scale-95">
+                Sign In
+              </Button>
+              <Button
+                onClick={() => router.push('/auth/sign-up')}
+                className="inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-all duration-200 hover:shadow-lg active:scale-95">Sign Up</Button>
             </div>
           )}
         </div>
 
-        {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-20">
           {[
             { icon: CheckCircle, title: "Easy Booking", desc: "Quickly reserve seminar halls" },
