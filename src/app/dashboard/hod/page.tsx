@@ -92,7 +92,6 @@ export default function HODDashboard() {
         <p className="text-slate-600">Review and manage seminar hall booking requests</p>
       </div>
 
-      {/* Filter Tabs */}
       <div className="mb-8 flex flex-wrap gap-2 animate-fade-in" style={{ animationDelay: "0.1s" }}>
         {["all", "pending", "approved", "rejected"].map((f) => (
           <button
@@ -110,7 +109,6 @@ export default function HODDashboard() {
         ))}
       </div>
 
-      {/* Bookings List */}
       <div className="space-y-4">
         {filteredBookings.length > 0 ? (
           filteredBookings.map((booking, idx) => (

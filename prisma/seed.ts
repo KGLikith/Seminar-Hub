@@ -1,115 +1,137 @@
-import { PrismaClient } from "../src/generated/client";
+import { ComponentType, PrismaClient } from "../src/generated/client";
 
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log("Seeding database...");
+  console.log("🌱 Seeding database...");
 
-  const depts = await Promise.all([
+  // -------------------------------
+  // 1. Departments
+  // -------------------------------
+  const departments = await Promise.all([
     prisma.department.create({
-      data: {
-        name: "Computer Science",
-        description: "Department of Computer Science and Engineering",
-      },
+      data: { name: "Computer Science", description: "CSE department" },
     }),
     prisma.department.create({
-      data: {
-        name: "Electronics",
-        description: "Department of Electronics and Communication",
-      },
+      data: { name: "Electronics", description: "ECE department" },
     }),
     prisma.department.create({
-      data: {
-        name: "Mechanical",
-        description: "Department of Mechanical Engineering",
-      },
+      data: { name: "Mechanical", description: "ME department" },
+    }),
+    prisma.department.create({
+      data: { name: "Civil", description: "Civil Engineering" },
+    }),
+    prisma.department.create({
+      data: { name: "Information Science", description: "ISE department" },
+    }),
+    prisma.department.create({
+      data: { name: "Electrical", description: "EEE department" },
     }),
   ]);
 
-  console.log("Created departments:", depts.length);
+  console.log("✔ Departments created:", departments.length);
 
-  // Create seminar halls
+  // -------------------------------
+  // 2. Seminar Halls
+  // -------------------------------
   const halls = await Promise.all([
     prisma.seminarHall.create({
       data: {
         name: "Main Auditorium",
         seating_capacity: 500,
         location: "Building A, Ground Floor",
-        description:
-          "Large auditorium with advanced audio-visual systems suitable for major events and seminars.",
-        department_id: depts[0].id,
+        description: "Large auditorium with AV setup",
+        department_id: departments[0].id,
         image_url: "/placeholder.svg",
       },
     }),
     prisma.seminarHall.create({
       data: {
         name: "Tech Conference Room",
-        seating_capacity: 100,
+        seating_capacity: 120,
         location: "Building B, 2nd Floor",
-        description:
-          "Modern conference room equipped with projector and video conferencing setup.",
-        department_id: depts[0].id,
+        description: "Smart room with projector & conferencing",
+        department_id: departments[0].id,
         image_url: "/placeholder.svg",
       },
     }),
     prisma.seminarHall.create({
       data: {
-        name: "Workshop Hall",
-        seating_capacity: 75,
+        name: "ECE Seminar Hall",
+        seating_capacity: 90,
         location: "Building C, 1st Floor",
-        description:
-          "Flexible space designed for workshops and interactive learning sessions.",
-        department_id: depts[1].id,
+        description: "Seminar hall with audio systems & projector",
+        department_id: departments[1].id,
+        image_url: "/placeholder.svg",
+      },
+    }),
+    prisma.seminarHall.create({
+      data: {
+        name: "Mechanical Workshop Hall",
+        seating_capacity: 70,
+        location: "Workshop Block",
+        description: "Hall for demos and sessions",
+        department_id: departments[2].id,
         image_url: "/placeholder.svg",
       },
     }),
   ]);
 
-  console.log("Created halls:", halls.length);
+  console.log("✔ Seminar halls created:", halls.length);
 
-  // Create equipment for halls
+  // -------------------------------
+  // 3. Equipment
+  // -------------------------------
   const equipment = await Promise.all([
     prisma.equipment.create({
       data: {
         name: "Projector",
-        type: "AV Equipment",
-        serial_number: "PROJ-001",
+        type: ComponentType.ac,
+        serial_number: "PROJ-CSE-001",
         condition: "active",
         hall_id: halls[0].id,
       },
     }),
     prisma.equipment.create({
       data: {
-        name: "Microphone System",
-        type: "Audio",
-        serial_number: "MIC-001",
+        name: "Sound System",
+        type: ComponentType.speaker,
+        serial_number: "AUD-MAIN-002",
         condition: "active",
         hall_id: halls[0].id,
       },
     }),
     prisma.equipment.create({
       data: {
-        name: "Projector",
-        type: "AV Equipment",
-        serial_number: "PROJ-002",
+        name: "Conference Mic Set",
+        type: ComponentType.microphone,
+        serial_number: "MIC-CONF-003",
         condition: "active",
         hall_id: halls[1].id,
       },
     }),
     prisma.equipment.create({
       data: {
-        name: "Whiteboard",
-        type: "Accessories",
-        serial_number: "WB-001",
+        name: "LED Screen",
+        type: ComponentType.projector,
+        serial_number: "LED-ECE-004",
         condition: "active",
-        hall_id: halls[1].id,
+        hall_id: halls[2].id,
+      },
+    }),
+    prisma.equipment.create({
+      data: {
+        name: "Portable AC",
+        type: ComponentType.ac,
+        serial_number: "AC-MECH-005",
+        condition: "active",
+        hall_id: halls[3].id,
       },
     }),
   ]);
 
-  console.log("Created equipment:", equipment.length);
+  console.log("✔ Equipment created:", equipment.length);
 
-  // Create hall components
   const components = await Promise.all([
     prisma.hallComponent.create({
       data: {
@@ -118,35 +140,16 @@ async function main() {
         status: "operational",
         location: "Ceiling Center",
         hall_id: halls[0].id,
-        notes: "Installed 2024, working properly",
+        notes: "Updated 2024",
       },
     }),
     prisma.hallComponent.create({
       data: {
-        name: "Wall-mounted Speaker",
-        type: "speaker",
+        name: "Stage Lighting System",
+        type: "lighting",
         status: "operational",
-        location: "Left Wall",
+        location: "Stage Front",
         hall_id: halls[0].id,
-      },
-    }),
-    prisma.hallComponent.create({
-      data: {
-        name: "Podium Microphone",
-        type: "microphone",
-        status: "operational",
-        location: "Front Center",
-        hall_id: halls[0].id,
-      },
-    }),
-    prisma.hallComponent.create({
-      data: {
-        name: "AC Unit",
-        type: "ac",
-        status: "operational",
-        location: "Back Wall",
-        hall_id: halls[1].id,
-        notes: "Temperature control working fine",
       },
     }),
     prisma.hallComponent.create({
@@ -160,18 +163,28 @@ async function main() {
     }),
     prisma.hallComponent.create({
       data: {
-        name: "LED Lighting System",
-        type: "lighting",
+        name: "AC Unit",
+        type: "ac",
         status: "operational",
-        location: "Ceiling Grid",
+        location: "Back Wall",
         hall_id: halls[2].id,
+        notes: "Cooling stable",
+      },
+    }),
+    prisma.hallComponent.create({
+      data: {
+        name: "Surround Speakers",
+        type: "speaker",
+        status: "operational",
+        location: "Side Walls",
+        hall_id: halls[3].id,
       },
     }),
   ]);
 
-  console.log("Created components:", components.length);
+  console.log("✔ Components created:", components.length);
 
-  console.log("Database seeded successfully!");
+  console.log("🎉 Database seeded successfully!");
 }
 
 main()
@@ -179,7 +192,7 @@ main()
     await prisma.$disconnect();
   })
   .catch(async (e) => {
-    console.error(e);
+    console.error("❌ Error during seeding:", e);
     await prisma.$disconnect();
     process.exit(1);
   });

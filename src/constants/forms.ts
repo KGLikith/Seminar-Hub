@@ -77,6 +77,3 @@ export const USER_FORGOT_PASSWORD_FORM: UserRegistrationProps[] = [
   },
 ];
 
-export const USER_TYPES = ["Teacher", "HOD", "Tech Staff"] as const;
-
-export type UserType = (typeof USER_TYPES)[number];

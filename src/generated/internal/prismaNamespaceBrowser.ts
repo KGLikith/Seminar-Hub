@@ -52,6 +52,7 @@ export const ModelName = {
   Department: 'Department',
   User: 'User',
   Profile: 'Profile',
+  UserRoleAssignment: 'UserRoleAssignment',
   SeminarHall: 'SeminarHall',
   HallTechStaff: 'HallTechStaff',
   Equipment: 'Equipment',
@@ -60,7 +61,8 @@ export const ModelName = {
   BookingLog: 'BookingLog',
   Notification: 'Notification',
   HallComponent: 'HallComponent',
-  ComponentMaintenanceLog: 'ComponentMaintenanceLog'
+  ComponentMaintenanceLog: 'ComponentMaintenanceLog',
+  EmailLog: 'EmailLog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -104,9 +106,9 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 
 export const ProfileScalarFieldEnum = {
   id: 'id',
+  clerkId: 'clerkId',
   email: 'email',
   name: 'name',
-  role: 'role',
   phone: 'phone',
   avatar_url: 'avatar_url',
   created_at: 'created_at',
@@ -116,6 +118,16 @@ export const ProfileScalarFieldEnum = {
 } as const
 
 export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
+
+
+export const UserRoleAssignmentScalarFieldEnum = {
+  id: 'id',
+  profile_id: 'profile_id',
+  role: 'role',
+  created_at: 'created_at'
+} as const
+
+export type UserRoleAssignmentScalarFieldEnum = (typeof UserRoleAssignmentScalarFieldEnum)[keyof typeof UserRoleAssignmentScalarFieldEnum]
 
 
 export const SeminarHallScalarFieldEnum = {
@@ -186,6 +198,8 @@ export const BookingScalarFieldEnum = {
   ai_summary: 'ai_summary',
   created_at: 'created_at',
   updated_at: 'updated_at',
+  expected_participants: 'expected_participants',
+  special_requirements: 'special_requirements',
   hall_id: 'hall_id',
   teacher_id: 'teacher_id',
   hod_id: 'hod_id'
@@ -252,6 +266,19 @@ export const ComponentMaintenanceLogScalarFieldEnum = {
 } as const
 
 export type ComponentMaintenanceLogScalarFieldEnum = (typeof ComponentMaintenanceLogScalarFieldEnum)[keyof typeof ComponentMaintenanceLogScalarFieldEnum]
+
+
+export const EmailLogScalarFieldEnum = {
+  id: 'id',
+  booking_id: 'booking_id',
+  recipient_email: 'recipient_email',
+  email_type: 'email_type',
+  sent_at: 'sent_at',
+  status: 'status',
+  error_message: 'error_message'
+} as const
+
+export type EmailLogScalarFieldEnum = (typeof EmailLogScalarFieldEnum)[keyof typeof EmailLogScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -19,6 +19,7 @@ enum BookingStatus {
   approved
   rejected
   completed
+  cancelled
 }
 
 enum EquipmentCondition {
@@ -63,6 +64,18 @@ model Department {
   halls    SeminarHall[]
 }
 
+// WIP: Department names
+
+enum DepartmentName {
+  Computer_Science
+  Electrical_Engineering
+  Mechanical_Engineering
+  Civil_Engineering
+  Chemistry
+  Physics
+  IEM
+}
+
 model User {
   id         String   @id @default(uuid())
   email      String   @unique
@@ -71,14 +84,14 @@ model User {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  profile Profile?
+  profile             Profile?
 }
 
 model Profile {
   id         String   @id @default(uuid())
+  clerkId    String   @unique
   email      String
   name       String
-  role       UserRole
   phone      String?
   avatar_url String?
   created_at DateTime @default(now())
@@ -90,6 +103,8 @@ model Profile {
   user_id String? @unique
   user    User?   @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
+  roles UserRoleAssignment[]
+
   hallAssignments  HallTechStaff[]
   equipmentUpdated Equipment[]     @relation("updated_by_equipment")
   equipmentLogs    EquipmentLog[]  @relation("updated_by_log")
@@ -100,6 +115,17 @@ model Profile {
   bookingLogsPerformed     BookingLog[]              @relation("log_performed_by")
   notifications            Notification[]
   componentMaintenanceLogs ComponentMaintenanceLog[]
+}
+
+model UserRoleAssignment {
+  id         String   @id @default(uuid())
+  profile_id String
+  role       UserRole
+  created_at DateTime @default(now())
+
+  profile Profile @relation(fields: [profile_id], references: [id], onDelete: Cascade)
+
+  @@unique([profile_id, role])
 }
 
 model SeminarHall {
@@ -141,7 +167,7 @@ model HallTechStaff {
 model Equipment {
   id              String             @id @default(uuid())
   name            String
-  type            String
+  type            ComponentType
   serial_number   String?
   condition       EquipmentCondition @default(active)
   last_updated_at DateTime           @default(now())
@@ -189,6 +215,10 @@ model Booking {
   created_at            DateTime      @default(now())
   updated_at            DateTime      @updatedAt
 
+  // NEW FIELDS
+  expected_participants Int?
+  special_requirements  String?
+
   hall_id String
   hall    SeminarHall @relation(fields: [hall_id], references: [id], onDelete: Cascade)
 
@@ -200,9 +230,10 @@ model Booking {
 
   logs          BookingLog[]
   notifications Notification[]
+  emailLogs     EmailLog[]
 
-  @@index([hall_id, booking_date, start_time, end_time])
-  @@index([teacher_id])
+  @@index([status])
+  @@index([hod_id])
 }
 
 model BookingLog {
@@ -276,4 +307,16 @@ model ComponentMaintenanceLog {
   performer    Profile @relation(fields: [performed_by], references: [id], onDelete: Cascade)
 
   @@index([component_id])
+}
+
+model EmailLog {
+  id              String   @id @default(uuid())
+  booking_id      String?
+  recipient_email String
+  email_type      String
+  sent_at         DateTime @default(now())
+  status          String   @default("sent")
+  error_message   String?
+
+  booking Booking? @relation(fields: [booking_id], references: [id], onDelete: SetNull)
 }

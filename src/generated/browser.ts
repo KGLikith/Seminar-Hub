@@ -33,6 +33,11 @@ export type User = Prisma.UserModel
  */
 export type Profile = Prisma.ProfileModel
 /**
+ * Model UserRoleAssignment
+ * 
+ */
+export type UserRoleAssignment = Prisma.UserRoleAssignmentModel
+/**
  * Model SeminarHall
  * 
  */
@@ -77,3 +82,8 @@ export type HallComponent = Prisma.HallComponentModel
  * 
  */
 export type ComponentMaintenanceLog = Prisma.ComponentMaintenanceLogModel
+/**
+ * Model EmailLog
+ * 
+ */
+export type EmailLog = Prisma.EmailLogModel

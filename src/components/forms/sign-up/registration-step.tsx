@@ -5,6 +5,7 @@ import { useFormContext } from 'react-hook-form'
 import TypeSelectionForm from './TypeSelectionForm'
 import dynamic from 'next/dynamic'
 import { Spinner } from '@/components/_components/spinner'
+import { UserRole } from '@/generated/enums'
 
 const DetailForm = dynamic(() => import('./account-detail-form'), {
   ssr: false,
@@ -24,7 +25,7 @@ const RegistrationFormStep = () => {
   } = useFormContext()
   const { currentStep } = useAuthContextHook()
   const [onOTP, setOnOTP] = useState<string>('')
-  const [onUserType, setOnUserType] = useState<'Teacher' | 'HOD' | 'Tech Staff'>('Teacher')
+  const [onUserType, setOnUserType] = useState<UserRole>(UserRole.teacher)
 
   useEffect(() => {
     setValue("otp", onOTP);

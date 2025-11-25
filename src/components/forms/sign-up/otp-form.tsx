@@ -9,7 +9,7 @@ type Props = {
 const OTPForm = ({ onOTP, setOTP }: Props) => {
   return (
     <>
-      <h2 className="text-gray-400 md:text-4xl font-bold">Enter OTP</h2>
+      <h2 className="text-gray-400 md:text-4xl font-bold mt-24">Enter OTP</h2>
       <p className="text-gray-500 md:text-sm">
         Enter the one time password that was sent to your email.
       </p>

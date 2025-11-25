@@ -20,8 +20,18 @@ export type BookingModel = runtime.Types.Result.DefaultSelection<Prisma.$Booking
 
 export type AggregateBooking = {
   _count: BookingCountAggregateOutputType | null
+  _avg: BookingAvgAggregateOutputType | null
+  _sum: BookingSumAggregateOutputType | null
   _min: BookingMinAggregateOutputType | null
   _max: BookingMaxAggregateOutputType | null
+}
+
+export type BookingAvgAggregateOutputType = {
+  expected_participants: number | null
+}
+
+export type BookingSumAggregateOutputType = {
+  expected_participants: number | null
 }
 
 export type BookingMinAggregateOutputType = {
@@ -37,6 +47,8 @@ export type BookingMinAggregateOutputType = {
   session_summary: string | null
   created_at: Date | null
   updated_at: Date | null
+  expected_participants: number | null
+  special_requirements: string | null
   hall_id: string | null
   teacher_id: string | null
   hod_id: string | null
@@ -55,6 +67,8 @@ export type BookingMaxAggregateOutputType = {
   session_summary: string | null
   created_at: Date | null
   updated_at: Date | null
+  expected_participants: number | null
+  special_requirements: string | null
   hall_id: string | null
   teacher_id: string | null
   hod_id: string | null
@@ -74,12 +88,22 @@ export type BookingCountAggregateOutputType = {
   ai_summary: number
   created_at: number
   updated_at: number
+  expected_participants: number
+  special_requirements: number
   hall_id: number
   teacher_id: number
   hod_id: number
   _all: number
 }
 
+
+export type BookingAvgAggregateInputType = {
+  expected_participants?: true
+}
+
+export type BookingSumAggregateInputType = {
+  expected_participants?: true
+}
 
 export type BookingMinAggregateInputType = {
   id?: true
@@ -94,6 +118,8 @@ export type BookingMinAggregateInputType = {
   session_summary?: true
   created_at?: true
   updated_at?: true
+  expected_participants?: true
+  special_requirements?: true
   hall_id?: true
   teacher_id?: true
   hod_id?: true
@@ -112,6 +138,8 @@ export type BookingMaxAggregateInputType = {
   session_summary?: true
   created_at?: true
   updated_at?: true
+  expected_participants?: true
+  special_requirements?: true
   hall_id?: true
   teacher_id?: true
   hod_id?: true
@@ -131,6 +159,8 @@ export type BookingCountAggregateInputType = {
   ai_summary?: true
   created_at?: true
   updated_at?: true
+  expected_participants?: true
+  special_requirements?: true
   hall_id?: true
   teacher_id?: true
   hod_id?: true
@@ -175,6 +205,18 @@ export type BookingAggregateArgs<ExtArgs extends runtime.Types.Extensions.Intern
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: BookingAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: BookingSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: BookingMinAggregateInputType
@@ -205,6 +247,8 @@ export type BookingGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   _count?: BookingCountAggregateInputType | true
+  _avg?: BookingAvgAggregateInputType
+  _sum?: BookingSumAggregateInputType
   _min?: BookingMinAggregateInputType
   _max?: BookingMaxAggregateInputType
 }
@@ -223,10 +267,14 @@ export type BookingGroupByOutputType = {
   ai_summary: runtime.JsonValue | null
   created_at: Date
   updated_at: Date
+  expected_participants: number | null
+  special_requirements: string | null
   hall_id: string
   teacher_id: string
   hod_id: string | null
   _count: BookingCountAggregateOutputType | null
+  _avg: BookingAvgAggregateOutputType | null
+  _sum: BookingSumAggregateOutputType | null
   _min: BookingMinAggregateOutputType | null
   _max: BookingMaxAggregateOutputType | null
 }
@@ -263,6 +311,8 @@ export type BookingWhereInput = {
   ai_summary?: Prisma.JsonNullableFilter<"Booking">
   created_at?: Prisma.DateTimeFilter<"Booking"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Booking"> | Date | string
+  expected_participants?: Prisma.IntNullableFilter<"Booking"> | number | null
+  special_requirements?: Prisma.StringNullableFilter<"Booking"> | string | null
   hall_id?: Prisma.StringFilter<"Booking"> | string
   teacher_id?: Prisma.StringFilter<"Booking"> | string
   hod_id?: Prisma.StringNullableFilter<"Booking"> | string | null
@@ -271,6 +321,7 @@ export type BookingWhereInput = {
   hod?: Prisma.XOR<Prisma.ProfileNullableScalarRelationFilter, Prisma.ProfileWhereInput> | null
   logs?: Prisma.BookingLogListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
+  emailLogs?: Prisma.EmailLogListRelationFilter
 }
 
 export type BookingOrderByWithRelationInput = {
@@ -287,6 +338,8 @@ export type BookingOrderByWithRelationInput = {
   ai_summary?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
+  expected_participants?: Prisma.SortOrderInput | Prisma.SortOrder
+  special_requirements?: Prisma.SortOrderInput | Prisma.SortOrder
   hall_id?: Prisma.SortOrder
   teacher_id?: Prisma.SortOrder
   hod_id?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -295,6 +348,7 @@ export type BookingOrderByWithRelationInput = {
   hod?: Prisma.ProfileOrderByWithRelationInput
   logs?: Prisma.BookingLogOrderByRelationAggregateInput
   notifications?: Prisma.NotificationOrderByRelationAggregateInput
+  emailLogs?: Prisma.EmailLogOrderByRelationAggregateInput
 }
 
 export type BookingWhereUniqueInput = Prisma.AtLeast<{
@@ -314,6 +368,8 @@ export type BookingWhereUniqueInput = Prisma.AtLeast<{
   ai_summary?: Prisma.JsonNullableFilter<"Booking">
   created_at?: Prisma.DateTimeFilter<"Booking"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Booking"> | Date | string
+  expected_participants?: Prisma.IntNullableFilter<"Booking"> | number | null
+  special_requirements?: Prisma.StringNullableFilter<"Booking"> | string | null
   hall_id?: Prisma.StringFilter<"Booking"> | string
   teacher_id?: Prisma.StringFilter<"Booking"> | string
   hod_id?: Prisma.StringNullableFilter<"Booking"> | string | null
@@ -322,6 +378,7 @@ export type BookingWhereUniqueInput = Prisma.AtLeast<{
   hod?: Prisma.XOR<Prisma.ProfileNullableScalarRelationFilter, Prisma.ProfileWhereInput> | null
   logs?: Prisma.BookingLogListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
+  emailLogs?: Prisma.EmailLogListRelationFilter
 }, "id">
 
 export type BookingOrderByWithAggregationInput = {
@@ -338,12 +395,16 @@ export type BookingOrderByWithAggregationInput = {
   ai_summary?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
+  expected_participants?: Prisma.SortOrderInput | Prisma.SortOrder
+  special_requirements?: Prisma.SortOrderInput | Prisma.SortOrder
   hall_id?: Prisma.SortOrder
   teacher_id?: Prisma.SortOrder
   hod_id?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.BookingCountOrderByAggregateInput
+  _avg?: Prisma.BookingAvgOrderByAggregateInput
   _max?: Prisma.BookingMaxOrderByAggregateInput
   _min?: Prisma.BookingMinOrderByAggregateInput
+  _sum?: Prisma.BookingSumOrderByAggregateInput
 }
 
 export type BookingScalarWhereWithAggregatesInput = {
@@ -363,6 +424,8 @@ export type BookingScalarWhereWithAggregatesInput = {
   ai_summary?: Prisma.JsonNullableWithAggregatesFilter<"Booking">
   created_at?: Prisma.DateTimeWithAggregatesFilter<"Booking"> | Date | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"Booking"> | Date | string
+  expected_participants?: Prisma.IntNullableWithAggregatesFilter<"Booking"> | number | null
+  special_requirements?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   hall_id?: Prisma.StringWithAggregatesFilter<"Booking"> | string
   teacher_id?: Prisma.StringWithAggregatesFilter<"Booking"> | string
   hod_id?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
@@ -382,11 +445,14 @@ export type BookingCreateInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
   updated_at?: Date | string
+  expected_participants?: number | null
+  special_requirements?: string | null
   hall: Prisma.SeminarHallCreateNestedOneWithoutBookingsInput
   teacher: Prisma.ProfileCreateNestedOneWithoutTeacherBookingsInput
   hod?: Prisma.ProfileCreateNestedOneWithoutHodBookingsInput
   logs?: Prisma.BookingLogCreateNestedManyWithoutBookingInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutRelatedBookingInput
+  emailLogs?: Prisma.EmailLogCreateNestedManyWithoutBookingInput
 }
 
 export type BookingUncheckedCreateInput = {
@@ -403,11 +469,14 @@ export type BookingUncheckedCreateInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
   updated_at?: Date | string
+  expected_participants?: number | null
+  special_requirements?: string | null
   hall_id: string
   teacher_id: string
   hod_id?: string | null
   logs?: Prisma.BookingLogUncheckedCreateNestedManyWithoutBookingInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutRelatedBookingInput
+  emailLogs?: Prisma.EmailLogUncheckedCreateNestedManyWithoutBookingInput
 }
 
 export type BookingUpdateInput = {
@@ -424,11 +493,14 @@ export type BookingUpdateInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expected_participants?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  special_requirements?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hall?: Prisma.SeminarHallUpdateOneRequiredWithoutBookingsNestedInput
   teacher?: Prisma.ProfileUpdateOneRequiredWithoutTeacherBookingsNestedInput
   hod?: Prisma.ProfileUpdateOneWithoutHodBookingsNestedInput
   logs?: Prisma.BookingLogUpdateManyWithoutBookingNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutRelatedBookingNestedInput
+  emailLogs?: Prisma.EmailLogUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateInput = {
@@ -445,11 +517,14 @@ export type BookingUncheckedUpdateInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expected_participants?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  special_requirements?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hall_id?: Prisma.StringFieldUpdateOperationsInput | string
   teacher_id?: Prisma.StringFieldUpdateOperationsInput | string
   hod_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.BookingLogUncheckedUpdateManyWithoutBookingNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutRelatedBookingNestedInput
+  emailLogs?: Prisma.EmailLogUncheckedUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingCreateManyInput = {
@@ -466,6 +541,8 @@ export type BookingCreateManyInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
   updated_at?: Date | string
+  expected_participants?: number | null
+  special_requirements?: string | null
   hall_id: string
   teacher_id: string
   hod_id?: string | null
@@ -485,6 +562,8 @@ export type BookingUpdateManyMutationInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expected_participants?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  special_requirements?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type BookingUncheckedUpdateManyInput = {
@@ -501,6 +580,8 @@ export type BookingUncheckedUpdateManyInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expected_participants?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  special_requirements?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hall_id?: Prisma.StringFieldUpdateOperationsInput | string
   teacher_id?: Prisma.StringFieldUpdateOperationsInput | string
   hod_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -530,9 +611,15 @@ export type BookingCountOrderByAggregateInput = {
   ai_summary?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
+  expected_participants?: Prisma.SortOrder
+  special_requirements?: Prisma.SortOrder
   hall_id?: Prisma.SortOrder
   teacher_id?: Prisma.SortOrder
   hod_id?: Prisma.SortOrder
+}
+
+export type BookingAvgOrderByAggregateInput = {
+  expected_participants?: Prisma.SortOrder
 }
 
 export type BookingMaxOrderByAggregateInput = {
@@ -548,6 +635,8 @@ export type BookingMaxOrderByAggregateInput = {
   session_summary?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
+  expected_participants?: Prisma.SortOrder
+  special_requirements?: Prisma.SortOrder
   hall_id?: Prisma.SortOrder
   teacher_id?: Prisma.SortOrder
   hod_id?: Prisma.SortOrder
@@ -566,9 +655,15 @@ export type BookingMinOrderByAggregateInput = {
   session_summary?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
+  expected_participants?: Prisma.SortOrder
+  special_requirements?: Prisma.SortOrder
   hall_id?: Prisma.SortOrder
   teacher_id?: Prisma.SortOrder
   hod_id?: Prisma.SortOrder
+}
+
+export type BookingSumOrderByAggregateInput = {
+  expected_participants?: Prisma.SortOrder
 }
 
 export type BookingScalarRelationFilter = {
@@ -715,6 +810,14 @@ export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
 
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type BookingCreateNestedOneWithoutLogsInput = {
   create?: Prisma.XOR<Prisma.BookingCreateWithoutLogsInput, Prisma.BookingUncheckedCreateWithoutLogsInput>
   connectOrCreate?: Prisma.BookingCreateOrConnectWithoutLogsInput
@@ -745,6 +848,22 @@ export type BookingUpdateOneWithoutNotificationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.BookingUpdateToOneWithWhereWithoutNotificationsInput, Prisma.BookingUpdateWithoutNotificationsInput>, Prisma.BookingUncheckedUpdateWithoutNotificationsInput>
 }
 
+export type BookingCreateNestedOneWithoutEmailLogsInput = {
+  create?: Prisma.XOR<Prisma.BookingCreateWithoutEmailLogsInput, Prisma.BookingUncheckedCreateWithoutEmailLogsInput>
+  connectOrCreate?: Prisma.BookingCreateOrConnectWithoutEmailLogsInput
+  connect?: Prisma.BookingWhereUniqueInput
+}
+
+export type BookingUpdateOneWithoutEmailLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.BookingCreateWithoutEmailLogsInput, Prisma.BookingUncheckedCreateWithoutEmailLogsInput>
+  connectOrCreate?: Prisma.BookingCreateOrConnectWithoutEmailLogsInput
+  upsert?: Prisma.BookingUpsertWithoutEmailLogsInput
+  disconnect?: Prisma.BookingWhereInput | boolean
+  delete?: Prisma.BookingWhereInput | boolean
+  connect?: Prisma.BookingWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BookingUpdateToOneWithWhereWithoutEmailLogsInput, Prisma.BookingUpdateWithoutEmailLogsInput>, Prisma.BookingUncheckedUpdateWithoutEmailLogsInput>
+}
+
 export type BookingCreateWithoutTeacherInput = {
   id?: string
   booking_date: Date | string
@@ -759,10 +878,13 @@ export type BookingCreateWithoutTeacherInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
   updated_at?: Date | string
+  expected_participants?: number | null
+  special_requirements?: string | null
   hall: Prisma.SeminarHallCreateNestedOneWithoutBookingsInput
   hod?: Prisma.ProfileCreateNestedOneWithoutHodBookingsInput
   logs?: Prisma.BookingLogCreateNestedManyWithoutBookingInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutRelatedBookingInput
+  emailLogs?: Prisma.EmailLogCreateNestedManyWithoutBookingInput
 }
 
 export type BookingUncheckedCreateWithoutTeacherInput = {
@@ -779,10 +901,13 @@ export type BookingUncheckedCreateWithoutTeacherInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
   updated_at?: Date | string
+  expected_participants?: number | null
+  special_requirements?: string | null
   hall_id: string
   hod_id?: string | null
   logs?: Prisma.BookingLogUncheckedCreateNestedManyWithoutBookingInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutRelatedBookingInput
+  emailLogs?: Prisma.EmailLogUncheckedCreateNestedManyWithoutBookingInput
 }
 
 export type BookingCreateOrConnectWithoutTeacherInput = {
@@ -809,10 +934,13 @@ export type BookingCreateWithoutHodInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
   updated_at?: Date | string
+  expected_participants?: number | null
+  special_requirements?: string | null
   hall: Prisma.SeminarHallCreateNestedOneWithoutBookingsInput
   teacher: Prisma.ProfileCreateNestedOneWithoutTeacherBookingsInput
   logs?: Prisma.BookingLogCreateNestedManyWithoutBookingInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutRelatedBookingInput
+  emailLogs?: Prisma.EmailLogCreateNestedManyWithoutBookingInput
 }
 
 export type BookingUncheckedCreateWithoutHodInput = {
@@ -829,10 +957,13 @@ export type BookingUncheckedCreateWithoutHodInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
   updated_at?: Date | string
+  expected_participants?: number | null
+  special_requirements?: string | null
   hall_id: string
   teacher_id: string
   logs?: Prisma.BookingLogUncheckedCreateNestedManyWithoutBookingInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutRelatedBookingInput
+  emailLogs?: Prisma.EmailLogUncheckedCreateNestedManyWithoutBookingInput
 }
 
 export type BookingCreateOrConnectWithoutHodInput = {
@@ -878,6 +1009,8 @@ export type BookingScalarWhereInput = {
   ai_summary?: Prisma.JsonNullableFilter<"Booking">
   created_at?: Prisma.DateTimeFilter<"Booking"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Booking"> | Date | string
+  expected_participants?: Prisma.IntNullableFilter<"Booking"> | number | null
+  special_requirements?: Prisma.StringNullableFilter<"Booking"> | string | null
   hall_id?: Prisma.StringFilter<"Booking"> | string
   teacher_id?: Prisma.StringFilter<"Booking"> | string
   hod_id?: Prisma.StringNullableFilter<"Booking"> | string | null
@@ -913,10 +1046,13 @@ export type BookingCreateWithoutHallInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
   updated_at?: Date | string
+  expected_participants?: number | null
+  special_requirements?: string | null
   teacher: Prisma.ProfileCreateNestedOneWithoutTeacherBookingsInput
   hod?: Prisma.ProfileCreateNestedOneWithoutHodBookingsInput
   logs?: Prisma.BookingLogCreateNestedManyWithoutBookingInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutRelatedBookingInput
+  emailLogs?: Prisma.EmailLogCreateNestedManyWithoutBookingInput
 }
 
 export type BookingUncheckedCreateWithoutHallInput = {
@@ -933,10 +1069,13 @@ export type BookingUncheckedCreateWithoutHallInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
   updated_at?: Date | string
+  expected_participants?: number | null
+  special_requirements?: string | null
   teacher_id: string
   hod_id?: string | null
   logs?: Prisma.BookingLogUncheckedCreateNestedManyWithoutBookingInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutRelatedBookingInput
+  emailLogs?: Prisma.EmailLogUncheckedCreateNestedManyWithoutBookingInput
 }
 
 export type BookingCreateOrConnectWithoutHallInput = {
@@ -979,10 +1118,13 @@ export type BookingCreateWithoutLogsInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
   updated_at?: Date | string
+  expected_participants?: number | null
+  special_requirements?: string | null
   hall: Prisma.SeminarHallCreateNestedOneWithoutBookingsInput
   teacher: Prisma.ProfileCreateNestedOneWithoutTeacherBookingsInput
   hod?: Prisma.ProfileCreateNestedOneWithoutHodBookingsInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutRelatedBookingInput
+  emailLogs?: Prisma.EmailLogCreateNestedManyWithoutBookingInput
 }
 
 export type BookingUncheckedCreateWithoutLogsInput = {
@@ -999,10 +1141,13 @@ export type BookingUncheckedCreateWithoutLogsInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
   updated_at?: Date | string
+  expected_participants?: number | null
+  special_requirements?: string | null
   hall_id: string
   teacher_id: string
   hod_id?: string | null
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutRelatedBookingInput
+  emailLogs?: Prisma.EmailLogUncheckedCreateNestedManyWithoutBookingInput
 }
 
 export type BookingCreateOrConnectWithoutLogsInput = {
@@ -1035,10 +1180,13 @@ export type BookingUpdateWithoutLogsInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expected_participants?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  special_requirements?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hall?: Prisma.SeminarHallUpdateOneRequiredWithoutBookingsNestedInput
   teacher?: Prisma.ProfileUpdateOneRequiredWithoutTeacherBookingsNestedInput
   hod?: Prisma.ProfileUpdateOneWithoutHodBookingsNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutRelatedBookingNestedInput
+  emailLogs?: Prisma.EmailLogUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateWithoutLogsInput = {
@@ -1055,10 +1203,13 @@ export type BookingUncheckedUpdateWithoutLogsInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expected_participants?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  special_requirements?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hall_id?: Prisma.StringFieldUpdateOperationsInput | string
   teacher_id?: Prisma.StringFieldUpdateOperationsInput | string
   hod_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutRelatedBookingNestedInput
+  emailLogs?: Prisma.EmailLogUncheckedUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingCreateWithoutNotificationsInput = {
@@ -1075,10 +1226,13 @@ export type BookingCreateWithoutNotificationsInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
   updated_at?: Date | string
+  expected_participants?: number | null
+  special_requirements?: string | null
   hall: Prisma.SeminarHallCreateNestedOneWithoutBookingsInput
   teacher: Prisma.ProfileCreateNestedOneWithoutTeacherBookingsInput
   hod?: Prisma.ProfileCreateNestedOneWithoutHodBookingsInput
   logs?: Prisma.BookingLogCreateNestedManyWithoutBookingInput
+  emailLogs?: Prisma.EmailLogCreateNestedManyWithoutBookingInput
 }
 
 export type BookingUncheckedCreateWithoutNotificationsInput = {
@@ -1095,10 +1249,13 @@ export type BookingUncheckedCreateWithoutNotificationsInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
   updated_at?: Date | string
+  expected_participants?: number | null
+  special_requirements?: string | null
   hall_id: string
   teacher_id: string
   hod_id?: string | null
   logs?: Prisma.BookingLogUncheckedCreateNestedManyWithoutBookingInput
+  emailLogs?: Prisma.EmailLogUncheckedCreateNestedManyWithoutBookingInput
 }
 
 export type BookingCreateOrConnectWithoutNotificationsInput = {
@@ -1131,10 +1288,13 @@ export type BookingUpdateWithoutNotificationsInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expected_participants?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  special_requirements?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hall?: Prisma.SeminarHallUpdateOneRequiredWithoutBookingsNestedInput
   teacher?: Prisma.ProfileUpdateOneRequiredWithoutTeacherBookingsNestedInput
   hod?: Prisma.ProfileUpdateOneWithoutHodBookingsNestedInput
   logs?: Prisma.BookingLogUpdateManyWithoutBookingNestedInput
+  emailLogs?: Prisma.EmailLogUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateWithoutNotificationsInput = {
@@ -1151,10 +1311,121 @@ export type BookingUncheckedUpdateWithoutNotificationsInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expected_participants?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  special_requirements?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hall_id?: Prisma.StringFieldUpdateOperationsInput | string
   teacher_id?: Prisma.StringFieldUpdateOperationsInput | string
   hod_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.BookingLogUncheckedUpdateManyWithoutBookingNestedInput
+  emailLogs?: Prisma.EmailLogUncheckedUpdateManyWithoutBookingNestedInput
+}
+
+export type BookingCreateWithoutEmailLogsInput = {
+  id?: string
+  booking_date: Date | string
+  start_time: Date | string
+  end_time: Date | string
+  purpose: string
+  permission_letter_url: string
+  status?: $Enums.BookingStatus
+  approved_at?: Date | string | null
+  rejection_reason?: string | null
+  session_summary?: string | null
+  ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  created_at?: Date | string
+  updated_at?: Date | string
+  expected_participants?: number | null
+  special_requirements?: string | null
+  hall: Prisma.SeminarHallCreateNestedOneWithoutBookingsInput
+  teacher: Prisma.ProfileCreateNestedOneWithoutTeacherBookingsInput
+  hod?: Prisma.ProfileCreateNestedOneWithoutHodBookingsInput
+  logs?: Prisma.BookingLogCreateNestedManyWithoutBookingInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutRelatedBookingInput
+}
+
+export type BookingUncheckedCreateWithoutEmailLogsInput = {
+  id?: string
+  booking_date: Date | string
+  start_time: Date | string
+  end_time: Date | string
+  purpose: string
+  permission_letter_url: string
+  status?: $Enums.BookingStatus
+  approved_at?: Date | string | null
+  rejection_reason?: string | null
+  session_summary?: string | null
+  ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  created_at?: Date | string
+  updated_at?: Date | string
+  expected_participants?: number | null
+  special_requirements?: string | null
+  hall_id: string
+  teacher_id: string
+  hod_id?: string | null
+  logs?: Prisma.BookingLogUncheckedCreateNestedManyWithoutBookingInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutRelatedBookingInput
+}
+
+export type BookingCreateOrConnectWithoutEmailLogsInput = {
+  where: Prisma.BookingWhereUniqueInput
+  create: Prisma.XOR<Prisma.BookingCreateWithoutEmailLogsInput, Prisma.BookingUncheckedCreateWithoutEmailLogsInput>
+}
+
+export type BookingUpsertWithoutEmailLogsInput = {
+  update: Prisma.XOR<Prisma.BookingUpdateWithoutEmailLogsInput, Prisma.BookingUncheckedUpdateWithoutEmailLogsInput>
+  create: Prisma.XOR<Prisma.BookingCreateWithoutEmailLogsInput, Prisma.BookingUncheckedCreateWithoutEmailLogsInput>
+  where?: Prisma.BookingWhereInput
+}
+
+export type BookingUpdateToOneWithWhereWithoutEmailLogsInput = {
+  where?: Prisma.BookingWhereInput
+  data: Prisma.XOR<Prisma.BookingUpdateWithoutEmailLogsInput, Prisma.BookingUncheckedUpdateWithoutEmailLogsInput>
+}
+
+export type BookingUpdateWithoutEmailLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  booking_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  start_time?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  end_time?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  permission_letter_url?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  approved_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejection_reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  session_summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expected_participants?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  special_requirements?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hall?: Prisma.SeminarHallUpdateOneRequiredWithoutBookingsNestedInput
+  teacher?: Prisma.ProfileUpdateOneRequiredWithoutTeacherBookingsNestedInput
+  hod?: Prisma.ProfileUpdateOneWithoutHodBookingsNestedInput
+  logs?: Prisma.BookingLogUpdateManyWithoutBookingNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutRelatedBookingNestedInput
+}
+
+export type BookingUncheckedUpdateWithoutEmailLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  booking_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  start_time?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  end_time?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purpose?: Prisma.StringFieldUpdateOperationsInput | string
+  permission_letter_url?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+  approved_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejection_reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  session_summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expected_participants?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  special_requirements?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hall_id?: Prisma.StringFieldUpdateOperationsInput | string
+  teacher_id?: Prisma.StringFieldUpdateOperationsInput | string
+  hod_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logs?: Prisma.BookingLogUncheckedUpdateManyWithoutBookingNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutRelatedBookingNestedInput
 }
 
 export type BookingCreateManyTeacherInput = {
@@ -1171,6 +1442,8 @@ export type BookingCreateManyTeacherInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
   updated_at?: Date | string
+  expected_participants?: number | null
+  special_requirements?: string | null
   hall_id: string
   hod_id?: string | null
 }
@@ -1189,6 +1462,8 @@ export type BookingCreateManyHodInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
   updated_at?: Date | string
+  expected_participants?: number | null
+  special_requirements?: string | null
   hall_id: string
   teacher_id: string
 }
@@ -1207,10 +1482,13 @@ export type BookingUpdateWithoutTeacherInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expected_participants?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  special_requirements?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hall?: Prisma.SeminarHallUpdateOneRequiredWithoutBookingsNestedInput
   hod?: Prisma.ProfileUpdateOneWithoutHodBookingsNestedInput
   logs?: Prisma.BookingLogUpdateManyWithoutBookingNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutRelatedBookingNestedInput
+  emailLogs?: Prisma.EmailLogUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateWithoutTeacherInput = {
@@ -1227,10 +1505,13 @@ export type BookingUncheckedUpdateWithoutTeacherInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expected_participants?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  special_requirements?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hall_id?: Prisma.StringFieldUpdateOperationsInput | string
   hod_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.BookingLogUncheckedUpdateManyWithoutBookingNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutRelatedBookingNestedInput
+  emailLogs?: Prisma.EmailLogUncheckedUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateManyWithoutTeacherInput = {
@@ -1247,6 +1528,8 @@ export type BookingUncheckedUpdateManyWithoutTeacherInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expected_participants?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  special_requirements?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hall_id?: Prisma.StringFieldUpdateOperationsInput | string
   hod_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -1265,10 +1548,13 @@ export type BookingUpdateWithoutHodInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expected_participants?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  special_requirements?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hall?: Prisma.SeminarHallUpdateOneRequiredWithoutBookingsNestedInput
   teacher?: Prisma.ProfileUpdateOneRequiredWithoutTeacherBookingsNestedInput
   logs?: Prisma.BookingLogUpdateManyWithoutBookingNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutRelatedBookingNestedInput
+  emailLogs?: Prisma.EmailLogUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateWithoutHodInput = {
@@ -1285,10 +1571,13 @@ export type BookingUncheckedUpdateWithoutHodInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expected_participants?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  special_requirements?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hall_id?: Prisma.StringFieldUpdateOperationsInput | string
   teacher_id?: Prisma.StringFieldUpdateOperationsInput | string
   logs?: Prisma.BookingLogUncheckedUpdateManyWithoutBookingNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutRelatedBookingNestedInput
+  emailLogs?: Prisma.EmailLogUncheckedUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateManyWithoutHodInput = {
@@ -1305,6 +1594,8 @@ export type BookingUncheckedUpdateManyWithoutHodInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expected_participants?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  special_requirements?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hall_id?: Prisma.StringFieldUpdateOperationsInput | string
   teacher_id?: Prisma.StringFieldUpdateOperationsInput | string
 }
@@ -1323,6 +1614,8 @@ export type BookingCreateManyHallInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
   updated_at?: Date | string
+  expected_participants?: number | null
+  special_requirements?: string | null
   teacher_id: string
   hod_id?: string | null
 }
@@ -1341,10 +1634,13 @@ export type BookingUpdateWithoutHallInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expected_participants?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  special_requirements?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teacher?: Prisma.ProfileUpdateOneRequiredWithoutTeacherBookingsNestedInput
   hod?: Prisma.ProfileUpdateOneWithoutHodBookingsNestedInput
   logs?: Prisma.BookingLogUpdateManyWithoutBookingNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutRelatedBookingNestedInput
+  emailLogs?: Prisma.EmailLogUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateWithoutHallInput = {
@@ -1361,10 +1657,13 @@ export type BookingUncheckedUpdateWithoutHallInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expected_participants?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  special_requirements?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teacher_id?: Prisma.StringFieldUpdateOperationsInput | string
   hod_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.BookingLogUncheckedUpdateManyWithoutBookingNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutRelatedBookingNestedInput
+  emailLogs?: Prisma.EmailLogUncheckedUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateManyWithoutHallInput = {
@@ -1381,6 +1680,8 @@ export type BookingUncheckedUpdateManyWithoutHallInput = {
   ai_summary?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expected_participants?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  special_requirements?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teacher_id?: Prisma.StringFieldUpdateOperationsInput | string
   hod_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -1393,11 +1694,13 @@ export type BookingUncheckedUpdateManyWithoutHallInput = {
 export type BookingCountOutputType = {
   logs: number
   notifications: number
+  emailLogs: number
 }
 
 export type BookingCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   logs?: boolean | BookingCountOutputTypeCountLogsArgs
   notifications?: boolean | BookingCountOutputTypeCountNotificationsArgs
+  emailLogs?: boolean | BookingCountOutputTypeCountEmailLogsArgs
 }
 
 /**
@@ -1424,6 +1727,13 @@ export type BookingCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime
   where?: Prisma.NotificationWhereInput
 }
 
+/**
+ * BookingCountOutputType without action
+ */
+export type BookingCountOutputTypeCountEmailLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EmailLogWhereInput
+}
+
 
 export type BookingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1439,6 +1749,8 @@ export type BookingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   ai_summary?: boolean
   created_at?: boolean
   updated_at?: boolean
+  expected_participants?: boolean
+  special_requirements?: boolean
   hall_id?: boolean
   teacher_id?: boolean
   hod_id?: boolean
@@ -1447,6 +1759,7 @@ export type BookingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   hod?: boolean | Prisma.Booking$hodArgs<ExtArgs>
   logs?: boolean | Prisma.Booking$logsArgs<ExtArgs>
   notifications?: boolean | Prisma.Booking$notificationsArgs<ExtArgs>
+  emailLogs?: boolean | Prisma.Booking$emailLogsArgs<ExtArgs>
   _count?: boolean | Prisma.BookingCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["booking"]>
 
@@ -1464,6 +1777,8 @@ export type BookingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   ai_summary?: boolean
   created_at?: boolean
   updated_at?: boolean
+  expected_participants?: boolean
+  special_requirements?: boolean
   hall_id?: boolean
   teacher_id?: boolean
   hod_id?: boolean
@@ -1486,6 +1801,8 @@ export type BookingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   ai_summary?: boolean
   created_at?: boolean
   updated_at?: boolean
+  expected_participants?: boolean
+  special_requirements?: boolean
   hall_id?: boolean
   teacher_id?: boolean
   hod_id?: boolean
@@ -1508,18 +1825,21 @@ export type BookingSelectScalar = {
   ai_summary?: boolean
   created_at?: boolean
   updated_at?: boolean
+  expected_participants?: boolean
+  special_requirements?: boolean
   hall_id?: boolean
   teacher_id?: boolean
   hod_id?: boolean
 }
 
-export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "booking_date" | "start_time" | "end_time" | "purpose" | "permission_letter_url" | "status" | "approved_at" | "rejection_reason" | "session_summary" | "ai_summary" | "created_at" | "updated_at" | "hall_id" | "teacher_id" | "hod_id", ExtArgs["result"]["booking"]>
+export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "booking_date" | "start_time" | "end_time" | "purpose" | "permission_letter_url" | "status" | "approved_at" | "rejection_reason" | "session_summary" | "ai_summary" | "created_at" | "updated_at" | "expected_participants" | "special_requirements" | "hall_id" | "teacher_id" | "hod_id", ExtArgs["result"]["booking"]>
 export type BookingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   hall?: boolean | Prisma.SeminarHallDefaultArgs<ExtArgs>
   teacher?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
   hod?: boolean | Prisma.Booking$hodArgs<ExtArgs>
   logs?: boolean | Prisma.Booking$logsArgs<ExtArgs>
   notifications?: boolean | Prisma.Booking$notificationsArgs<ExtArgs>
+  emailLogs?: boolean | Prisma.Booking$emailLogsArgs<ExtArgs>
   _count?: boolean | Prisma.BookingCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type BookingIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1541,6 +1861,7 @@ export type $BookingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     hod: Prisma.$ProfilePayload<ExtArgs> | null
     logs: Prisma.$BookingLogPayload<ExtArgs>[]
     notifications: Prisma.$NotificationPayload<ExtArgs>[]
+    emailLogs: Prisma.$EmailLogPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1556,6 +1877,8 @@ export type $BookingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     ai_summary: runtime.JsonValue | null
     created_at: Date
     updated_at: Date
+    expected_participants: number | null
+    special_requirements: string | null
     hall_id: string
     teacher_id: string
     hod_id: string | null
@@ -1958,6 +2281,7 @@ export interface Prisma__BookingClient<T, Null = never, ExtArgs extends runtime.
   hod<T extends Prisma.Booking$hodArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Booking$hodArgs<ExtArgs>>): Prisma.Prisma__ProfileClient<runtime.Types.Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   logs<T extends Prisma.Booking$logsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Booking$logsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notifications<T extends Prisma.Booking$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Booking$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  emailLogs<T extends Prisma.Booking$emailLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Booking$emailLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2000,6 +2324,8 @@ export interface BookingFieldRefs {
   readonly ai_summary: Prisma.FieldRef<"Booking", 'Json'>
   readonly created_at: Prisma.FieldRef<"Booking", 'DateTime'>
   readonly updated_at: Prisma.FieldRef<"Booking", 'DateTime'>
+  readonly expected_participants: Prisma.FieldRef<"Booking", 'Int'>
+  readonly special_requirements: Prisma.FieldRef<"Booking", 'String'>
   readonly hall_id: Prisma.FieldRef<"Booking", 'String'>
   readonly teacher_id: Prisma.FieldRef<"Booking", 'String'>
   readonly hod_id: Prisma.FieldRef<"Booking", 'String'>
@@ -2463,6 +2789,30 @@ export type Booking$notificationsArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[]
+}
+
+/**
+ * Booking.emailLogs
+ */
+export type Booking$emailLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EmailLog
+   */
+  select?: Prisma.EmailLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EmailLog
+   */
+  omit?: Prisma.EmailLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EmailLogInclude<ExtArgs> | null
+  where?: Prisma.EmailLogWhereInput
+  orderBy?: Prisma.EmailLogOrderByWithRelationInput | Prisma.EmailLogOrderByWithRelationInput[]
+  cursor?: Prisma.EmailLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EmailLogScalarFieldEnum | Prisma.EmailLogScalarFieldEnum[]
 }
 
 /**

@@ -2,19 +2,19 @@
 import { Card, CardContent, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { UserType } from "@/constants/forms";
+import { UserRole } from "@/generated/enums";
 import { cn } from "@/lib/utils";
 import { User } from "lucide-react";
 import React from "react";
 import { FieldValues, UseFormRegister } from "react-hook-form";
 
 type Props = {
-  value: UserType;
+  value: UserRole;
   title: string;
   text?: string;
   register: UseFormRegister<FieldValues>;
-  userType: UserType;
-  setUserType: React.Dispatch<React.SetStateAction<UserType>>;
+  userType: UserRole;
+  setUserType: React.Dispatch<React.SetStateAction<UserRole>>;
 };
 
 const UserTypeCard = ({
@@ -30,7 +30,7 @@ const UserTypeCard = ({
       <Card
         className={cn(
           "cursor-pointer border-2 rounded-xl transition-all bg-black hover:bg-neutral-900",
-          "p-4",
+          "py-3 px-2",
           userType === value && "border-teal-300"
         )}
       >
@@ -77,7 +77,7 @@ const UserTypeCard = ({
               <Input
                 {...register("type", {
                   onChange: (event) =>
-                    setUserType(event.target.value as UserType),
+                    setUserType(event.target.value as UserRole),
                 })}
                 value={value}
                 id={value}

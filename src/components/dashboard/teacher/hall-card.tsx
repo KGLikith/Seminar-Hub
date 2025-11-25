@@ -1,88 +1,77 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
-import { MapPin, Users, CheckCircle2, AlertCircle } from 'lucide-react';
+import { MapPin, Users, BookOpen } from 'lucide-react';
+
+interface Hall {
+  id: string;
+  name: string;
+  location: string;
+  seating_capacity: number;
+  image_url?: string;
+  status: string;
+  equipment: any[];
+}
 
 interface HallCardProps {
-  hall: any;
-  onBook: (hall: any) => void;
+  hall: Hall;
+  onBook: (hall: Hall) => void;
 }
 
 export default function HallCard({ hall, onBook }: HallCardProps) {
   const isAvailable = hall.status === "available";
 
   return (
-    <div className="group rounded-xl border-2 border-slate-200 bg-white overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-blue-300 animate-fade-in">
-      {/* Image */}
-      {hall.image_url && (
-        <Link href={`/dashboard/teacher/halls/${hall.id}`}>
-          <div className="relative h-48 overflow-hidden bg-linear-to-br from-slate-200 to-slate-300 cursor-pointer">
-            <Image
-              src={hall.image_url || "/placeholder.svg?height=192&width=400&query=seminar hall"}
-              alt={hall.name}
-              fill
-              className="object-cover group-hover:scale-110 transition-transform duration-300"
-            />
+    <div className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col h-full fade-in">
+      <div className="relative h-48 bg-linear-to-br from-blue-100 to-indigo-100 overflow-hidden">
+        {hall.image_url ? (
+          <Image
+            src={hall.image_url || "/placeholder.svg"}
+            alt={hall.name}
+            fill
+            className="object-cover"
+          />
+        ) : (
+          <div className="flex items-center justify-center h-full">
+            <BookOpen className="w-12 h-12 text-blue-300" />
           </div>
-        </Link>
-      )}
-
-      {/* Content */}
-      <div className="p-6 space-y-4">
-        {/* Title & Status */}
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex-1">
-            <h3 className="heading-3 text-slate-900 mb-1">{hall.name}</h3>
-            <div className="flex items-center gap-2 text-sm text-slate-600">
-              <MapPin className="w-4 h-4" />
-              <span>{hall.location}</span>
-            </div>
-          </div>
-          <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full font-semibold text-sm whitespace-nowrap ${
-            isAvailable
-              ? "bg-emerald-100 text-emerald-700"
-              : "bg-amber-100 text-amber-700"
+        )}
+        <div className="absolute top-3 right-3">
+          <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold ${
+            isAvailable 
+              ? 'bg-emerald-100 text-emerald-800' 
+              : 'bg-red-100 text-red-800'
           }`}>
-            {isAvailable ? (
-              <CheckCircle2 className="w-4 h-4" />
-            ) : (
-              <AlertCircle className="w-4 h-4" />
-            )}
-            {hall.status.replace("_", " ")}
+            {isAvailable ? 'Available' : 'Unavailable'}
+          </span>
+        </div>
+      </div>
+
+      <div className="p-6 flex flex-col flex-1">
+        <h3 className="text-lg md:text-xl font-bold text-slate-900 mb-2">{hall.name}</h3>
+        
+        <div className="space-y-3 mb-6 flex-1">
+          <div className="flex items-center gap-2 text-slate-600">
+            <MapPin className="w-4 h-4 shrink-0 text-blue-600" />
+            <span className="text-sm">{hall.location}</span>
+          </div>
+          <div className="flex items-center gap-2 text-slate-600">
+            <Users className="w-4 h-4 shrink-0 text-blue-600" />
+            <span className="text-sm">Capacity: {hall.seating_capacity} seats</span>
           </div>
         </div>
 
-        {/* Details Grid */}
-        <div className="grid grid-cols-2 gap-3 p-4 bg-slate-50 rounded-lg">
-          <div>
-            <p className="text-xs text-slate-600 font-medium mb-1">Capacity</p>
-            <div className="flex items-center gap-1.5">
-              <Users className="w-4 h-4 text-slate-600" />
-              <p className="font-semibold text-slate-900">{hall.seating_capacity}</p>
-            </div>
-          </div>
-          <div>
-            <p className="text-xs text-slate-600 font-medium mb-1">Equipment</p>
-            <p className="font-semibold text-slate-900">{hall.equipment?.length || 0}</p>
-          </div>
-        </div>
-
-        {/* Actions */}
-        <div className="flex gap-2 pt-2">
-          <button
-            onClick={() => onBook(hall)}
-            disabled={!isAvailable}
-            className="flex-1 px-4 py-2.5 bg-linear-to-r from-blue-600 to-blue-500 text-white font-semibold rounded-lg hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Book Now
-          </button>
-          <Link href={`/dashboard/teacher/halls/${hall.id}`} className="flex-1">
-            <button className="w-full px-4 py-2.5 bg-slate-100 text-slate-900 font-semibold rounded-lg hover:bg-slate-200 transition-all duration-200">
-              Preview
-            </button>
-          </Link>
-        </div>
+        <button
+          onClick={() => onBook(hall)}
+          disabled={!isAvailable}
+          className={`w-full py-2 px-4 rounded-lg font-semibold transition-colors ${
+            isAvailable
+              ? 'bg-blue-600 text-white hover:bg-blue-700'
+              : 'bg-slate-200 text-slate-500 cursor-not-allowed'
+          }`}
+        >
+          {isAvailable ? 'Book Now' : 'Not Available'}
+        </button>
       </div>
     </div>
   );

@@ -26,9 +26,9 @@ export type AggregateProfile = {
 
 export type ProfileMinAggregateOutputType = {
   id: string | null
+  clerkId: string | null
   email: string | null
   name: string | null
-  role: $Enums.UserRole | null
   phone: string | null
   avatar_url: string | null
   created_at: Date | null
@@ -39,9 +39,9 @@ export type ProfileMinAggregateOutputType = {
 
 export type ProfileMaxAggregateOutputType = {
   id: string | null
+  clerkId: string | null
   email: string | null
   name: string | null
-  role: $Enums.UserRole | null
   phone: string | null
   avatar_url: string | null
   created_at: Date | null
@@ -52,9 +52,9 @@ export type ProfileMaxAggregateOutputType = {
 
 export type ProfileCountAggregateOutputType = {
   id: number
+  clerkId: number
   email: number
   name: number
-  role: number
   phone: number
   avatar_url: number
   created_at: number
@@ -67,9 +67,9 @@ export type ProfileCountAggregateOutputType = {
 
 export type ProfileMinAggregateInputType = {
   id?: true
+  clerkId?: true
   email?: true
   name?: true
-  role?: true
   phone?: true
   avatar_url?: true
   created_at?: true
@@ -80,9 +80,9 @@ export type ProfileMinAggregateInputType = {
 
 export type ProfileMaxAggregateInputType = {
   id?: true
+  clerkId?: true
   email?: true
   name?: true
-  role?: true
   phone?: true
   avatar_url?: true
   created_at?: true
@@ -93,9 +93,9 @@ export type ProfileMaxAggregateInputType = {
 
 export type ProfileCountAggregateInputType = {
   id?: true
+  clerkId?: true
   email?: true
   name?: true
-  role?: true
   phone?: true
   avatar_url?: true
   created_at?: true
@@ -179,9 +179,9 @@ export type ProfileGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 
 export type ProfileGroupByOutputType = {
   id: string
+  clerkId: string
   email: string
   name: string
-  role: $Enums.UserRole
   phone: string | null
   avatar_url: string | null
   created_at: Date
@@ -213,9 +213,9 @@ export type ProfileWhereInput = {
   OR?: Prisma.ProfileWhereInput[]
   NOT?: Prisma.ProfileWhereInput | Prisma.ProfileWhereInput[]
   id?: Prisma.StringFilter<"Profile"> | string
+  clerkId?: Prisma.StringFilter<"Profile"> | string
   email?: Prisma.StringFilter<"Profile"> | string
   name?: Prisma.StringFilter<"Profile"> | string
-  role?: Prisma.EnumUserRoleFilter<"Profile"> | $Enums.UserRole
   phone?: Prisma.StringNullableFilter<"Profile"> | string | null
   avatar_url?: Prisma.StringNullableFilter<"Profile"> | string | null
   created_at?: Prisma.DateTimeFilter<"Profile"> | Date | string
@@ -224,6 +224,7 @@ export type ProfileWhereInput = {
   user_id?: Prisma.StringNullableFilter<"Profile"> | string | null
   department?: Prisma.XOR<Prisma.DepartmentNullableScalarRelationFilter, Prisma.DepartmentWhereInput> | null
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  roles?: Prisma.UserRoleAssignmentListRelationFilter
   hallAssignments?: Prisma.HallTechStaffListRelationFilter
   equipmentUpdated?: Prisma.EquipmentListRelationFilter
   equipmentLogs?: Prisma.EquipmentLogListRelationFilter
@@ -236,9 +237,9 @@ export type ProfileWhereInput = {
 
 export type ProfileOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  clerkId?: Prisma.SortOrder
   email?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  role?: Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   avatar_url?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -247,6 +248,7 @@ export type ProfileOrderByWithRelationInput = {
   user_id?: Prisma.SortOrderInput | Prisma.SortOrder
   department?: Prisma.DepartmentOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
+  roles?: Prisma.UserRoleAssignmentOrderByRelationAggregateInput
   hallAssignments?: Prisma.HallTechStaffOrderByRelationAggregateInput
   equipmentUpdated?: Prisma.EquipmentOrderByRelationAggregateInput
   equipmentLogs?: Prisma.EquipmentLogOrderByRelationAggregateInput
@@ -259,13 +261,13 @@ export type ProfileOrderByWithRelationInput = {
 
 export type ProfileWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  clerkId?: string
   user_id?: string
   AND?: Prisma.ProfileWhereInput | Prisma.ProfileWhereInput[]
   OR?: Prisma.ProfileWhereInput[]
   NOT?: Prisma.ProfileWhereInput | Prisma.ProfileWhereInput[]
   email?: Prisma.StringFilter<"Profile"> | string
   name?: Prisma.StringFilter<"Profile"> | string
-  role?: Prisma.EnumUserRoleFilter<"Profile"> | $Enums.UserRole
   phone?: Prisma.StringNullableFilter<"Profile"> | string | null
   avatar_url?: Prisma.StringNullableFilter<"Profile"> | string | null
   created_at?: Prisma.DateTimeFilter<"Profile"> | Date | string
@@ -273,6 +275,7 @@ export type ProfileWhereUniqueInput = Prisma.AtLeast<{
   department_id?: Prisma.StringNullableFilter<"Profile"> | string | null
   department?: Prisma.XOR<Prisma.DepartmentNullableScalarRelationFilter, Prisma.DepartmentWhereInput> | null
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  roles?: Prisma.UserRoleAssignmentListRelationFilter
   hallAssignments?: Prisma.HallTechStaffListRelationFilter
   equipmentUpdated?: Prisma.EquipmentListRelationFilter
   equipmentLogs?: Prisma.EquipmentLogListRelationFilter
@@ -281,13 +284,13 @@ export type ProfileWhereUniqueInput = Prisma.AtLeast<{
   bookingLogsPerformed?: Prisma.BookingLogListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogListRelationFilter
-}, "id" | "user_id">
+}, "id" | "clerkId" | "user_id">
 
 export type ProfileOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  clerkId?: Prisma.SortOrder
   email?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  role?: Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   avatar_url?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -304,9 +307,9 @@ export type ProfileScalarWhereWithAggregatesInput = {
   OR?: Prisma.ProfileScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ProfileScalarWhereWithAggregatesInput | Prisma.ProfileScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Profile"> | string
+  clerkId?: Prisma.StringWithAggregatesFilter<"Profile"> | string
   email?: Prisma.StringWithAggregatesFilter<"Profile"> | string
   name?: Prisma.StringWithAggregatesFilter<"Profile"> | string
-  role?: Prisma.EnumUserRoleWithAggregatesFilter<"Profile"> | $Enums.UserRole
   phone?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
   avatar_url?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
   created_at?: Prisma.DateTimeWithAggregatesFilter<"Profile"> | Date | string
@@ -317,15 +320,16 @@ export type ProfileScalarWhereWithAggregatesInput = {
 
 export type ProfileCreateInput = {
   id?: string
+  clerkId: string
   email: string
   name: string
-  role: $Enums.UserRole
   phone?: string | null
   avatar_url?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   department?: Prisma.DepartmentCreateNestedOneWithoutProfilesInput
   user?: Prisma.UserCreateNestedOneWithoutProfileInput
+  roles?: Prisma.UserRoleAssignmentCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentCreateNestedManyWithoutUpdated_byInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutUserInput
@@ -338,15 +342,16 @@ export type ProfileCreateInput = {
 
 export type ProfileUncheckedCreateInput = {
   id?: string
+  clerkId: string
   email: string
   name: string
-  role: $Enums.UserRole
   phone?: string | null
   avatar_url?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   department_id?: string | null
   user_id?: string | null
+  roles?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentUncheckedCreateNestedManyWithoutUpdated_byInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutUserInput
@@ -359,15 +364,16 @@ export type ProfileUncheckedCreateInput = {
 
 export type ProfileUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneWithoutProfilesNestedInput
   user?: Prisma.UserUpdateOneWithoutProfileNestedInput
+  roles?: Prisma.UserRoleAssignmentUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUpdateManyWithoutUpdated_byNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutUserNestedInput
@@ -380,15 +386,16 @@ export type ProfileUpdateInput = {
 
 export type ProfileUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUncheckedUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUncheckedUpdateManyWithoutUpdated_byNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutUserNestedInput
@@ -401,9 +408,9 @@ export type ProfileUncheckedUpdateInput = {
 
 export type ProfileCreateManyInput = {
   id?: string
+  clerkId: string
   email: string
   name: string
-  role: $Enums.UserRole
   phone?: string | null
   avatar_url?: string | null
   created_at?: Date | string
@@ -414,9 +421,9 @@ export type ProfileCreateManyInput = {
 
 export type ProfileUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -425,9 +432,9 @@ export type ProfileUpdateManyMutationInput = {
 
 export type ProfileUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -453,9 +460,9 @@ export type ProfileNullableScalarRelationFilter = {
 
 export type ProfileCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  clerkId?: Prisma.SortOrder
   email?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  role?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   avatar_url?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -466,9 +473,9 @@ export type ProfileCountOrderByAggregateInput = {
 
 export type ProfileMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  clerkId?: Prisma.SortOrder
   email?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  role?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   avatar_url?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -479,9 +486,9 @@ export type ProfileMaxOrderByAggregateInput = {
 
 export type ProfileMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  clerkId?: Prisma.SortOrder
   email?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  role?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   avatar_url?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -569,8 +576,18 @@ export type ProfileUncheckedUpdateOneWithoutUserNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutUserInput, Prisma.ProfileUpdateWithoutUserInput>, Prisma.ProfileUncheckedUpdateWithoutUserInput>
 }
 
-export type EnumUserRoleFieldUpdateOperationsInput = {
-  set?: $Enums.UserRole
+export type ProfileCreateNestedOneWithoutRolesInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutRolesInput, Prisma.ProfileUncheckedCreateWithoutRolesInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutRolesInput
+  connect?: Prisma.ProfileWhereUniqueInput
+}
+
+export type ProfileUpdateOneRequiredWithoutRolesNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutRolesInput, Prisma.ProfileUncheckedCreateWithoutRolesInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutRolesInput
+  upsert?: Prisma.ProfileUpsertWithoutRolesInput
+  connect?: Prisma.ProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutRolesInput, Prisma.ProfileUpdateWithoutRolesInput>, Prisma.ProfileUncheckedUpdateWithoutRolesInput>
 }
 
 export type ProfileCreateNestedOneWithoutHallAssignmentsInput = {
@@ -691,14 +708,15 @@ export type ProfileUpdateOneRequiredWithoutComponentMaintenanceLogsNestedInput =
 
 export type ProfileCreateWithoutDepartmentInput = {
   id?: string
+  clerkId: string
   email: string
   name: string
-  role: $Enums.UserRole
   phone?: string | null
   avatar_url?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   user?: Prisma.UserCreateNestedOneWithoutProfileInput
+  roles?: Prisma.UserRoleAssignmentCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentCreateNestedManyWithoutUpdated_byInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutUserInput
@@ -711,14 +729,15 @@ export type ProfileCreateWithoutDepartmentInput = {
 
 export type ProfileUncheckedCreateWithoutDepartmentInput = {
   id?: string
+  clerkId: string
   email: string
   name: string
-  role: $Enums.UserRole
   phone?: string | null
   avatar_url?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   user_id?: string | null
+  roles?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentUncheckedCreateNestedManyWithoutUpdated_byInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutUserInput
@@ -760,9 +779,9 @@ export type ProfileScalarWhereInput = {
   OR?: Prisma.ProfileScalarWhereInput[]
   NOT?: Prisma.ProfileScalarWhereInput | Prisma.ProfileScalarWhereInput[]
   id?: Prisma.StringFilter<"Profile"> | string
+  clerkId?: Prisma.StringFilter<"Profile"> | string
   email?: Prisma.StringFilter<"Profile"> | string
   name?: Prisma.StringFilter<"Profile"> | string
-  role?: Prisma.EnumUserRoleFilter<"Profile"> | $Enums.UserRole
   phone?: Prisma.StringNullableFilter<"Profile"> | string | null
   avatar_url?: Prisma.StringNullableFilter<"Profile"> | string | null
   created_at?: Prisma.DateTimeFilter<"Profile"> | Date | string
@@ -773,14 +792,15 @@ export type ProfileScalarWhereInput = {
 
 export type ProfileCreateWithoutUserInput = {
   id?: string
+  clerkId: string
   email: string
   name: string
-  role: $Enums.UserRole
   phone?: string | null
   avatar_url?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   department?: Prisma.DepartmentCreateNestedOneWithoutProfilesInput
+  roles?: Prisma.UserRoleAssignmentCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentCreateNestedManyWithoutUpdated_byInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutUserInput
@@ -793,14 +813,15 @@ export type ProfileCreateWithoutUserInput = {
 
 export type ProfileUncheckedCreateWithoutUserInput = {
   id?: string
+  clerkId: string
   email: string
   name: string
-  role: $Enums.UserRole
   phone?: string | null
   avatar_url?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   department_id?: string | null
+  roles?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentUncheckedCreateNestedManyWithoutUpdated_byInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutUserInput
@@ -829,14 +850,15 @@ export type ProfileUpdateToOneWithWhereWithoutUserInput = {
 
 export type ProfileUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneWithoutProfilesNestedInput
+  roles?: Prisma.UserRoleAssignmentUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUpdateManyWithoutUpdated_byNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutUserNestedInput
@@ -849,14 +871,115 @@ export type ProfileUpdateWithoutUserInput = {
 
 export type ProfileUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutProfileNestedInput
+  hallAssignments?: Prisma.HallTechStaffUncheckedUpdateManyWithoutTech_staffNestedInput
+  equipmentUpdated?: Prisma.EquipmentUncheckedUpdateManyWithoutUpdated_byNestedInput
+  equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutUserNestedInput
+  teacherBookings?: Prisma.BookingUncheckedUpdateManyWithoutTeacherNestedInput
+  hodBookings?: Prisma.BookingUncheckedUpdateManyWithoutHodNestedInput
+  bookingLogsPerformed?: Prisma.BookingLogUncheckedUpdateManyWithoutPerformerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedUpdateManyWithoutPerformerNestedInput
+}
+
+export type ProfileCreateWithoutRolesInput = {
+  id?: string
+  clerkId: string
+  email: string
+  name: string
+  phone?: string | null
+  avatar_url?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  department?: Prisma.DepartmentCreateNestedOneWithoutProfilesInput
+  user?: Prisma.UserCreateNestedOneWithoutProfileInput
+  hallAssignments?: Prisma.HallTechStaffCreateNestedManyWithoutTech_staffInput
+  equipmentUpdated?: Prisma.EquipmentCreateNestedManyWithoutUpdated_byInput
+  equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutUserInput
+  teacherBookings?: Prisma.BookingCreateNestedManyWithoutTeacherInput
+  hodBookings?: Prisma.BookingCreateNestedManyWithoutHodInput
+  bookingLogsPerformed?: Prisma.BookingLogCreateNestedManyWithoutPerformerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogCreateNestedManyWithoutPerformerInput
+}
+
+export type ProfileUncheckedCreateWithoutRolesInput = {
+  id?: string
+  clerkId: string
+  email: string
+  name: string
+  phone?: string | null
+  avatar_url?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  department_id?: string | null
+  user_id?: string | null
+  hallAssignments?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutTech_staffInput
+  equipmentUpdated?: Prisma.EquipmentUncheckedCreateNestedManyWithoutUpdated_byInput
+  equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutUserInput
+  teacherBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutTeacherInput
+  hodBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutHodInput
+  bookingLogsPerformed?: Prisma.BookingLogUncheckedCreateNestedManyWithoutPerformerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedCreateNestedManyWithoutPerformerInput
+}
+
+export type ProfileCreateOrConnectWithoutRolesInput = {
+  where: Prisma.ProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutRolesInput, Prisma.ProfileUncheckedCreateWithoutRolesInput>
+}
+
+export type ProfileUpsertWithoutRolesInput = {
+  update: Prisma.XOR<Prisma.ProfileUpdateWithoutRolesInput, Prisma.ProfileUncheckedUpdateWithoutRolesInput>
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutRolesInput, Prisma.ProfileUncheckedCreateWithoutRolesInput>
+  where?: Prisma.ProfileWhereInput
+}
+
+export type ProfileUpdateToOneWithWhereWithoutRolesInput = {
+  where?: Prisma.ProfileWhereInput
+  data: Prisma.XOR<Prisma.ProfileUpdateWithoutRolesInput, Prisma.ProfileUncheckedUpdateWithoutRolesInput>
+}
+
+export type ProfileUpdateWithoutRolesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  department?: Prisma.DepartmentUpdateOneWithoutProfilesNestedInput
+  user?: Prisma.UserUpdateOneWithoutProfileNestedInput
+  hallAssignments?: Prisma.HallTechStaffUpdateManyWithoutTech_staffNestedInput
+  equipmentUpdated?: Prisma.EquipmentUpdateManyWithoutUpdated_byNestedInput
+  equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutUserNestedInput
+  teacherBookings?: Prisma.BookingUpdateManyWithoutTeacherNestedInput
+  hodBookings?: Prisma.BookingUpdateManyWithoutHodNestedInput
+  bookingLogsPerformed?: Prisma.BookingLogUpdateManyWithoutPerformerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUpdateManyWithoutPerformerNestedInput
+}
+
+export type ProfileUncheckedUpdateWithoutRolesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  department_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hallAssignments?: Prisma.HallTechStaffUncheckedUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUncheckedUpdateManyWithoutUpdated_byNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutUserNestedInput
@@ -869,15 +992,16 @@ export type ProfileUncheckedUpdateWithoutUserInput = {
 
 export type ProfileCreateWithoutHallAssignmentsInput = {
   id?: string
+  clerkId: string
   email: string
   name: string
-  role: $Enums.UserRole
   phone?: string | null
   avatar_url?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   department?: Prisma.DepartmentCreateNestedOneWithoutProfilesInput
   user?: Prisma.UserCreateNestedOneWithoutProfileInput
+  roles?: Prisma.UserRoleAssignmentCreateNestedManyWithoutProfileInput
   equipmentUpdated?: Prisma.EquipmentCreateNestedManyWithoutUpdated_byInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutUserInput
   teacherBookings?: Prisma.BookingCreateNestedManyWithoutTeacherInput
@@ -889,15 +1013,16 @@ export type ProfileCreateWithoutHallAssignmentsInput = {
 
 export type ProfileUncheckedCreateWithoutHallAssignmentsInput = {
   id?: string
+  clerkId: string
   email: string
   name: string
-  role: $Enums.UserRole
   phone?: string | null
   avatar_url?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   department_id?: string | null
   user_id?: string | null
+  roles?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutProfileInput
   equipmentUpdated?: Prisma.EquipmentUncheckedCreateNestedManyWithoutUpdated_byInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutUserInput
   teacherBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutTeacherInput
@@ -925,15 +1050,16 @@ export type ProfileUpdateToOneWithWhereWithoutHallAssignmentsInput = {
 
 export type ProfileUpdateWithoutHallAssignmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneWithoutProfilesNestedInput
   user?: Prisma.UserUpdateOneWithoutProfileNestedInput
+  roles?: Prisma.UserRoleAssignmentUpdateManyWithoutProfileNestedInput
   equipmentUpdated?: Prisma.EquipmentUpdateManyWithoutUpdated_byNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutUserNestedInput
   teacherBookings?: Prisma.BookingUpdateManyWithoutTeacherNestedInput
@@ -945,15 +1071,16 @@ export type ProfileUpdateWithoutHallAssignmentsInput = {
 
 export type ProfileUncheckedUpdateWithoutHallAssignmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutProfileNestedInput
   equipmentUpdated?: Prisma.EquipmentUncheckedUpdateManyWithoutUpdated_byNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutUserNestedInput
   teacherBookings?: Prisma.BookingUncheckedUpdateManyWithoutTeacherNestedInput
@@ -965,15 +1092,16 @@ export type ProfileUncheckedUpdateWithoutHallAssignmentsInput = {
 
 export type ProfileCreateWithoutEquipmentUpdatedInput = {
   id?: string
+  clerkId: string
   email: string
   name: string
-  role: $Enums.UserRole
   phone?: string | null
   avatar_url?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   department?: Prisma.DepartmentCreateNestedOneWithoutProfilesInput
   user?: Prisma.UserCreateNestedOneWithoutProfileInput
+  roles?: Prisma.UserRoleAssignmentCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffCreateNestedManyWithoutTech_staffInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutUserInput
   teacherBookings?: Prisma.BookingCreateNestedManyWithoutTeacherInput
@@ -985,15 +1113,16 @@ export type ProfileCreateWithoutEquipmentUpdatedInput = {
 
 export type ProfileUncheckedCreateWithoutEquipmentUpdatedInput = {
   id?: string
+  clerkId: string
   email: string
   name: string
-  role: $Enums.UserRole
   phone?: string | null
   avatar_url?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   department_id?: string | null
   user_id?: string | null
+  roles?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutTech_staffInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutUserInput
   teacherBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutTeacherInput
@@ -1021,15 +1150,16 @@ export type ProfileUpdateToOneWithWhereWithoutEquipmentUpdatedInput = {
 
 export type ProfileUpdateWithoutEquipmentUpdatedInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneWithoutProfilesNestedInput
   user?: Prisma.UserUpdateOneWithoutProfileNestedInput
+  roles?: Prisma.UserRoleAssignmentUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUpdateManyWithoutTech_staffNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutUserNestedInput
   teacherBookings?: Prisma.BookingUpdateManyWithoutTeacherNestedInput
@@ -1041,15 +1171,16 @@ export type ProfileUpdateWithoutEquipmentUpdatedInput = {
 
 export type ProfileUncheckedUpdateWithoutEquipmentUpdatedInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUncheckedUpdateManyWithoutTech_staffNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutUserNestedInput
   teacherBookings?: Prisma.BookingUncheckedUpdateManyWithoutTeacherNestedInput
@@ -1061,15 +1192,16 @@ export type ProfileUncheckedUpdateWithoutEquipmentUpdatedInput = {
 
 export type ProfileCreateWithoutEquipmentLogsInput = {
   id?: string
+  clerkId: string
   email: string
   name: string
-  role: $Enums.UserRole
   phone?: string | null
   avatar_url?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   department?: Prisma.DepartmentCreateNestedOneWithoutProfilesInput
   user?: Prisma.UserCreateNestedOneWithoutProfileInput
+  roles?: Prisma.UserRoleAssignmentCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentCreateNestedManyWithoutUpdated_byInput
   teacherBookings?: Prisma.BookingCreateNestedManyWithoutTeacherInput
@@ -1081,15 +1213,16 @@ export type ProfileCreateWithoutEquipmentLogsInput = {
 
 export type ProfileUncheckedCreateWithoutEquipmentLogsInput = {
   id?: string
+  clerkId: string
   email: string
   name: string
-  role: $Enums.UserRole
   phone?: string | null
   avatar_url?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   department_id?: string | null
   user_id?: string | null
+  roles?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentUncheckedCreateNestedManyWithoutUpdated_byInput
   teacherBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutTeacherInput
@@ -1117,15 +1250,16 @@ export type ProfileUpdateToOneWithWhereWithoutEquipmentLogsInput = {
 
 export type ProfileUpdateWithoutEquipmentLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneWithoutProfilesNestedInput
   user?: Prisma.UserUpdateOneWithoutProfileNestedInput
+  roles?: Prisma.UserRoleAssignmentUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUpdateManyWithoutUpdated_byNestedInput
   teacherBookings?: Prisma.BookingUpdateManyWithoutTeacherNestedInput
@@ -1137,15 +1271,16 @@ export type ProfileUpdateWithoutEquipmentLogsInput = {
 
 export type ProfileUncheckedUpdateWithoutEquipmentLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUncheckedUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUncheckedUpdateManyWithoutUpdated_byNestedInput
   teacherBookings?: Prisma.BookingUncheckedUpdateManyWithoutTeacherNestedInput
@@ -1157,15 +1292,16 @@ export type ProfileUncheckedUpdateWithoutEquipmentLogsInput = {
 
 export type ProfileCreateWithoutTeacherBookingsInput = {
   id?: string
+  clerkId: string
   email: string
   name: string
-  role: $Enums.UserRole
   phone?: string | null
   avatar_url?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   department?: Prisma.DepartmentCreateNestedOneWithoutProfilesInput
   user?: Prisma.UserCreateNestedOneWithoutProfileInput
+  roles?: Prisma.UserRoleAssignmentCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentCreateNestedManyWithoutUpdated_byInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutUserInput
@@ -1177,15 +1313,16 @@ export type ProfileCreateWithoutTeacherBookingsInput = {
 
 export type ProfileUncheckedCreateWithoutTeacherBookingsInput = {
   id?: string
+  clerkId: string
   email: string
   name: string
-  role: $Enums.UserRole
   phone?: string | null
   avatar_url?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   department_id?: string | null
   user_id?: string | null
+  roles?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentUncheckedCreateNestedManyWithoutUpdated_byInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutUserInput
@@ -1202,15 +1339,16 @@ export type ProfileCreateOrConnectWithoutTeacherBookingsInput = {
 
 export type ProfileCreateWithoutHodBookingsInput = {
   id?: string
+  clerkId: string
   email: string
   name: string
-  role: $Enums.UserRole
   phone?: string | null
   avatar_url?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   department?: Prisma.DepartmentCreateNestedOneWithoutProfilesInput
   user?: Prisma.UserCreateNestedOneWithoutProfileInput
+  roles?: Prisma.UserRoleAssignmentCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentCreateNestedManyWithoutUpdated_byInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutUserInput
@@ -1222,15 +1360,16 @@ export type ProfileCreateWithoutHodBookingsInput = {
 
 export type ProfileUncheckedCreateWithoutHodBookingsInput = {
   id?: string
+  clerkId: string
   email: string
   name: string
-  role: $Enums.UserRole
   phone?: string | null
   avatar_url?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   department_id?: string | null
   user_id?: string | null
+  roles?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentUncheckedCreateNestedManyWithoutUpdated_byInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutUserInput
@@ -1258,15 +1397,16 @@ export type ProfileUpdateToOneWithWhereWithoutTeacherBookingsInput = {
 
 export type ProfileUpdateWithoutTeacherBookingsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneWithoutProfilesNestedInput
   user?: Prisma.UserUpdateOneWithoutProfileNestedInput
+  roles?: Prisma.UserRoleAssignmentUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUpdateManyWithoutUpdated_byNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutUserNestedInput
@@ -1278,15 +1418,16 @@ export type ProfileUpdateWithoutTeacherBookingsInput = {
 
 export type ProfileUncheckedUpdateWithoutTeacherBookingsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUncheckedUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUncheckedUpdateManyWithoutUpdated_byNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutUserNestedInput
@@ -1309,15 +1450,16 @@ export type ProfileUpdateToOneWithWhereWithoutHodBookingsInput = {
 
 export type ProfileUpdateWithoutHodBookingsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneWithoutProfilesNestedInput
   user?: Prisma.UserUpdateOneWithoutProfileNestedInput
+  roles?: Prisma.UserRoleAssignmentUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUpdateManyWithoutUpdated_byNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutUserNestedInput
@@ -1329,15 +1471,16 @@ export type ProfileUpdateWithoutHodBookingsInput = {
 
 export type ProfileUncheckedUpdateWithoutHodBookingsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUncheckedUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUncheckedUpdateManyWithoutUpdated_byNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutUserNestedInput
@@ -1349,15 +1492,16 @@ export type ProfileUncheckedUpdateWithoutHodBookingsInput = {
 
 export type ProfileCreateWithoutBookingLogsPerformedInput = {
   id?: string
+  clerkId: string
   email: string
   name: string
-  role: $Enums.UserRole
   phone?: string | null
   avatar_url?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   department?: Prisma.DepartmentCreateNestedOneWithoutProfilesInput
   user?: Prisma.UserCreateNestedOneWithoutProfileInput
+  roles?: Prisma.UserRoleAssignmentCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentCreateNestedManyWithoutUpdated_byInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutUserInput
@@ -1369,15 +1513,16 @@ export type ProfileCreateWithoutBookingLogsPerformedInput = {
 
 export type ProfileUncheckedCreateWithoutBookingLogsPerformedInput = {
   id?: string
+  clerkId: string
   email: string
   name: string
-  role: $Enums.UserRole
   phone?: string | null
   avatar_url?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   department_id?: string | null
   user_id?: string | null
+  roles?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentUncheckedCreateNestedManyWithoutUpdated_byInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutUserInput
@@ -1405,15 +1550,16 @@ export type ProfileUpdateToOneWithWhereWithoutBookingLogsPerformedInput = {
 
 export type ProfileUpdateWithoutBookingLogsPerformedInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneWithoutProfilesNestedInput
   user?: Prisma.UserUpdateOneWithoutProfileNestedInput
+  roles?: Prisma.UserRoleAssignmentUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUpdateManyWithoutUpdated_byNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutUserNestedInput
@@ -1425,15 +1571,16 @@ export type ProfileUpdateWithoutBookingLogsPerformedInput = {
 
 export type ProfileUncheckedUpdateWithoutBookingLogsPerformedInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUncheckedUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUncheckedUpdateManyWithoutUpdated_byNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutUserNestedInput
@@ -1445,15 +1592,16 @@ export type ProfileUncheckedUpdateWithoutBookingLogsPerformedInput = {
 
 export type ProfileCreateWithoutNotificationsInput = {
   id?: string
+  clerkId: string
   email: string
   name: string
-  role: $Enums.UserRole
   phone?: string | null
   avatar_url?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   department?: Prisma.DepartmentCreateNestedOneWithoutProfilesInput
   user?: Prisma.UserCreateNestedOneWithoutProfileInput
+  roles?: Prisma.UserRoleAssignmentCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentCreateNestedManyWithoutUpdated_byInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutUserInput
@@ -1465,15 +1613,16 @@ export type ProfileCreateWithoutNotificationsInput = {
 
 export type ProfileUncheckedCreateWithoutNotificationsInput = {
   id?: string
+  clerkId: string
   email: string
   name: string
-  role: $Enums.UserRole
   phone?: string | null
   avatar_url?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   department_id?: string | null
   user_id?: string | null
+  roles?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentUncheckedCreateNestedManyWithoutUpdated_byInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutUserInput
@@ -1501,15 +1650,16 @@ export type ProfileUpdateToOneWithWhereWithoutNotificationsInput = {
 
 export type ProfileUpdateWithoutNotificationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneWithoutProfilesNestedInput
   user?: Prisma.UserUpdateOneWithoutProfileNestedInput
+  roles?: Prisma.UserRoleAssignmentUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUpdateManyWithoutUpdated_byNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutUserNestedInput
@@ -1521,15 +1671,16 @@ export type ProfileUpdateWithoutNotificationsInput = {
 
 export type ProfileUncheckedUpdateWithoutNotificationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUncheckedUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUncheckedUpdateManyWithoutUpdated_byNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutUserNestedInput
@@ -1541,15 +1692,16 @@ export type ProfileUncheckedUpdateWithoutNotificationsInput = {
 
 export type ProfileCreateWithoutComponentMaintenanceLogsInput = {
   id?: string
+  clerkId: string
   email: string
   name: string
-  role: $Enums.UserRole
   phone?: string | null
   avatar_url?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   department?: Prisma.DepartmentCreateNestedOneWithoutProfilesInput
   user?: Prisma.UserCreateNestedOneWithoutProfileInput
+  roles?: Prisma.UserRoleAssignmentCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentCreateNestedManyWithoutUpdated_byInput
   equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutUserInput
@@ -1561,15 +1713,16 @@ export type ProfileCreateWithoutComponentMaintenanceLogsInput = {
 
 export type ProfileUncheckedCreateWithoutComponentMaintenanceLogsInput = {
   id?: string
+  clerkId: string
   email: string
   name: string
-  role: $Enums.UserRole
   phone?: string | null
   avatar_url?: string | null
   created_at?: Date | string
   updated_at?: Date | string
   department_id?: string | null
   user_id?: string | null
+  roles?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentUncheckedCreateNestedManyWithoutUpdated_byInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutUserInput
@@ -1597,15 +1750,16 @@ export type ProfileUpdateToOneWithWhereWithoutComponentMaintenanceLogsInput = {
 
 export type ProfileUpdateWithoutComponentMaintenanceLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneWithoutProfilesNestedInput
   user?: Prisma.UserUpdateOneWithoutProfileNestedInput
+  roles?: Prisma.UserRoleAssignmentUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUpdateManyWithoutUpdated_byNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutUserNestedInput
@@ -1617,15 +1771,16 @@ export type ProfileUpdateWithoutComponentMaintenanceLogsInput = {
 
 export type ProfileUncheckedUpdateWithoutComponentMaintenanceLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUncheckedUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUncheckedUpdateManyWithoutUpdated_byNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutUserNestedInput
@@ -1637,9 +1792,9 @@ export type ProfileUncheckedUpdateWithoutComponentMaintenanceLogsInput = {
 
 export type ProfileCreateManyDepartmentInput = {
   id?: string
+  clerkId: string
   email: string
   name: string
-  role: $Enums.UserRole
   phone?: string | null
   avatar_url?: string | null
   created_at?: Date | string
@@ -1649,14 +1804,15 @@ export type ProfileCreateManyDepartmentInput = {
 
 export type ProfileUpdateWithoutDepartmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneWithoutProfileNestedInput
+  roles?: Prisma.UserRoleAssignmentUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUpdateManyWithoutUpdated_byNestedInput
   equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutUserNestedInput
@@ -1669,14 +1825,15 @@ export type ProfileUpdateWithoutDepartmentInput = {
 
 export type ProfileUncheckedUpdateWithoutDepartmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUncheckedUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUncheckedUpdateManyWithoutUpdated_byNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutUserNestedInput
@@ -1689,9 +1846,9 @@ export type ProfileUncheckedUpdateWithoutDepartmentInput = {
 
 export type ProfileUncheckedUpdateManyWithoutDepartmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1705,6 +1862,7 @@ export type ProfileUncheckedUpdateManyWithoutDepartmentInput = {
  */
 
 export type ProfileCountOutputType = {
+  roles: number
   hallAssignments: number
   equipmentUpdated: number
   equipmentLogs: number
@@ -1716,6 +1874,7 @@ export type ProfileCountOutputType = {
 }
 
 export type ProfileCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  roles?: boolean | ProfileCountOutputTypeCountRolesArgs
   hallAssignments?: boolean | ProfileCountOutputTypeCountHallAssignmentsArgs
   equipmentUpdated?: boolean | ProfileCountOutputTypeCountEquipmentUpdatedArgs
   equipmentLogs?: boolean | ProfileCountOutputTypeCountEquipmentLogsArgs
@@ -1734,6 +1893,13 @@ export type ProfileCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exte
    * Select specific fields to fetch from the ProfileCountOutputType
    */
   select?: Prisma.ProfileCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ProfileCountOutputType without action
+ */
+export type ProfileCountOutputTypeCountRolesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserRoleAssignmentWhereInput
 }
 
 /**
@@ -1795,9 +1961,9 @@ export type ProfileCountOutputTypeCountComponentMaintenanceLogsArgs<ExtArgs exte
 
 export type ProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  clerkId?: boolean
   email?: boolean
   name?: boolean
-  role?: boolean
   phone?: boolean
   avatar_url?: boolean
   created_at?: boolean
@@ -1806,6 +1972,7 @@ export type ProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   user_id?: boolean
   department?: boolean | Prisma.Profile$departmentArgs<ExtArgs>
   user?: boolean | Prisma.Profile$userArgs<ExtArgs>
+  roles?: boolean | Prisma.Profile$rolesArgs<ExtArgs>
   hallAssignments?: boolean | Prisma.Profile$hallAssignmentsArgs<ExtArgs>
   equipmentUpdated?: boolean | Prisma.Profile$equipmentUpdatedArgs<ExtArgs>
   equipmentLogs?: boolean | Prisma.Profile$equipmentLogsArgs<ExtArgs>
@@ -1819,9 +1986,9 @@ export type ProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
 
 export type ProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  clerkId?: boolean
   email?: boolean
   name?: boolean
-  role?: boolean
   phone?: boolean
   avatar_url?: boolean
   created_at?: boolean
@@ -1834,9 +2001,9 @@ export type ProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
 
 export type ProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  clerkId?: boolean
   email?: boolean
   name?: boolean
-  role?: boolean
   phone?: boolean
   avatar_url?: boolean
   created_at?: boolean
@@ -1849,9 +2016,9 @@ export type ProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 
 export type ProfileSelectScalar = {
   id?: boolean
+  clerkId?: boolean
   email?: boolean
   name?: boolean
-  role?: boolean
   phone?: boolean
   avatar_url?: boolean
   created_at?: boolean
@@ -1860,10 +2027,11 @@ export type ProfileSelectScalar = {
   user_id?: boolean
 }
 
-export type ProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "role" | "phone" | "avatar_url" | "created_at" | "updated_at" | "department_id" | "user_id", ExtArgs["result"]["profile"]>
+export type ProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clerkId" | "email" | "name" | "phone" | "avatar_url" | "created_at" | "updated_at" | "department_id" | "user_id", ExtArgs["result"]["profile"]>
 export type ProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   department?: boolean | Prisma.Profile$departmentArgs<ExtArgs>
   user?: boolean | Prisma.Profile$userArgs<ExtArgs>
+  roles?: boolean | Prisma.Profile$rolesArgs<ExtArgs>
   hallAssignments?: boolean | Prisma.Profile$hallAssignmentsArgs<ExtArgs>
   equipmentUpdated?: boolean | Prisma.Profile$equipmentUpdatedArgs<ExtArgs>
   equipmentLogs?: boolean | Prisma.Profile$equipmentLogsArgs<ExtArgs>
@@ -1888,6 +2056,7 @@ export type $ProfilePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   objects: {
     department: Prisma.$DepartmentPayload<ExtArgs> | null
     user: Prisma.$UserPayload<ExtArgs> | null
+    roles: Prisma.$UserRoleAssignmentPayload<ExtArgs>[]
     hallAssignments: Prisma.$HallTechStaffPayload<ExtArgs>[]
     equipmentUpdated: Prisma.$EquipmentPayload<ExtArgs>[]
     equipmentLogs: Prisma.$EquipmentLogPayload<ExtArgs>[]
@@ -1899,9 +2068,9 @@ export type $ProfilePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    clerkId: string
     email: string
     name: string
-    role: $Enums.UserRole
     phone: string | null
     avatar_url: string | null
     created_at: Date
@@ -2304,6 +2473,7 @@ export interface Prisma__ProfileClient<T, Null = never, ExtArgs extends runtime.
   readonly [Symbol.toStringTag]: "PrismaPromise"
   department<T extends Prisma.Profile$departmentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$departmentArgs<ExtArgs>>): Prisma.Prisma__DepartmentClient<runtime.Types.Result.GetResult<Prisma.$DepartmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   user<T extends Prisma.Profile$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  roles<T extends Prisma.Profile$rolesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$rolesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserRoleAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   hallAssignments<T extends Prisma.Profile$hallAssignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$hallAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HallTechStaffPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   equipmentUpdated<T extends Prisma.Profile$equipmentUpdatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$equipmentUpdatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EquipmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   equipmentLogs<T extends Prisma.Profile$equipmentLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$equipmentLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EquipmentLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2342,9 +2512,9 @@ export interface Prisma__ProfileClient<T, Null = never, ExtArgs extends runtime.
  */
 export interface ProfileFieldRefs {
   readonly id: Prisma.FieldRef<"Profile", 'String'>
+  readonly clerkId: Prisma.FieldRef<"Profile", 'String'>
   readonly email: Prisma.FieldRef<"Profile", 'String'>
   readonly name: Prisma.FieldRef<"Profile", 'String'>
-  readonly role: Prisma.FieldRef<"Profile", 'UserRole'>
   readonly phone: Prisma.FieldRef<"Profile", 'String'>
   readonly avatar_url: Prisma.FieldRef<"Profile", 'String'>
   readonly created_at: Prisma.FieldRef<"Profile", 'DateTime'>
@@ -2782,6 +2952,30 @@ export type Profile$userArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    */
   include?: Prisma.UserInclude<ExtArgs> | null
   where?: Prisma.UserWhereInput
+}
+
+/**
+ * Profile.roles
+ */
+export type Profile$rolesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserRoleAssignment
+   */
+  select?: Prisma.UserRoleAssignmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserRoleAssignment
+   */
+  omit?: Prisma.UserRoleAssignmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserRoleAssignmentInclude<ExtArgs> | null
+  where?: Prisma.UserRoleAssignmentWhereInput
+  orderBy?: Prisma.UserRoleAssignmentOrderByWithRelationInput | Prisma.UserRoleAssignmentOrderByWithRelationInput[]
+  cursor?: Prisma.UserRoleAssignmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserRoleAssignmentScalarFieldEnum | Prisma.UserRoleAssignmentScalarFieldEnum[]
 }
 
 /**

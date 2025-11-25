@@ -18,6 +18,7 @@ export const useSignInForm = () => {
   });
   const onHandleSubmit = methods.handleSubmit(
     async (values: UserLoginProps) => {
+      console.log("hello", values)
       if (!isLoaded) return;
       try {
         setLoading(true);
@@ -26,18 +27,34 @@ export const useSignInForm = () => {
           password: values.password,
         });
 
+        console.log(JSON.stringify(authenticated, null, 2));
+
         if (authenticated.status === "complete") {
+          console.log("hello inside")
           await setActive({ session: authenticated.createdSessionId });
           toast.success("Welcome back!");
-          router.push("/profile");
+          router.push("/dashboard");
+        }else{
+          console.log("helo what s up")
         }
+        
       } catch (error: any) {
         setLoading(false);
-        console.log(error.errors[0].code);
-        if (error.errors[0].code === "form_password_incorrect")
-          toast.error("Password is incorrect try again");
-        if (error.errors[0].code === "form_identifier_not_found")
-          toast.error("Email not found");
+        const code = error?.errors?.[0]?.code;
+
+        if (!code) {
+          console.log(error)
+          toast.error("Something went wrong");
+          return;
+        }
+
+        if (code === "form_password_incorrect") {
+          toast.error("Password incorrect");
+        } else if (code === "form_identifier_not_found") {
+          toast.error("Email not registered");
+        } else {
+          toast.error(code);
+        }
       }
     }
   );

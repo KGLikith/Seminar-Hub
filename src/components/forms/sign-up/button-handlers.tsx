@@ -20,7 +20,7 @@ const ButtonHandler = () => {
       <div className="w-full flex flex-col gap-3 items-center text-green-700">
         <Button
           type="submit"
-          className="w-full bg-white text-black hover:bg-gray-300"
+          className="w-full bg-white text-black hover:bg-gray-300 cursor-pointer"
         >
           Create an account
         </Button>
@@ -40,7 +40,7 @@ const ButtonHandler = () => {
         <Button
           type="submit"
           disabled={loading}
-          className="w-full bg-white text-black hover:bg-gray-300"
+          className="w-full bg-white text-black hover:bg-gray-300 cursor-pointer"
           {...{
             onClick: async () => {
               setLoading(true)
@@ -91,7 +91,7 @@ const ButtonHandler = () => {
     <div className="w-full flex flex-col gap-3 items-center text-green-700">
       <Button
         type="submit"
-        className="w-full bg-white text-black hover:bg-gray-300"
+        className="w-full bg-white text-black hover:bg-gray-300 cursor-pointer"
         onClick={() => setCurrentStep((prev: number) => prev + 1)}
       >
         Continue

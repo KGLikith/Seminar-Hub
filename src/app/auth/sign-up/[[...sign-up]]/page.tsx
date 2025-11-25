@@ -5,21 +5,25 @@ import RegistrationFormStep from '@/components/forms/sign-up/registration-step'
 
 import React from 'react'
 
-
 const SignUp = () => {
   return (
-    <div className="flex-1 py-24 md:px-16 w-full">
-      <div className="flex flex-col h-full gap-3">
+    <div className="flex-1 w-full md:px-16 py-2 min-h-0 overflow-hidden">
+      <div className="flex flex-col gap-4 h-full min-h-0">
+
         <SignUpFormProvider>
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-4 min-h-0">
             <RegistrationFormStep />
             <ButtonHandler />
           </div>
+
+          {/* Highlight bar sits at bottom, no overflow */}
           <HighLightBar />
         </SignUpFormProvider>
+
       </div>
     </div>
-  )
-}
+  );
+};
+
 
 export default SignUp

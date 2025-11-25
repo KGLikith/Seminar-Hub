@@ -503,10 +503,6 @@ export type HallComponentUncheckedUpdateManyWithoutHallNestedInput = {
   deleteMany?: Prisma.HallComponentScalarWhereInput | Prisma.HallComponentScalarWhereInput[]
 }
 
-export type EnumComponentTypeFieldUpdateOperationsInput = {
-  set?: $Enums.ComponentType
-}
-
 export type EnumComponentStatusFieldUpdateOperationsInput = {
   set?: $Enums.ComponentStatus
 }

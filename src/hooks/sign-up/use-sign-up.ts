@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { onCompleteUserRegistration } from "@/actions/auth";
 import { z } from "zod";
 import { toast } from "sonner";
+import { UserRole } from "@/generated/enums";
 
 export const useSignUpForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -19,7 +20,8 @@ export const useSignUpForm = () => {
   const methods = useForm<z.infer<typeof UserRegistrationSchema>>({
     resolver: zodResolver(UserRegistrationSchema),
     defaultValues: {
-      type: "Teacher",
+      type: UserRole.teacher,
+      department: "Computer Science",
     },
     mode: "onSubmit",
     reValidateMode: "onChange",
@@ -32,9 +34,7 @@ export const useSignUpForm = () => {
   ) => {
     if (!isLoaded) return;
     try {
-      console.log("hello");
       setLoading(true);
-      console.log("Generating OTP for:", email, signUp);
       if (!signUp.createdUserId) {
         await signUp.create({
           emailAddress: email,
@@ -44,13 +44,11 @@ export const useSignUpForm = () => {
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
       setLoading(false);
 
-      console.log("OTP sent successfully");
       onNext((prev) => prev + 1);
     } catch (error: any) {
       setLoading(false);
       const msg = error?.errors?.[0]?.longMessage || "Something went wrong";
       toast.error(msg);
-      console.log("error", msg);
     }
   };
 
@@ -73,7 +71,8 @@ export const useSignUpForm = () => {
             values.fullname,
             signUp.createdUserId,
             values.email,
-            values.type
+            values.type,
+            values.department
           );
 
           if (registered?.status == 200 && registered.user) {
