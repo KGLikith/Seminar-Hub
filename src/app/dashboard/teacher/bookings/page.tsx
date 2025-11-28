@@ -1,161 +1,275 @@
-"use client";
 
+'use client'
 import { useEffect, useState } from "react";
-import { MapPin, Calendar, Clock, Users, AlertCircle, CheckCircle2, XCircle } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { ArrowLeft, Calendar, MapPin, FileText, Sparkles, XCircle, Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import {
+   AlertDialog,
+   AlertDialogAction,
+   AlertDialogCancel,
+   AlertDialogContent,
+   AlertDialogDescription,
+   AlertDialogFooter,
+   AlertDialogHeader,
+   AlertDialogTitle,
+   AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { useRouter } from "next/navigation";
+import { useProfile, useUserRole } from "@/hooks/react-query/useUser";
+import { Booking } from "@/generated/client";
+import { useAuth } from "@clerk/nextjs";
+import { useMyBookings } from "@/hooks/react-query/useBookings";
+import { cancelBooking } from "@/actions/booking";
 
-interface Booking {
-  id: string;
-  hall: { name: string; location: string; seating_capacity: number };
-  booking_date: string;
-  start_time: string;
-  end_time: string;
-  purpose: string;
-  status: string;
-  rejection_reason?: string;
-}
+const MyBookings = () => {
+   const router = useRouter();
+   const { userId } = useAuth();
+   const { data: profile } = useProfile(userId ?? undefined);
+   const { data: roleUserId } = useUserRole(profile?.id ?? undefined);
+   const { data: bookings, isLoading } = useMyBookings(profile?.id ?? undefined);
+   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
+   const [summaryText, setSummaryText] = useState("");
+   const [submitting, setSubmitting] = useState(false);
 
-export default function MyBookings() {
-  const [bookings, setBookings] = useState<Booking[]>([]);
-  const [loading, setLoading] = useState(true);
+   const handleAddSummary = (booking: Booking) => {
+      setSelectedBooking(booking);
+      setSummaryText(booking.session_summary || "");
+   };
 
-  useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        const res = await fetch("/api/bookings");
-        if (res.ok) {
-          setBookings(await res.json());
-        }
-      } catch (error) {
-        console.error("[v0] Error fetching bookings:", error);
-      } finally {
-        setLoading(false);
+   const submitSummary = async () => {
+      if (!selectedBooking || !summaryText.trim()) {
+         toast.error("Please enter a summary");
+         return;
       }
-    };
-    fetchBookings();
-  }, []);
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "approved":
-        return <CheckCircle2 className="w-6 h-6 text-emerald-600" />;
-      case "rejected":
-        return <XCircle className="w-6 h-6 text-red-600" />;
-      default:
-        return <Clock className="w-6 h-6 text-amber-600" />;
-    }
-  };
+      setSubmitting(true);
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "approved":
-        return "bg-emerald-100 text-emerald-800";
-      case "rejected":
-        return "bg-red-100 text-red-800";
-      case "completed":
-        return "bg-blue-100 text-blue-800";
-      default:
-        return "bg-amber-100 text-amber-800";
-    }
-  };
+      try {
+         //   const { data, error } = await supabase.functions.invoke("generate-summary", {
+         //     body: {
+         //       rawSummary: summaryText,
+         //       bookingId: selectedBooking.id,
+         //     },
+         //   });
 
-  if (loading) {
-    return (
-      <div className="p-4 md:p-8 max-w-4xl mx-auto">
-        <div className="space-y-4">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="h-40 bg-linear-to-r from-slate-200 via-slate-100 to-slate-200 rounded-lg animate-pulse"></div>
-          ))}
-        </div>
-      </div>
-    );
-  }
+         //   if (error) throw error;
 
-  return (
-    <div className="p-4 md:p-8 max-w-4xl mx-auto">
-      {/* Header */}
-      <div className="mb-8 animate-fade-in">
-        <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">My Bookings</h1>
-        <p className="text-slate-600">Track the status of all your seminar hall booking requests</p>
-      </div>
+         toast.success("Session summary saved and AI analysis generated!");
+         setSelectedBooking(null);
+         setSummaryText("");
+         //   fetchMyBookings();
+      } catch (error: any) {
+         console.error("Error submitting summary:", error);
+         toast.error(error.message || "Failed to submit summary");
+      } finally {
+         setSubmitting(false);
+      }
+   };
 
-      {/* Bookings Grid */}
-      <div className="space-y-4">
-        {bookings.length > 0 ? (
-          bookings.map((booking, idx) => (
-            <div
-              key={booking.id}
-              className="bg-white border border-slate-200 rounded-lg p-6 hover:shadow-lg transition-all duration-300 animate-fade-in"
-              style={{ animationDelay: `${idx * 50}ms` }}
-            >
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
-                <div>
-                  <h3 className="text-xl font-bold text-slate-900">{booking.hall.name}</h3>
-                  <div className="flex items-center gap-1 text-sm text-slate-600 mt-1">
-                    <MapPin className="w-4 h-4" />
-                    {booking.hall.location}
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  {getStatusIcon(booking.status)}
-                  <span className={`px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(booking.status)}`}>
-                    {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
-                  </span>
-                </div>
-              </div>
+   const handleCancelBooking = async (bookingId: string) => {
+      try {
+         const { error } = await cancelBooking(bookingId, roleUserId || "");
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-slate-400" />
-                  <div>
-                    <p className="text-xs text-slate-600">Date</p>
-                    <p className="font-semibold text-slate-900">
-                      {new Date(booking.booking_date).toLocaleDateString()}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-slate-400" />
-                  <div>
-                    <p className="text-xs text-slate-600">Start Time</p>
-                    <p className="font-semibold text-slate-900">
-                      {new Date(booking.start_time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                    </p>
-                  </div>
-                </div>
-                <div>
-                  <p className="text-xs text-slate-600">Purpose</p>
-                  <p className="font-semibold text-slate-900 truncate">{booking.purpose}</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Users className="w-4 h-4 text-slate-400" />
-                  <div>
-                    <p className="text-xs text-slate-600">Capacity</p>
-                    <p className="font-semibold text-slate-900">{booking.hall.seating_capacity}</p>
-                  </div>
-                </div>
-              </div>
+         if (error) throw error;
 
-              {booking.rejection_reason && (
-                <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg flex gap-3">
-                  <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-sm font-semibold text-red-900">Rejection Reason</p>
-                    <p className="text-sm text-red-700">{booking.rejection_reason}</p>
-                  </div>
-                </div>
-              )}
+         toast.success("Booking cancelled successfully");
+      } catch (error: any) {
+         console.error("Error cancelling booking:", error);
+         toast.error("Failed to cancel booking");
+      }
+   };
+
+   const getStatusColor = (status: string) => {
+      switch (status) {
+         case "approved":
+            return "bg-accent text-accent-foreground";
+         case "pending":
+            return "bg-warning text-warning-foreground";
+         case "rejected":
+            return "bg-destructive text-destructive-foreground";
+         case "completed":
+            return "bg-success text-success-foreground";
+         case "cancelled":
+            return "bg-muted text-muted-foreground";
+         default:
+            return "bg-muted text-muted-foreground";
+      }
+   };
+
+   if (isLoading) {
+      return (
+         <div className="flex w-full h-full justify-between items-center">
+            <Loader2 className="animate-spin" />
+         </div>
+      );
+   }
+
+   return (
+      <>
+         <div className="container mx-auto px-4 py-8">
+            <div className="mb-8">
+               <h1 className="text-3xl font-bold mb-2">My Bookings</h1>
+               <p className="text-muted-foreground">
+                  View your booking history and add session summaries
+               </p>
             </div>
-          ))
-        ) : (
-          <div className="p-12 text-center bg-slate-50 rounded-lg">
-            <Calendar className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-            <p className="text-slate-600 mb-4">No bookings yet</p>
-            <a href="/dashboard/teacher" className="text-blue-600 font-medium hover:underline">
-              Create your first booking
-            </a>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
+
+            <div className="space-y-4">
+               {bookings && bookings.length > 0 ? (
+                  bookings.map((booking) => (
+                     <Card key={booking.id}>
+                        <CardHeader>
+                           <div className="flex items-start justify-between">
+                              <div className="flex-1">
+                                 <CardTitle className="mb-2">{booking.purpose}</CardTitle>
+                                 <CardDescription className="space-y-1">
+                                    <div className="flex items-center gap-2">
+                                       <MapPin className="h-4 w-4" />
+                                       <span>
+                                          {booking.hall.name} - {booking.hall.location}
+                                       </span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                       <Calendar className="h-4 w-4" />
+                                       <p className="text-sm text-muted-foreground mt-1">
+                                          {new Date(booking.booking_date).toLocaleDateString()} •{" "}
+                                          {new Date(booking.start_time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} -{" "}
+                                          {new Date(booking.end_time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                                       </p>
+                                    </div>
+                                 </CardDescription>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                 <Badge className={getStatusColor(booking.status)} variant="outline">
+                                    {booking.status}
+                                 </Badge>
+                                 {(booking.status === "pending" || booking.status === "approved") && (
+                                    <AlertDialog>
+                                       <AlertDialogTrigger asChild>
+                                          <Button variant="ghost" size="sm">
+                                             <XCircle className="h-4 w-4" />
+                                          </Button>
+                                       </AlertDialogTrigger>
+                                       <AlertDialogContent>
+                                          <AlertDialogHeader>
+                                             <AlertDialogTitle>Cancel Booking</AlertDialogTitle>
+                                             <AlertDialogDescription>
+                                                Are you sure you want to cancel this booking? This action cannot be undone.
+                                             </AlertDialogDescription>
+                                          </AlertDialogHeader>
+                                          <AlertDialogFooter>
+                                             <AlertDialogCancel>No, keep it</AlertDialogCancel>
+                                             <AlertDialogAction onClick={() => handleCancelBooking(booking.id)}>
+                                                Yes, cancel booking
+                                             </AlertDialogAction>
+                                          </AlertDialogFooter>
+                                       </AlertDialogContent>
+                                    </AlertDialog>
+                                 )}
+                              </div>
+                           </div>
+                        </CardHeader>
+                        <CardContent>
+                           {booking.session_summary ? (
+                              <div className="space-y-3">
+                                 <div className="p-4 bg-muted rounded-lg">
+                                    <p className="text-sm font-medium mb-2">Session Summary</p>
+                                    <p className="text-sm text-muted-foreground">{booking.session_summary}</p>
+                                 </div>
+                                 {/* {booking.ai_summary && (
+                                 <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
+                                    <div className="flex items-center gap-2 mb-2">
+                                       <Sparkles className="h-4 w-4 text-primary" />
+                                       <p className="text-sm font-medium text-primary">AI Analysis</p>
+                                    </div>
+                                    <div className="space-y-2 text-sm">
+                                       <div>
+                                          <span className="font-medium">Title:</span> {booking.ai_summary.title}
+                                       </div>
+                                       <div>
+                                          <span className="font-medium">Summary:</span> {booking.ai_summary.summary}
+                                       </div>
+                                       {booking.ai_summary?.highlights && (
+                                          <div>
+                                             <span className="font-medium">Key Highlights:</span>
+                                             <ul className="list-disc list-inside mt-1">
+                                                {booking.ai_summary.highlights.map((h: string, i: number) => (
+                                                   <li key={i}>{h}</li>
+                                                ))}
+                                             </ul>
+                                          </div>
+                                       )}
+                                       {booking.ai_summary.keywords && (
+                                          <div>
+                                             <span className="font-medium">Keywords:</span>{" "}
+                                             {booking.ai_summary.keywords.join(", ")}
+                                          </div>
+                                       )}
+                                    </div>
+                                 </div>
+                              )} */}
+                              </div>
+                           ) : booking.status === "approved" || booking.status === "completed" ? (
+                              <Button onClick={() => handleAddSummary(booking)}>
+                                 <FileText className="h-4 w-4 mr-2" />
+                                 Add Session Summary
+                              </Button>
+                           ) : null}
+                        </CardContent>
+                     </Card>
+                  ))
+               ) : (
+                  <Card>
+                     <CardContent className="py-12 text-center">
+                        <p className="text-muted-foreground">No bookings found</p>
+                     </CardContent>
+                  </Card>
+               )}
+            </div>
+         </div>
+
+         {/* Summary Dialog */}
+         <Dialog open={!!selectedBooking} onOpenChange={() => setSelectedBooking(null)}>
+            <DialogContent className="max-w-2xl">
+               <DialogHeader>
+                  <DialogTitle>Add Session Summary</DialogTitle>
+                  <DialogDescription>
+                     Describe what happened during the session. Our AI will generate a structured summary.
+                  </DialogDescription>
+               </DialogHeader>
+               <div className="py-4">
+                  <Textarea
+                     placeholder="Enter your session summary... Include key topics discussed, outcomes, attendance, and any notable events."
+                     value={summaryText}
+                     onChange={(e) => setSummaryText(e.target.value)}
+                     rows={10}
+                     className="resize-none"
+                  />
+               </div>
+               <DialogFooter>
+                  <Button variant="outline" onClick={() => setSelectedBooking(null)}>
+                     Cancel
+                  </Button>
+                  <Button onClick={submitSummary} disabled={submitting || !summaryText.trim()}>
+                     {submitting ? (
+                        "Generating AI Summary..."
+                     ) : (
+                        <>
+                           <Sparkles className="h-4 w-4 mr-2" />
+                           Submit & Generate AI Summary
+                        </>
+                     )}
+                  </Button>
+               </DialogFooter>
+            </DialogContent>
+         </Dialog>
+      </>
+   );
+};
+
+export default MyBookings;

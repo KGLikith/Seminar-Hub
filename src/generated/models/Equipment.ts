@@ -27,7 +27,7 @@ export type AggregateEquipment = {
 export type EquipmentMinAggregateOutputType = {
   id: string | null
   name: string | null
-  type: $Enums.ComponentType | null
+  type: $Enums.EquipmentType | null
   serial_number: string | null
   condition: $Enums.EquipmentCondition | null
   last_updated_at: Date | null
@@ -39,7 +39,7 @@ export type EquipmentMinAggregateOutputType = {
 export type EquipmentMaxAggregateOutputType = {
   id: string | null
   name: string | null
-  type: $Enums.ComponentType | null
+  type: $Enums.EquipmentType | null
   serial_number: string | null
   condition: $Enums.EquipmentCondition | null
   last_updated_at: Date | null
@@ -174,7 +174,7 @@ export type EquipmentGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
 export type EquipmentGroupByOutputType = {
   id: string
   name: string
-  type: $Enums.ComponentType
+  type: $Enums.EquipmentType
   serial_number: string | null
   condition: $Enums.EquipmentCondition
   last_updated_at: Date
@@ -207,7 +207,7 @@ export type EquipmentWhereInput = {
   NOT?: Prisma.EquipmentWhereInput | Prisma.EquipmentWhereInput[]
   id?: Prisma.StringFilter<"Equipment"> | string
   name?: Prisma.StringFilter<"Equipment"> | string
-  type?: Prisma.EnumComponentTypeFilter<"Equipment"> | $Enums.ComponentType
+  type?: Prisma.EnumEquipmentTypeFilter<"Equipment"> | $Enums.EquipmentType
   serial_number?: Prisma.StringNullableFilter<"Equipment"> | string | null
   condition?: Prisma.EnumEquipmentConditionFilter<"Equipment"> | $Enums.EquipmentCondition
   last_updated_at?: Prisma.DateTimeFilter<"Equipment"> | Date | string
@@ -217,6 +217,7 @@ export type EquipmentWhereInput = {
   hall?: Prisma.XOR<Prisma.SeminarHallScalarRelationFilter, Prisma.SeminarHallWhereInput>
   updated_by?: Prisma.XOR<Prisma.ProfileNullableScalarRelationFilter, Prisma.ProfileWhereInput> | null
   logs?: Prisma.EquipmentLogListRelationFilter
+  maintenanceRequests?: Prisma.MaintenanceRequestListRelationFilter
 }
 
 export type EquipmentOrderByWithRelationInput = {
@@ -232,6 +233,7 @@ export type EquipmentOrderByWithRelationInput = {
   hall?: Prisma.SeminarHallOrderByWithRelationInput
   updated_by?: Prisma.ProfileOrderByWithRelationInput
   logs?: Prisma.EquipmentLogOrderByRelationAggregateInput
+  maintenanceRequests?: Prisma.MaintenanceRequestOrderByRelationAggregateInput
 }
 
 export type EquipmentWhereUniqueInput = Prisma.AtLeast<{
@@ -240,7 +242,7 @@ export type EquipmentWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.EquipmentWhereInput[]
   NOT?: Prisma.EquipmentWhereInput | Prisma.EquipmentWhereInput[]
   name?: Prisma.StringFilter<"Equipment"> | string
-  type?: Prisma.EnumComponentTypeFilter<"Equipment"> | $Enums.ComponentType
+  type?: Prisma.EnumEquipmentTypeFilter<"Equipment"> | $Enums.EquipmentType
   serial_number?: Prisma.StringNullableFilter<"Equipment"> | string | null
   condition?: Prisma.EnumEquipmentConditionFilter<"Equipment"> | $Enums.EquipmentCondition
   last_updated_at?: Prisma.DateTimeFilter<"Equipment"> | Date | string
@@ -250,6 +252,7 @@ export type EquipmentWhereUniqueInput = Prisma.AtLeast<{
   hall?: Prisma.XOR<Prisma.SeminarHallScalarRelationFilter, Prisma.SeminarHallWhereInput>
   updated_by?: Prisma.XOR<Prisma.ProfileNullableScalarRelationFilter, Prisma.ProfileWhereInput> | null
   logs?: Prisma.EquipmentLogListRelationFilter
+  maintenanceRequests?: Prisma.MaintenanceRequestListRelationFilter
 }, "id">
 
 export type EquipmentOrderByWithAggregationInput = {
@@ -273,7 +276,7 @@ export type EquipmentScalarWhereWithAggregatesInput = {
   NOT?: Prisma.EquipmentScalarWhereWithAggregatesInput | Prisma.EquipmentScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Equipment"> | string
   name?: Prisma.StringWithAggregatesFilter<"Equipment"> | string
-  type?: Prisma.EnumComponentTypeWithAggregatesFilter<"Equipment"> | $Enums.ComponentType
+  type?: Prisma.EnumEquipmentTypeWithAggregatesFilter<"Equipment"> | $Enums.EquipmentType
   serial_number?: Prisma.StringNullableWithAggregatesFilter<"Equipment"> | string | null
   condition?: Prisma.EnumEquipmentConditionWithAggregatesFilter<"Equipment"> | $Enums.EquipmentCondition
   last_updated_at?: Prisma.DateTimeWithAggregatesFilter<"Equipment"> | Date | string
@@ -285,7 +288,7 @@ export type EquipmentScalarWhereWithAggregatesInput = {
 export type EquipmentCreateInput = {
   id?: string
   name: string
-  type: $Enums.ComponentType
+  type: $Enums.EquipmentType
   serial_number?: string | null
   condition?: $Enums.EquipmentCondition
   last_updated_at?: Date | string
@@ -293,12 +296,13 @@ export type EquipmentCreateInput = {
   hall: Prisma.SeminarHallCreateNestedOneWithoutEquipmentInput
   updated_by?: Prisma.ProfileCreateNestedOneWithoutEquipmentUpdatedInput
   logs?: Prisma.EquipmentLogCreateNestedManyWithoutEquipmentInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutEquipmentInput
 }
 
 export type EquipmentUncheckedCreateInput = {
   id?: string
   name: string
-  type: $Enums.ComponentType
+  type: $Enums.EquipmentType
   serial_number?: string | null
   condition?: $Enums.EquipmentCondition
   last_updated_at?: Date | string
@@ -306,12 +310,13 @@ export type EquipmentUncheckedCreateInput = {
   hall_id: string
   last_updated_by?: string | null
   logs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutEquipmentInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutEquipmentInput
 }
 
 export type EquipmentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType
+  type?: Prisma.EnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType
   serial_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
   last_updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -319,12 +324,13 @@ export type EquipmentUpdateInput = {
   hall?: Prisma.SeminarHallUpdateOneRequiredWithoutEquipmentNestedInput
   updated_by?: Prisma.ProfileUpdateOneWithoutEquipmentUpdatedNestedInput
   logs?: Prisma.EquipmentLogUpdateManyWithoutEquipmentNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutEquipmentNestedInput
 }
 
 export type EquipmentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType
+  type?: Prisma.EnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType
   serial_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
   last_updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -332,12 +338,13 @@ export type EquipmentUncheckedUpdateInput = {
   hall_id?: Prisma.StringFieldUpdateOperationsInput | string
   last_updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutEquipmentNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutEquipmentNestedInput
 }
 
 export type EquipmentCreateManyInput = {
   id?: string
   name: string
-  type: $Enums.ComponentType
+  type: $Enums.EquipmentType
   serial_number?: string | null
   condition?: $Enums.EquipmentCondition
   last_updated_at?: Date | string
@@ -349,7 +356,7 @@ export type EquipmentCreateManyInput = {
 export type EquipmentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType
+  type?: Prisma.EnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType
   serial_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
   last_updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -359,7 +366,7 @@ export type EquipmentUpdateManyMutationInput = {
 export type EquipmentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType
+  type?: Prisma.EnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType
   serial_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
   last_updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -417,6 +424,11 @@ export type EquipmentMinOrderByAggregateInput = {
 export type EquipmentScalarRelationFilter = {
   is?: Prisma.EquipmentWhereInput
   isNot?: Prisma.EquipmentWhereInput
+}
+
+export type EquipmentNullableScalarRelationFilter = {
+  is?: Prisma.EquipmentWhereInput | null
+  isNot?: Prisma.EquipmentWhereInput | null
 }
 
 export type EquipmentCreateNestedManyWithoutUpdated_byInput = {
@@ -503,8 +515,8 @@ export type EquipmentUncheckedUpdateManyWithoutHallNestedInput = {
   deleteMany?: Prisma.EquipmentScalarWhereInput | Prisma.EquipmentScalarWhereInput[]
 }
 
-export type EnumComponentTypeFieldUpdateOperationsInput = {
-  set?: $Enums.ComponentType
+export type EnumEquipmentTypeFieldUpdateOperationsInput = {
+  set?: $Enums.EquipmentType
 }
 
 export type EnumEquipmentConditionFieldUpdateOperationsInput = {
@@ -525,28 +537,46 @@ export type EquipmentUpdateOneRequiredWithoutLogsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.EquipmentUpdateToOneWithWhereWithoutLogsInput, Prisma.EquipmentUpdateWithoutLogsInput>, Prisma.EquipmentUncheckedUpdateWithoutLogsInput>
 }
 
+export type EquipmentCreateNestedOneWithoutMaintenanceRequestsInput = {
+  create?: Prisma.XOR<Prisma.EquipmentCreateWithoutMaintenanceRequestsInput, Prisma.EquipmentUncheckedCreateWithoutMaintenanceRequestsInput>
+  connectOrCreate?: Prisma.EquipmentCreateOrConnectWithoutMaintenanceRequestsInput
+  connect?: Prisma.EquipmentWhereUniqueInput
+}
+
+export type EquipmentUpdateOneWithoutMaintenanceRequestsNestedInput = {
+  create?: Prisma.XOR<Prisma.EquipmentCreateWithoutMaintenanceRequestsInput, Prisma.EquipmentUncheckedCreateWithoutMaintenanceRequestsInput>
+  connectOrCreate?: Prisma.EquipmentCreateOrConnectWithoutMaintenanceRequestsInput
+  upsert?: Prisma.EquipmentUpsertWithoutMaintenanceRequestsInput
+  disconnect?: Prisma.EquipmentWhereInput | boolean
+  delete?: Prisma.EquipmentWhereInput | boolean
+  connect?: Prisma.EquipmentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EquipmentUpdateToOneWithWhereWithoutMaintenanceRequestsInput, Prisma.EquipmentUpdateWithoutMaintenanceRequestsInput>, Prisma.EquipmentUncheckedUpdateWithoutMaintenanceRequestsInput>
+}
+
 export type EquipmentCreateWithoutUpdated_byInput = {
   id?: string
   name: string
-  type: $Enums.ComponentType
+  type: $Enums.EquipmentType
   serial_number?: string | null
   condition?: $Enums.EquipmentCondition
   last_updated_at?: Date | string
   created_at?: Date | string
   hall: Prisma.SeminarHallCreateNestedOneWithoutEquipmentInput
   logs?: Prisma.EquipmentLogCreateNestedManyWithoutEquipmentInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutEquipmentInput
 }
 
 export type EquipmentUncheckedCreateWithoutUpdated_byInput = {
   id?: string
   name: string
-  type: $Enums.ComponentType
+  type: $Enums.EquipmentType
   serial_number?: string | null
   condition?: $Enums.EquipmentCondition
   last_updated_at?: Date | string
   created_at?: Date | string
   hall_id: string
   logs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutEquipmentInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutEquipmentInput
 }
 
 export type EquipmentCreateOrConnectWithoutUpdated_byInput = {
@@ -581,7 +611,7 @@ export type EquipmentScalarWhereInput = {
   NOT?: Prisma.EquipmentScalarWhereInput | Prisma.EquipmentScalarWhereInput[]
   id?: Prisma.StringFilter<"Equipment"> | string
   name?: Prisma.StringFilter<"Equipment"> | string
-  type?: Prisma.EnumComponentTypeFilter<"Equipment"> | $Enums.ComponentType
+  type?: Prisma.EnumEquipmentTypeFilter<"Equipment"> | $Enums.EquipmentType
   serial_number?: Prisma.StringNullableFilter<"Equipment"> | string | null
   condition?: Prisma.EnumEquipmentConditionFilter<"Equipment"> | $Enums.EquipmentCondition
   last_updated_at?: Prisma.DateTimeFilter<"Equipment"> | Date | string
@@ -593,25 +623,27 @@ export type EquipmentScalarWhereInput = {
 export type EquipmentCreateWithoutHallInput = {
   id?: string
   name: string
-  type: $Enums.ComponentType
+  type: $Enums.EquipmentType
   serial_number?: string | null
   condition?: $Enums.EquipmentCondition
   last_updated_at?: Date | string
   created_at?: Date | string
   updated_by?: Prisma.ProfileCreateNestedOneWithoutEquipmentUpdatedInput
   logs?: Prisma.EquipmentLogCreateNestedManyWithoutEquipmentInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutEquipmentInput
 }
 
 export type EquipmentUncheckedCreateWithoutHallInput = {
   id?: string
   name: string
-  type: $Enums.ComponentType
+  type: $Enums.EquipmentType
   serial_number?: string | null
   condition?: $Enums.EquipmentCondition
   last_updated_at?: Date | string
   created_at?: Date | string
   last_updated_by?: string | null
   logs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutEquipmentInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutEquipmentInput
 }
 
 export type EquipmentCreateOrConnectWithoutHallInput = {
@@ -643,25 +675,27 @@ export type EquipmentUpdateManyWithWhereWithoutHallInput = {
 export type EquipmentCreateWithoutLogsInput = {
   id?: string
   name: string
-  type: $Enums.ComponentType
+  type: $Enums.EquipmentType
   serial_number?: string | null
   condition?: $Enums.EquipmentCondition
   last_updated_at?: Date | string
   created_at?: Date | string
   hall: Prisma.SeminarHallCreateNestedOneWithoutEquipmentInput
   updated_by?: Prisma.ProfileCreateNestedOneWithoutEquipmentUpdatedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutEquipmentInput
 }
 
 export type EquipmentUncheckedCreateWithoutLogsInput = {
   id?: string
   name: string
-  type: $Enums.ComponentType
+  type: $Enums.EquipmentType
   serial_number?: string | null
   condition?: $Enums.EquipmentCondition
   last_updated_at?: Date | string
   created_at?: Date | string
   hall_id: string
   last_updated_by?: string | null
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutEquipmentInput
 }
 
 export type EquipmentCreateOrConnectWithoutLogsInput = {
@@ -683,31 +717,101 @@ export type EquipmentUpdateToOneWithWhereWithoutLogsInput = {
 export type EquipmentUpdateWithoutLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType
+  type?: Prisma.EnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType
   serial_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
   last_updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   hall?: Prisma.SeminarHallUpdateOneRequiredWithoutEquipmentNestedInput
   updated_by?: Prisma.ProfileUpdateOneWithoutEquipmentUpdatedNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutEquipmentNestedInput
 }
 
 export type EquipmentUncheckedUpdateWithoutLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType
+  type?: Prisma.EnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType
   serial_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
   last_updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   hall_id?: Prisma.StringFieldUpdateOperationsInput | string
   last_updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutEquipmentNestedInput
+}
+
+export type EquipmentCreateWithoutMaintenanceRequestsInput = {
+  id?: string
+  name: string
+  type: $Enums.EquipmentType
+  serial_number?: string | null
+  condition?: $Enums.EquipmentCondition
+  last_updated_at?: Date | string
+  created_at?: Date | string
+  hall: Prisma.SeminarHallCreateNestedOneWithoutEquipmentInput
+  updated_by?: Prisma.ProfileCreateNestedOneWithoutEquipmentUpdatedInput
+  logs?: Prisma.EquipmentLogCreateNestedManyWithoutEquipmentInput
+}
+
+export type EquipmentUncheckedCreateWithoutMaintenanceRequestsInput = {
+  id?: string
+  name: string
+  type: $Enums.EquipmentType
+  serial_number?: string | null
+  condition?: $Enums.EquipmentCondition
+  last_updated_at?: Date | string
+  created_at?: Date | string
+  hall_id: string
+  last_updated_by?: string | null
+  logs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutEquipmentInput
+}
+
+export type EquipmentCreateOrConnectWithoutMaintenanceRequestsInput = {
+  where: Prisma.EquipmentWhereUniqueInput
+  create: Prisma.XOR<Prisma.EquipmentCreateWithoutMaintenanceRequestsInput, Prisma.EquipmentUncheckedCreateWithoutMaintenanceRequestsInput>
+}
+
+export type EquipmentUpsertWithoutMaintenanceRequestsInput = {
+  update: Prisma.XOR<Prisma.EquipmentUpdateWithoutMaintenanceRequestsInput, Prisma.EquipmentUncheckedUpdateWithoutMaintenanceRequestsInput>
+  create: Prisma.XOR<Prisma.EquipmentCreateWithoutMaintenanceRequestsInput, Prisma.EquipmentUncheckedCreateWithoutMaintenanceRequestsInput>
+  where?: Prisma.EquipmentWhereInput
+}
+
+export type EquipmentUpdateToOneWithWhereWithoutMaintenanceRequestsInput = {
+  where?: Prisma.EquipmentWhereInput
+  data: Prisma.XOR<Prisma.EquipmentUpdateWithoutMaintenanceRequestsInput, Prisma.EquipmentUncheckedUpdateWithoutMaintenanceRequestsInput>
+}
+
+export type EquipmentUpdateWithoutMaintenanceRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType
+  serial_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
+  last_updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  hall?: Prisma.SeminarHallUpdateOneRequiredWithoutEquipmentNestedInput
+  updated_by?: Prisma.ProfileUpdateOneWithoutEquipmentUpdatedNestedInput
+  logs?: Prisma.EquipmentLogUpdateManyWithoutEquipmentNestedInput
+}
+
+export type EquipmentUncheckedUpdateWithoutMaintenanceRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType
+  serial_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
+  last_updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  hall_id?: Prisma.StringFieldUpdateOperationsInput | string
+  last_updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutEquipmentNestedInput
 }
 
 export type EquipmentCreateManyUpdated_byInput = {
   id?: string
   name: string
-  type: $Enums.ComponentType
+  type: $Enums.EquipmentType
   serial_number?: string | null
   condition?: $Enums.EquipmentCondition
   last_updated_at?: Date | string
@@ -718,31 +822,33 @@ export type EquipmentCreateManyUpdated_byInput = {
 export type EquipmentUpdateWithoutUpdated_byInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType
+  type?: Prisma.EnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType
   serial_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
   last_updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   hall?: Prisma.SeminarHallUpdateOneRequiredWithoutEquipmentNestedInput
   logs?: Prisma.EquipmentLogUpdateManyWithoutEquipmentNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutEquipmentNestedInput
 }
 
 export type EquipmentUncheckedUpdateWithoutUpdated_byInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType
+  type?: Prisma.EnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType
   serial_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
   last_updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   hall_id?: Prisma.StringFieldUpdateOperationsInput | string
   logs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutEquipmentNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutEquipmentNestedInput
 }
 
 export type EquipmentUncheckedUpdateManyWithoutUpdated_byInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType
+  type?: Prisma.EnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType
   serial_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
   last_updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -753,7 +859,7 @@ export type EquipmentUncheckedUpdateManyWithoutUpdated_byInput = {
 export type EquipmentCreateManyHallInput = {
   id?: string
   name: string
-  type: $Enums.ComponentType
+  type: $Enums.EquipmentType
   serial_number?: string | null
   condition?: $Enums.EquipmentCondition
   last_updated_at?: Date | string
@@ -764,31 +870,33 @@ export type EquipmentCreateManyHallInput = {
 export type EquipmentUpdateWithoutHallInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType
+  type?: Prisma.EnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType
   serial_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
   last_updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_by?: Prisma.ProfileUpdateOneWithoutEquipmentUpdatedNestedInput
   logs?: Prisma.EquipmentLogUpdateManyWithoutEquipmentNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutEquipmentNestedInput
 }
 
 export type EquipmentUncheckedUpdateWithoutHallInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType
+  type?: Prisma.EnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType
   serial_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
   last_updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   last_updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutEquipmentNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutEquipmentNestedInput
 }
 
 export type EquipmentUncheckedUpdateManyWithoutHallInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType
+  type?: Prisma.EnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType
   serial_number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
   last_updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -803,10 +911,12 @@ export type EquipmentUncheckedUpdateManyWithoutHallInput = {
 
 export type EquipmentCountOutputType = {
   logs: number
+  maintenanceRequests: number
 }
 
 export type EquipmentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   logs?: boolean | EquipmentCountOutputTypeCountLogsArgs
+  maintenanceRequests?: boolean | EquipmentCountOutputTypeCountMaintenanceRequestsArgs
 }
 
 /**
@@ -826,6 +936,13 @@ export type EquipmentCountOutputTypeCountLogsArgs<ExtArgs extends runtime.Types.
   where?: Prisma.EquipmentLogWhereInput
 }
 
+/**
+ * EquipmentCountOutputType without action
+ */
+export type EquipmentCountOutputTypeCountMaintenanceRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MaintenanceRequestWhereInput
+}
+
 
 export type EquipmentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -840,6 +957,7 @@ export type EquipmentSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   hall?: boolean | Prisma.SeminarHallDefaultArgs<ExtArgs>
   updated_by?: boolean | Prisma.Equipment$updated_byArgs<ExtArgs>
   logs?: boolean | Prisma.Equipment$logsArgs<ExtArgs>
+  maintenanceRequests?: boolean | Prisma.Equipment$maintenanceRequestsArgs<ExtArgs>
   _count?: boolean | Prisma.EquipmentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["equipment"]>
 
@@ -888,6 +1006,7 @@ export type EquipmentInclude<ExtArgs extends runtime.Types.Extensions.InternalAr
   hall?: boolean | Prisma.SeminarHallDefaultArgs<ExtArgs>
   updated_by?: boolean | Prisma.Equipment$updated_byArgs<ExtArgs>
   logs?: boolean | Prisma.Equipment$logsArgs<ExtArgs>
+  maintenanceRequests?: boolean | Prisma.Equipment$maintenanceRequestsArgs<ExtArgs>
   _count?: boolean | Prisma.EquipmentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type EquipmentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -905,11 +1024,12 @@ export type $EquipmentPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     hall: Prisma.$SeminarHallPayload<ExtArgs>
     updated_by: Prisma.$ProfilePayload<ExtArgs> | null
     logs: Prisma.$EquipmentLogPayload<ExtArgs>[]
+    maintenanceRequests: Prisma.$MaintenanceRequestPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
-    type: $Enums.ComponentType
+    type: $Enums.EquipmentType
     serial_number: string | null
     condition: $Enums.EquipmentCondition
     last_updated_at: Date
@@ -1313,6 +1433,7 @@ export interface Prisma__EquipmentClient<T, Null = never, ExtArgs extends runtim
   hall<T extends Prisma.SeminarHallDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SeminarHallDefaultArgs<ExtArgs>>): Prisma.Prisma__SeminarHallClient<runtime.Types.Result.GetResult<Prisma.$SeminarHallPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   updated_by<T extends Prisma.Equipment$updated_byArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Equipment$updated_byArgs<ExtArgs>>): Prisma.Prisma__ProfileClient<runtime.Types.Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   logs<T extends Prisma.Equipment$logsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Equipment$logsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EquipmentLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  maintenanceRequests<T extends Prisma.Equipment$maintenanceRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Equipment$maintenanceRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MaintenanceRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1344,7 +1465,7 @@ export interface Prisma__EquipmentClient<T, Null = never, ExtArgs extends runtim
 export interface EquipmentFieldRefs {
   readonly id: Prisma.FieldRef<"Equipment", 'String'>
   readonly name: Prisma.FieldRef<"Equipment", 'String'>
-  readonly type: Prisma.FieldRef<"Equipment", 'ComponentType'>
+  readonly type: Prisma.FieldRef<"Equipment", 'EquipmentType'>
   readonly serial_number: Prisma.FieldRef<"Equipment", 'String'>
   readonly condition: Prisma.FieldRef<"Equipment", 'EquipmentCondition'>
   readonly last_updated_at: Prisma.FieldRef<"Equipment", 'DateTime'>
@@ -1787,6 +1908,30 @@ export type Equipment$logsArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.EquipmentLogScalarFieldEnum | Prisma.EquipmentLogScalarFieldEnum[]
+}
+
+/**
+ * Equipment.maintenanceRequests
+ */
+export type Equipment$maintenanceRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MaintenanceRequest
+   */
+  select?: Prisma.MaintenanceRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MaintenanceRequest
+   */
+  omit?: Prisma.MaintenanceRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MaintenanceRequestInclude<ExtArgs> | null
+  where?: Prisma.MaintenanceRequestWhereInput
+  orderBy?: Prisma.MaintenanceRequestOrderByWithRelationInput | Prisma.MaintenanceRequestOrderByWithRelationInput[]
+  cursor?: Prisma.MaintenanceRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MaintenanceRequestScalarFieldEnum | Prisma.MaintenanceRequestScalarFieldEnum[]
 }
 
 /**

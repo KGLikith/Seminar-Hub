@@ -1,6 +1,6 @@
 "use client";
 
-import { Building2, Calendar, FileText, Clock, Bell, LogOut, Loader2 } from "lucide-react";
+import { Building2, Calendar, Bell, Loader2 } from "lucide-react";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -64,8 +64,8 @@ export default function Dashboard() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
           <Button
-            className="h-24 shadow-sm hover:shadow-md transition-all flex flex-col items-start justify-center p-5"
-            onClick={() => router.push("/halls")}
+            className="h-24 shadow-sm hover:shadow-md transition-all flex flex-col items-start justify-center p-5 cursor-pointer"
+            onClick={() => router.push("/dashboard/halls")}
           >
             <Building2 className="h-5 w-5 mb-2" /> Browse All Halls
           </Button>
@@ -73,8 +73,8 @@ export default function Dashboard() {
           {role == UserRole.hod || role == UserRole.teacher ? (
             <Button
               variant="default"
-              className="h-24 shadow-sm hover:shadow-md transition-all flex flex-col items-start justify-center p-5"
-              onClick={() => router.push("/book")}
+              className="h-24 shadow-sm hover:shadow-md transition-all flex flex-col items-start justify-center p-5 cursor-pointer"
+              onClick={() => router.push("/dashboard/book")}
             >
               <Calendar className="h-5 w-5 mb-2" /> Request Booking
             </Button>) : null}
@@ -83,7 +83,7 @@ export default function Dashboard() {
 
         {role === UserRole.hod && (
           <>
-            <Button onClick={() => router.push("/hod-approval")} variant="secondary">
+            <Button onClick={() => router.push("/dashboard/hod/approval")} variant="secondary">
               <Bell className="h-4 w-4 mr-2" />
               Pending Approvals
               {pendingBookings?.length ? pendingBookings.length > 0 && (
@@ -92,11 +92,14 @@ export default function Dashboard() {
                 </Badge>
               ) : null}
             </Button>
-            <Button onClick={() => router.push("/analytics")} variant="outline">
-              Analytics 
+            <Button onClick={() => router.push("/dashboard/hod/analytics")} variant="outline">
+              Analytics
             </Button>
-            <Button onClick={() => router.push("/hall-management")} variant="outline">
+            <Button onClick={() => router.push("/dashboard/hod/hall-management")} variant="outline">
               Manage Halls
+            </Button>
+            <Button onClick={() => router.push("/dashboard/hod/department-management")} variant="outline">
+              Manage Department
             </Button>
           </>
         )}
@@ -114,7 +117,7 @@ export default function Dashboard() {
                 key={hall.id}
                 className="shadow-md hover:shadow-xl transition-all cursor-pointer animate-fade-in"
                 style={{ animationDelay: `${idx * 50}ms` }}
-                onClick={() => router.push(`/halls/${hall.id}`)}
+                onClick={() => router.push(`/dashboard/halls/${hall.id}`)}
               >
                 <CardHeader>
                   <div className="flex justify-between items-start">

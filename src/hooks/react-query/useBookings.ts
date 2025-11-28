@@ -7,9 +7,11 @@ import {
   rejectBooking,
   addBookingSummary,
   getPendingBookingsForHOD,
+  BookingFilters,
+  getBookingLogs,
 } from "@/actions/booking"
 
-export const useBookings = (filters?: any) => {
+export const useBookings = (filters?: BookingFilters) => {
   return useQuery({
     queryKey: ["bookings", filters],
     queryFn: () => getBookings(filters),
@@ -90,5 +92,13 @@ export const usePendingBookingsForHOD = (departmentId: string | undefined) => {
     queryFn: () => (departmentId ? getPendingBookingsForHOD(departmentId) : null),
     
     enabled: !!departmentId,
+  })
+}
+
+export const useBookingLogs = (bookingId: string | undefined) => {
+  return useQuery({
+    queryKey: ["bookingLogs", bookingId],
+    queryFn: () => (bookingId ? getBookingLogs(bookingId) : null),
+    enabled: !!bookingId,
   })
 }

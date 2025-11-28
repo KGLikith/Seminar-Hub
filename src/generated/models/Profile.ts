@@ -223,6 +223,7 @@ export type ProfileWhereInput = {
   department_id?: Prisma.StringNullableFilter<"Profile"> | string | null
   user_id?: Prisma.StringNullableFilter<"Profile"> | string | null
   department?: Prisma.XOR<Prisma.DepartmentNullableScalarRelationFilter, Prisma.DepartmentWhereInput> | null
+  hod_of_department?: Prisma.XOR<Prisma.DepartmentNullableScalarRelationFilter, Prisma.DepartmentWhereInput> | null
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   roles?: Prisma.UserRoleAssignmentListRelationFilter
   hallAssignments?: Prisma.HallTechStaffListRelationFilter
@@ -232,7 +233,10 @@ export type ProfileWhereInput = {
   hodBookings?: Prisma.BookingListRelationFilter
   bookingLogsPerformed?: Prisma.BookingLogListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestListRelationFilter
+  favoriteHalls?: Prisma.FavoriteHallListRelationFilter
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogListRelationFilter
+  maintenanceRequests?: Prisma.MaintenanceRequestListRelationFilter
 }
 
 export type ProfileOrderByWithRelationInput = {
@@ -247,6 +251,7 @@ export type ProfileOrderByWithRelationInput = {
   department_id?: Prisma.SortOrderInput | Prisma.SortOrder
   user_id?: Prisma.SortOrderInput | Prisma.SortOrder
   department?: Prisma.DepartmentOrderByWithRelationInput
+  hod_of_department?: Prisma.DepartmentOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
   roles?: Prisma.UserRoleAssignmentOrderByRelationAggregateInput
   hallAssignments?: Prisma.HallTechStaffOrderByRelationAggregateInput
@@ -256,7 +261,10 @@ export type ProfileOrderByWithRelationInput = {
   hodBookings?: Prisma.BookingOrderByRelationAggregateInput
   bookingLogsPerformed?: Prisma.BookingLogOrderByRelationAggregateInput
   notifications?: Prisma.NotificationOrderByRelationAggregateInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestOrderByRelationAggregateInput
+  favoriteHalls?: Prisma.FavoriteHallOrderByRelationAggregateInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogOrderByRelationAggregateInput
+  maintenanceRequests?: Prisma.MaintenanceRequestOrderByRelationAggregateInput
 }
 
 export type ProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -274,6 +282,7 @@ export type ProfileWhereUniqueInput = Prisma.AtLeast<{
   updated_at?: Prisma.DateTimeFilter<"Profile"> | Date | string
   department_id?: Prisma.StringNullableFilter<"Profile"> | string | null
   department?: Prisma.XOR<Prisma.DepartmentNullableScalarRelationFilter, Prisma.DepartmentWhereInput> | null
+  hod_of_department?: Prisma.XOR<Prisma.DepartmentNullableScalarRelationFilter, Prisma.DepartmentWhereInput> | null
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   roles?: Prisma.UserRoleAssignmentListRelationFilter
   hallAssignments?: Prisma.HallTechStaffListRelationFilter
@@ -283,7 +292,10 @@ export type ProfileWhereUniqueInput = Prisma.AtLeast<{
   hodBookings?: Prisma.BookingListRelationFilter
   bookingLogsPerformed?: Prisma.BookingLogListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestListRelationFilter
+  favoriteHalls?: Prisma.FavoriteHallListRelationFilter
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogListRelationFilter
+  maintenanceRequests?: Prisma.MaintenanceRequestListRelationFilter
 }, "id" | "clerkId" | "user_id">
 
 export type ProfileOrderByWithAggregationInput = {
@@ -328,6 +340,7 @@ export type ProfileCreateInput = {
   created_at?: Date | string
   updated_at?: Date | string
   department?: Prisma.DepartmentCreateNestedOneWithoutProfilesInput
+  hod_of_department?: Prisma.DepartmentCreateNestedOneWithoutHod_profileInput
   user?: Prisma.UserCreateNestedOneWithoutProfileInput
   roles?: Prisma.UserRoleAssignmentCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffCreateNestedManyWithoutTech_staffInput
@@ -337,7 +350,10 @@ export type ProfileCreateInput = {
   hodBookings?: Prisma.BookingCreateNestedManyWithoutHodInput
   bookingLogsPerformed?: Prisma.BookingLogCreateNestedManyWithoutPerformerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestCreateNestedManyWithoutTechStaffInput
+  favoriteHalls?: Prisma.FavoriteHallCreateNestedManyWithoutUserInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogCreateNestedManyWithoutPerformerInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutHodInput
 }
 
 export type ProfileUncheckedCreateInput = {
@@ -351,6 +367,7 @@ export type ProfileUncheckedCreateInput = {
   updated_at?: Date | string
   department_id?: string | null
   user_id?: string | null
+  hod_of_department?: Prisma.DepartmentUncheckedCreateNestedOneWithoutHod_profileInput
   roles?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentUncheckedCreateNestedManyWithoutUpdated_byInput
@@ -359,7 +376,10 @@ export type ProfileUncheckedCreateInput = {
   hodBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutHodInput
   bookingLogsPerformed?: Prisma.BookingLogUncheckedCreateNestedManyWithoutPerformerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutTechStaffInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedCreateNestedManyWithoutUserInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedCreateNestedManyWithoutPerformerInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutHodInput
 }
 
 export type ProfileUpdateInput = {
@@ -372,6 +392,7 @@ export type ProfileUpdateInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneWithoutProfilesNestedInput
+  hod_of_department?: Prisma.DepartmentUpdateOneWithoutHod_profileNestedInput
   user?: Prisma.UserUpdateOneWithoutProfileNestedInput
   roles?: Prisma.UserRoleAssignmentUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUpdateManyWithoutTech_staffNestedInput
@@ -381,7 +402,10 @@ export type ProfileUpdateInput = {
   hodBookings?: Prisma.BookingUpdateManyWithoutHodNestedInput
   bookingLogsPerformed?: Prisma.BookingLogUpdateManyWithoutPerformerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUpdateManyWithoutTechStaffNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUpdateManyWithoutUserNestedInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUpdateManyWithoutPerformerNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutHodNestedInput
 }
 
 export type ProfileUncheckedUpdateInput = {
@@ -395,6 +419,7 @@ export type ProfileUncheckedUpdateInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hod_of_department?: Prisma.DepartmentUncheckedUpdateOneWithoutHod_profileNestedInput
   roles?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUncheckedUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUncheckedUpdateManyWithoutUpdated_byNestedInput
@@ -403,7 +428,10 @@ export type ProfileUncheckedUpdateInput = {
   hodBookings?: Prisma.BookingUncheckedUpdateManyWithoutHodNestedInput
   bookingLogsPerformed?: Prisma.BookingLogUncheckedUpdateManyWithoutPerformerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutTechStaffNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedUpdateManyWithoutUserNestedInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedUpdateManyWithoutPerformerNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutHodNestedInput
 }
 
 export type ProfileCreateManyInput = {
@@ -443,6 +471,11 @@ export type ProfileUncheckedUpdateManyInput = {
   user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
+export type ProfileNullableScalarRelationFilter = {
+  is?: Prisma.ProfileWhereInput | null
+  isNot?: Prisma.ProfileWhereInput | null
+}
+
 export type ProfileListRelationFilter = {
   every?: Prisma.ProfileWhereInput
   some?: Prisma.ProfileWhereInput
@@ -451,11 +484,6 @@ export type ProfileListRelationFilter = {
 
 export type ProfileOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type ProfileNullableScalarRelationFilter = {
-  is?: Prisma.ProfileWhereInput | null
-  isNot?: Prisma.ProfileWhereInput | null
 }
 
 export type ProfileCountOrderByAggregateInput = {
@@ -502,6 +530,12 @@ export type ProfileScalarRelationFilter = {
   isNot?: Prisma.ProfileWhereInput
 }
 
+export type ProfileCreateNestedOneWithoutHod_of_departmentInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutHod_of_departmentInput, Prisma.ProfileUncheckedCreateWithoutHod_of_departmentInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutHod_of_departmentInput
+  connect?: Prisma.ProfileWhereUniqueInput
+}
+
 export type ProfileCreateNestedManyWithoutDepartmentInput = {
   create?: Prisma.XOR<Prisma.ProfileCreateWithoutDepartmentInput, Prisma.ProfileUncheckedCreateWithoutDepartmentInput> | Prisma.ProfileCreateWithoutDepartmentInput[] | Prisma.ProfileUncheckedCreateWithoutDepartmentInput[]
   connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutDepartmentInput | Prisma.ProfileCreateOrConnectWithoutDepartmentInput[]
@@ -514,6 +548,16 @@ export type ProfileUncheckedCreateNestedManyWithoutDepartmentInput = {
   connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutDepartmentInput | Prisma.ProfileCreateOrConnectWithoutDepartmentInput[]
   createMany?: Prisma.ProfileCreateManyDepartmentInputEnvelope
   connect?: Prisma.ProfileWhereUniqueInput | Prisma.ProfileWhereUniqueInput[]
+}
+
+export type ProfileUpdateOneWithoutHod_of_departmentNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutHod_of_departmentInput, Prisma.ProfileUncheckedCreateWithoutHod_of_departmentInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutHod_of_departmentInput
+  upsert?: Prisma.ProfileUpsertWithoutHod_of_departmentInput
+  disconnect?: Prisma.ProfileWhereInput | boolean
+  delete?: Prisma.ProfileWhereInput | boolean
+  connect?: Prisma.ProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutHod_of_departmentInput, Prisma.ProfileUpdateWithoutHod_of_departmentInput>, Prisma.ProfileUncheckedUpdateWithoutHod_of_departmentInput>
 }
 
 export type ProfileUpdateManyWithoutDepartmentNestedInput = {
@@ -588,6 +632,20 @@ export type ProfileUpdateOneRequiredWithoutRolesNestedInput = {
   upsert?: Prisma.ProfileUpsertWithoutRolesInput
   connect?: Prisma.ProfileWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutRolesInput, Prisma.ProfileUpdateWithoutRolesInput>, Prisma.ProfileUncheckedUpdateWithoutRolesInput>
+}
+
+export type ProfileCreateNestedOneWithoutFavoriteHallsInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutFavoriteHallsInput, Prisma.ProfileUncheckedCreateWithoutFavoriteHallsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutFavoriteHallsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+}
+
+export type ProfileUpdateOneRequiredWithoutFavoriteHallsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutFavoriteHallsInput, Prisma.ProfileUncheckedCreateWithoutFavoriteHallsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutFavoriteHallsInput
+  upsert?: Prisma.ProfileUpsertWithoutFavoriteHallsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutFavoriteHallsInput, Prisma.ProfileUpdateWithoutFavoriteHallsInput>, Prisma.ProfileUncheckedUpdateWithoutFavoriteHallsInput>
 }
 
 export type ProfileCreateNestedOneWithoutHallAssignmentsInput = {
@@ -706,7 +764,37 @@ export type ProfileUpdateOneRequiredWithoutComponentMaintenanceLogsNestedInput =
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutComponentMaintenanceLogsInput, Prisma.ProfileUpdateWithoutComponentMaintenanceLogsInput>, Prisma.ProfileUncheckedUpdateWithoutComponentMaintenanceLogsInput>
 }
 
-export type ProfileCreateWithoutDepartmentInput = {
+export type ProfileCreateNestedOneWithoutMaintenanceRequestsCreatedInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutMaintenanceRequestsCreatedInput, Prisma.ProfileUncheckedCreateWithoutMaintenanceRequestsCreatedInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutMaintenanceRequestsCreatedInput
+  connect?: Prisma.ProfileWhereUniqueInput
+}
+
+export type ProfileCreateNestedOneWithoutMaintenanceRequestsInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutMaintenanceRequestsInput, Prisma.ProfileUncheckedCreateWithoutMaintenanceRequestsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutMaintenanceRequestsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+}
+
+export type ProfileUpdateOneRequiredWithoutMaintenanceRequestsCreatedNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutMaintenanceRequestsCreatedInput, Prisma.ProfileUncheckedCreateWithoutMaintenanceRequestsCreatedInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutMaintenanceRequestsCreatedInput
+  upsert?: Prisma.ProfileUpsertWithoutMaintenanceRequestsCreatedInput
+  connect?: Prisma.ProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutMaintenanceRequestsCreatedInput, Prisma.ProfileUpdateWithoutMaintenanceRequestsCreatedInput>, Prisma.ProfileUncheckedUpdateWithoutMaintenanceRequestsCreatedInput>
+}
+
+export type ProfileUpdateOneWithoutMaintenanceRequestsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutMaintenanceRequestsInput, Prisma.ProfileUncheckedCreateWithoutMaintenanceRequestsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutMaintenanceRequestsInput
+  upsert?: Prisma.ProfileUpsertWithoutMaintenanceRequestsInput
+  disconnect?: Prisma.ProfileWhereInput | boolean
+  delete?: Prisma.ProfileWhereInput | boolean
+  connect?: Prisma.ProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutMaintenanceRequestsInput, Prisma.ProfileUpdateWithoutMaintenanceRequestsInput>, Prisma.ProfileUncheckedUpdateWithoutMaintenanceRequestsInput>
+}
+
+export type ProfileCreateWithoutHod_of_departmentInput = {
   id?: string
   clerkId: string
   email: string
@@ -715,6 +803,7 @@ export type ProfileCreateWithoutDepartmentInput = {
   avatar_url?: string | null
   created_at?: Date | string
   updated_at?: Date | string
+  department?: Prisma.DepartmentCreateNestedOneWithoutProfilesInput
   user?: Prisma.UserCreateNestedOneWithoutProfileInput
   roles?: Prisma.UserRoleAssignmentCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffCreateNestedManyWithoutTech_staffInput
@@ -724,7 +813,65 @@ export type ProfileCreateWithoutDepartmentInput = {
   hodBookings?: Prisma.BookingCreateNestedManyWithoutHodInput
   bookingLogsPerformed?: Prisma.BookingLogCreateNestedManyWithoutPerformerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestCreateNestedManyWithoutTechStaffInput
+  favoriteHalls?: Prisma.FavoriteHallCreateNestedManyWithoutUserInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogCreateNestedManyWithoutPerformerInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutHodInput
+}
+
+export type ProfileUncheckedCreateWithoutHod_of_departmentInput = {
+  id?: string
+  clerkId: string
+  email: string
+  name: string
+  phone?: string | null
+  avatar_url?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  department_id?: string | null
+  user_id?: string | null
+  roles?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutProfileInput
+  hallAssignments?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutTech_staffInput
+  equipmentUpdated?: Prisma.EquipmentUncheckedCreateNestedManyWithoutUpdated_byInput
+  equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutUserInput
+  teacherBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutTeacherInput
+  hodBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutHodInput
+  bookingLogsPerformed?: Prisma.BookingLogUncheckedCreateNestedManyWithoutPerformerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutTechStaffInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedCreateNestedManyWithoutUserInput
+  componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedCreateNestedManyWithoutPerformerInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutHodInput
+}
+
+export type ProfileCreateOrConnectWithoutHod_of_departmentInput = {
+  where: Prisma.ProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutHod_of_departmentInput, Prisma.ProfileUncheckedCreateWithoutHod_of_departmentInput>
+}
+
+export type ProfileCreateWithoutDepartmentInput = {
+  id?: string
+  clerkId: string
+  email: string
+  name: string
+  phone?: string | null
+  avatar_url?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  hod_of_department?: Prisma.DepartmentCreateNestedOneWithoutHod_profileInput
+  user?: Prisma.UserCreateNestedOneWithoutProfileInput
+  roles?: Prisma.UserRoleAssignmentCreateNestedManyWithoutProfileInput
+  hallAssignments?: Prisma.HallTechStaffCreateNestedManyWithoutTech_staffInput
+  equipmentUpdated?: Prisma.EquipmentCreateNestedManyWithoutUpdated_byInput
+  equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutUserInput
+  teacherBookings?: Prisma.BookingCreateNestedManyWithoutTeacherInput
+  hodBookings?: Prisma.BookingCreateNestedManyWithoutHodInput
+  bookingLogsPerformed?: Prisma.BookingLogCreateNestedManyWithoutPerformerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestCreateNestedManyWithoutTechStaffInput
+  favoriteHalls?: Prisma.FavoriteHallCreateNestedManyWithoutUserInput
+  componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogCreateNestedManyWithoutPerformerInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutHodInput
 }
 
 export type ProfileUncheckedCreateWithoutDepartmentInput = {
@@ -737,6 +884,7 @@ export type ProfileUncheckedCreateWithoutDepartmentInput = {
   created_at?: Date | string
   updated_at?: Date | string
   user_id?: string | null
+  hod_of_department?: Prisma.DepartmentUncheckedCreateNestedOneWithoutHod_profileInput
   roles?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentUncheckedCreateNestedManyWithoutUpdated_byInput
@@ -745,7 +893,10 @@ export type ProfileUncheckedCreateWithoutDepartmentInput = {
   hodBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutHodInput
   bookingLogsPerformed?: Prisma.BookingLogUncheckedCreateNestedManyWithoutPerformerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutTechStaffInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedCreateNestedManyWithoutUserInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedCreateNestedManyWithoutPerformerInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutHodInput
 }
 
 export type ProfileCreateOrConnectWithoutDepartmentInput = {
@@ -756,6 +907,67 @@ export type ProfileCreateOrConnectWithoutDepartmentInput = {
 export type ProfileCreateManyDepartmentInputEnvelope = {
   data: Prisma.ProfileCreateManyDepartmentInput | Prisma.ProfileCreateManyDepartmentInput[]
   skipDuplicates?: boolean
+}
+
+export type ProfileUpsertWithoutHod_of_departmentInput = {
+  update: Prisma.XOR<Prisma.ProfileUpdateWithoutHod_of_departmentInput, Prisma.ProfileUncheckedUpdateWithoutHod_of_departmentInput>
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutHod_of_departmentInput, Prisma.ProfileUncheckedCreateWithoutHod_of_departmentInput>
+  where?: Prisma.ProfileWhereInput
+}
+
+export type ProfileUpdateToOneWithWhereWithoutHod_of_departmentInput = {
+  where?: Prisma.ProfileWhereInput
+  data: Prisma.XOR<Prisma.ProfileUpdateWithoutHod_of_departmentInput, Prisma.ProfileUncheckedUpdateWithoutHod_of_departmentInput>
+}
+
+export type ProfileUpdateWithoutHod_of_departmentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  department?: Prisma.DepartmentUpdateOneWithoutProfilesNestedInput
+  user?: Prisma.UserUpdateOneWithoutProfileNestedInput
+  roles?: Prisma.UserRoleAssignmentUpdateManyWithoutProfileNestedInput
+  hallAssignments?: Prisma.HallTechStaffUpdateManyWithoutTech_staffNestedInput
+  equipmentUpdated?: Prisma.EquipmentUpdateManyWithoutUpdated_byNestedInput
+  equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutUserNestedInput
+  teacherBookings?: Prisma.BookingUpdateManyWithoutTeacherNestedInput
+  hodBookings?: Prisma.BookingUpdateManyWithoutHodNestedInput
+  bookingLogsPerformed?: Prisma.BookingLogUpdateManyWithoutPerformerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUpdateManyWithoutTechStaffNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUpdateManyWithoutUserNestedInput
+  componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUpdateManyWithoutPerformerNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutHodNestedInput
+}
+
+export type ProfileUncheckedUpdateWithoutHod_of_departmentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  department_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutProfileNestedInput
+  hallAssignments?: Prisma.HallTechStaffUncheckedUpdateManyWithoutTech_staffNestedInput
+  equipmentUpdated?: Prisma.EquipmentUncheckedUpdateManyWithoutUpdated_byNestedInput
+  equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutUserNestedInput
+  teacherBookings?: Prisma.BookingUncheckedUpdateManyWithoutTeacherNestedInput
+  hodBookings?: Prisma.BookingUncheckedUpdateManyWithoutHodNestedInput
+  bookingLogsPerformed?: Prisma.BookingLogUncheckedUpdateManyWithoutPerformerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutTechStaffNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedUpdateManyWithoutUserNestedInput
+  componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedUpdateManyWithoutPerformerNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutHodNestedInput
 }
 
 export type ProfileUpsertWithWhereUniqueWithoutDepartmentInput = {
@@ -800,6 +1012,7 @@ export type ProfileCreateWithoutUserInput = {
   created_at?: Date | string
   updated_at?: Date | string
   department?: Prisma.DepartmentCreateNestedOneWithoutProfilesInput
+  hod_of_department?: Prisma.DepartmentCreateNestedOneWithoutHod_profileInput
   roles?: Prisma.UserRoleAssignmentCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentCreateNestedManyWithoutUpdated_byInput
@@ -808,7 +1021,10 @@ export type ProfileCreateWithoutUserInput = {
   hodBookings?: Prisma.BookingCreateNestedManyWithoutHodInput
   bookingLogsPerformed?: Prisma.BookingLogCreateNestedManyWithoutPerformerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestCreateNestedManyWithoutTechStaffInput
+  favoriteHalls?: Prisma.FavoriteHallCreateNestedManyWithoutUserInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogCreateNestedManyWithoutPerformerInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutHodInput
 }
 
 export type ProfileUncheckedCreateWithoutUserInput = {
@@ -821,6 +1037,7 @@ export type ProfileUncheckedCreateWithoutUserInput = {
   created_at?: Date | string
   updated_at?: Date | string
   department_id?: string | null
+  hod_of_department?: Prisma.DepartmentUncheckedCreateNestedOneWithoutHod_profileInput
   roles?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentUncheckedCreateNestedManyWithoutUpdated_byInput
@@ -829,7 +1046,10 @@ export type ProfileUncheckedCreateWithoutUserInput = {
   hodBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutHodInput
   bookingLogsPerformed?: Prisma.BookingLogUncheckedCreateNestedManyWithoutPerformerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutTechStaffInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedCreateNestedManyWithoutUserInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedCreateNestedManyWithoutPerformerInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutHodInput
 }
 
 export type ProfileCreateOrConnectWithoutUserInput = {
@@ -858,6 +1078,7 @@ export type ProfileUpdateWithoutUserInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneWithoutProfilesNestedInput
+  hod_of_department?: Prisma.DepartmentUpdateOneWithoutHod_profileNestedInput
   roles?: Prisma.UserRoleAssignmentUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUpdateManyWithoutUpdated_byNestedInput
@@ -866,7 +1087,10 @@ export type ProfileUpdateWithoutUserInput = {
   hodBookings?: Prisma.BookingUpdateManyWithoutHodNestedInput
   bookingLogsPerformed?: Prisma.BookingLogUpdateManyWithoutPerformerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUpdateManyWithoutTechStaffNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUpdateManyWithoutUserNestedInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUpdateManyWithoutPerformerNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutHodNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutUserInput = {
@@ -879,6 +1103,7 @@ export type ProfileUncheckedUpdateWithoutUserInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hod_of_department?: Prisma.DepartmentUncheckedUpdateOneWithoutHod_profileNestedInput
   roles?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUncheckedUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUncheckedUpdateManyWithoutUpdated_byNestedInput
@@ -887,7 +1112,10 @@ export type ProfileUncheckedUpdateWithoutUserInput = {
   hodBookings?: Prisma.BookingUncheckedUpdateManyWithoutHodNestedInput
   bookingLogsPerformed?: Prisma.BookingLogUncheckedUpdateManyWithoutPerformerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutTechStaffNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedUpdateManyWithoutUserNestedInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedUpdateManyWithoutPerformerNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutHodNestedInput
 }
 
 export type ProfileCreateWithoutRolesInput = {
@@ -900,6 +1128,7 @@ export type ProfileCreateWithoutRolesInput = {
   created_at?: Date | string
   updated_at?: Date | string
   department?: Prisma.DepartmentCreateNestedOneWithoutProfilesInput
+  hod_of_department?: Prisma.DepartmentCreateNestedOneWithoutHod_profileInput
   user?: Prisma.UserCreateNestedOneWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentCreateNestedManyWithoutUpdated_byInput
@@ -908,7 +1137,10 @@ export type ProfileCreateWithoutRolesInput = {
   hodBookings?: Prisma.BookingCreateNestedManyWithoutHodInput
   bookingLogsPerformed?: Prisma.BookingLogCreateNestedManyWithoutPerformerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestCreateNestedManyWithoutTechStaffInput
+  favoriteHalls?: Prisma.FavoriteHallCreateNestedManyWithoutUserInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogCreateNestedManyWithoutPerformerInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutHodInput
 }
 
 export type ProfileUncheckedCreateWithoutRolesInput = {
@@ -922,6 +1154,7 @@ export type ProfileUncheckedCreateWithoutRolesInput = {
   updated_at?: Date | string
   department_id?: string | null
   user_id?: string | null
+  hod_of_department?: Prisma.DepartmentUncheckedCreateNestedOneWithoutHod_profileInput
   hallAssignments?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentUncheckedCreateNestedManyWithoutUpdated_byInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutUserInput
@@ -929,7 +1162,10 @@ export type ProfileUncheckedCreateWithoutRolesInput = {
   hodBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutHodInput
   bookingLogsPerformed?: Prisma.BookingLogUncheckedCreateNestedManyWithoutPerformerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutTechStaffInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedCreateNestedManyWithoutUserInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedCreateNestedManyWithoutPerformerInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutHodInput
 }
 
 export type ProfileCreateOrConnectWithoutRolesInput = {
@@ -958,6 +1194,7 @@ export type ProfileUpdateWithoutRolesInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneWithoutProfilesNestedInput
+  hod_of_department?: Prisma.DepartmentUpdateOneWithoutHod_profileNestedInput
   user?: Prisma.UserUpdateOneWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUpdateManyWithoutUpdated_byNestedInput
@@ -966,7 +1203,10 @@ export type ProfileUpdateWithoutRolesInput = {
   hodBookings?: Prisma.BookingUpdateManyWithoutHodNestedInput
   bookingLogsPerformed?: Prisma.BookingLogUpdateManyWithoutPerformerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUpdateManyWithoutTechStaffNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUpdateManyWithoutUserNestedInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUpdateManyWithoutPerformerNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutHodNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutRolesInput = {
@@ -980,6 +1220,7 @@ export type ProfileUncheckedUpdateWithoutRolesInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hod_of_department?: Prisma.DepartmentUncheckedUpdateOneWithoutHod_profileNestedInput
   hallAssignments?: Prisma.HallTechStaffUncheckedUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUncheckedUpdateManyWithoutUpdated_byNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutUserNestedInput
@@ -987,7 +1228,126 @@ export type ProfileUncheckedUpdateWithoutRolesInput = {
   hodBookings?: Prisma.BookingUncheckedUpdateManyWithoutHodNestedInput
   bookingLogsPerformed?: Prisma.BookingLogUncheckedUpdateManyWithoutPerformerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutTechStaffNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedUpdateManyWithoutUserNestedInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedUpdateManyWithoutPerformerNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutHodNestedInput
+}
+
+export type ProfileCreateWithoutFavoriteHallsInput = {
+  id?: string
+  clerkId: string
+  email: string
+  name: string
+  phone?: string | null
+  avatar_url?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  department?: Prisma.DepartmentCreateNestedOneWithoutProfilesInput
+  hod_of_department?: Prisma.DepartmentCreateNestedOneWithoutHod_profileInput
+  user?: Prisma.UserCreateNestedOneWithoutProfileInput
+  roles?: Prisma.UserRoleAssignmentCreateNestedManyWithoutProfileInput
+  hallAssignments?: Prisma.HallTechStaffCreateNestedManyWithoutTech_staffInput
+  equipmentUpdated?: Prisma.EquipmentCreateNestedManyWithoutUpdated_byInput
+  equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutUserInput
+  teacherBookings?: Prisma.BookingCreateNestedManyWithoutTeacherInput
+  hodBookings?: Prisma.BookingCreateNestedManyWithoutHodInput
+  bookingLogsPerformed?: Prisma.BookingLogCreateNestedManyWithoutPerformerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestCreateNestedManyWithoutTechStaffInput
+  componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogCreateNestedManyWithoutPerformerInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutHodInput
+}
+
+export type ProfileUncheckedCreateWithoutFavoriteHallsInput = {
+  id?: string
+  clerkId: string
+  email: string
+  name: string
+  phone?: string | null
+  avatar_url?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  department_id?: string | null
+  user_id?: string | null
+  hod_of_department?: Prisma.DepartmentUncheckedCreateNestedOneWithoutHod_profileInput
+  roles?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutProfileInput
+  hallAssignments?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutTech_staffInput
+  equipmentUpdated?: Prisma.EquipmentUncheckedCreateNestedManyWithoutUpdated_byInput
+  equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutUserInput
+  teacherBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutTeacherInput
+  hodBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutHodInput
+  bookingLogsPerformed?: Prisma.BookingLogUncheckedCreateNestedManyWithoutPerformerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutTechStaffInput
+  componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedCreateNestedManyWithoutPerformerInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutHodInput
+}
+
+export type ProfileCreateOrConnectWithoutFavoriteHallsInput = {
+  where: Prisma.ProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutFavoriteHallsInput, Prisma.ProfileUncheckedCreateWithoutFavoriteHallsInput>
+}
+
+export type ProfileUpsertWithoutFavoriteHallsInput = {
+  update: Prisma.XOR<Prisma.ProfileUpdateWithoutFavoriteHallsInput, Prisma.ProfileUncheckedUpdateWithoutFavoriteHallsInput>
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutFavoriteHallsInput, Prisma.ProfileUncheckedCreateWithoutFavoriteHallsInput>
+  where?: Prisma.ProfileWhereInput
+}
+
+export type ProfileUpdateToOneWithWhereWithoutFavoriteHallsInput = {
+  where?: Prisma.ProfileWhereInput
+  data: Prisma.XOR<Prisma.ProfileUpdateWithoutFavoriteHallsInput, Prisma.ProfileUncheckedUpdateWithoutFavoriteHallsInput>
+}
+
+export type ProfileUpdateWithoutFavoriteHallsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  department?: Prisma.DepartmentUpdateOneWithoutProfilesNestedInput
+  hod_of_department?: Prisma.DepartmentUpdateOneWithoutHod_profileNestedInput
+  user?: Prisma.UserUpdateOneWithoutProfileNestedInput
+  roles?: Prisma.UserRoleAssignmentUpdateManyWithoutProfileNestedInput
+  hallAssignments?: Prisma.HallTechStaffUpdateManyWithoutTech_staffNestedInput
+  equipmentUpdated?: Prisma.EquipmentUpdateManyWithoutUpdated_byNestedInput
+  equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutUserNestedInput
+  teacherBookings?: Prisma.BookingUpdateManyWithoutTeacherNestedInput
+  hodBookings?: Prisma.BookingUpdateManyWithoutHodNestedInput
+  bookingLogsPerformed?: Prisma.BookingLogUpdateManyWithoutPerformerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUpdateManyWithoutTechStaffNestedInput
+  componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUpdateManyWithoutPerformerNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutHodNestedInput
+}
+
+export type ProfileUncheckedUpdateWithoutFavoriteHallsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  department_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hod_of_department?: Prisma.DepartmentUncheckedUpdateOneWithoutHod_profileNestedInput
+  roles?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutProfileNestedInput
+  hallAssignments?: Prisma.HallTechStaffUncheckedUpdateManyWithoutTech_staffNestedInput
+  equipmentUpdated?: Prisma.EquipmentUncheckedUpdateManyWithoutUpdated_byNestedInput
+  equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutUserNestedInput
+  teacherBookings?: Prisma.BookingUncheckedUpdateManyWithoutTeacherNestedInput
+  hodBookings?: Prisma.BookingUncheckedUpdateManyWithoutHodNestedInput
+  bookingLogsPerformed?: Prisma.BookingLogUncheckedUpdateManyWithoutPerformerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutTechStaffNestedInput
+  componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedUpdateManyWithoutPerformerNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutHodNestedInput
 }
 
 export type ProfileCreateWithoutHallAssignmentsInput = {
@@ -1000,6 +1360,7 @@ export type ProfileCreateWithoutHallAssignmentsInput = {
   created_at?: Date | string
   updated_at?: Date | string
   department?: Prisma.DepartmentCreateNestedOneWithoutProfilesInput
+  hod_of_department?: Prisma.DepartmentCreateNestedOneWithoutHod_profileInput
   user?: Prisma.UserCreateNestedOneWithoutProfileInput
   roles?: Prisma.UserRoleAssignmentCreateNestedManyWithoutProfileInput
   equipmentUpdated?: Prisma.EquipmentCreateNestedManyWithoutUpdated_byInput
@@ -1008,7 +1369,10 @@ export type ProfileCreateWithoutHallAssignmentsInput = {
   hodBookings?: Prisma.BookingCreateNestedManyWithoutHodInput
   bookingLogsPerformed?: Prisma.BookingLogCreateNestedManyWithoutPerformerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestCreateNestedManyWithoutTechStaffInput
+  favoriteHalls?: Prisma.FavoriteHallCreateNestedManyWithoutUserInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogCreateNestedManyWithoutPerformerInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutHodInput
 }
 
 export type ProfileUncheckedCreateWithoutHallAssignmentsInput = {
@@ -1022,6 +1386,7 @@ export type ProfileUncheckedCreateWithoutHallAssignmentsInput = {
   updated_at?: Date | string
   department_id?: string | null
   user_id?: string | null
+  hod_of_department?: Prisma.DepartmentUncheckedCreateNestedOneWithoutHod_profileInput
   roles?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutProfileInput
   equipmentUpdated?: Prisma.EquipmentUncheckedCreateNestedManyWithoutUpdated_byInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutUserInput
@@ -1029,7 +1394,10 @@ export type ProfileUncheckedCreateWithoutHallAssignmentsInput = {
   hodBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutHodInput
   bookingLogsPerformed?: Prisma.BookingLogUncheckedCreateNestedManyWithoutPerformerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutTechStaffInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedCreateNestedManyWithoutUserInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedCreateNestedManyWithoutPerformerInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutHodInput
 }
 
 export type ProfileCreateOrConnectWithoutHallAssignmentsInput = {
@@ -1058,6 +1426,7 @@ export type ProfileUpdateWithoutHallAssignmentsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneWithoutProfilesNestedInput
+  hod_of_department?: Prisma.DepartmentUpdateOneWithoutHod_profileNestedInput
   user?: Prisma.UserUpdateOneWithoutProfileNestedInput
   roles?: Prisma.UserRoleAssignmentUpdateManyWithoutProfileNestedInput
   equipmentUpdated?: Prisma.EquipmentUpdateManyWithoutUpdated_byNestedInput
@@ -1066,7 +1435,10 @@ export type ProfileUpdateWithoutHallAssignmentsInput = {
   hodBookings?: Prisma.BookingUpdateManyWithoutHodNestedInput
   bookingLogsPerformed?: Prisma.BookingLogUpdateManyWithoutPerformerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUpdateManyWithoutTechStaffNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUpdateManyWithoutUserNestedInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUpdateManyWithoutPerformerNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutHodNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutHallAssignmentsInput = {
@@ -1080,6 +1452,7 @@ export type ProfileUncheckedUpdateWithoutHallAssignmentsInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hod_of_department?: Prisma.DepartmentUncheckedUpdateOneWithoutHod_profileNestedInput
   roles?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutProfileNestedInput
   equipmentUpdated?: Prisma.EquipmentUncheckedUpdateManyWithoutUpdated_byNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutUserNestedInput
@@ -1087,7 +1460,10 @@ export type ProfileUncheckedUpdateWithoutHallAssignmentsInput = {
   hodBookings?: Prisma.BookingUncheckedUpdateManyWithoutHodNestedInput
   bookingLogsPerformed?: Prisma.BookingLogUncheckedUpdateManyWithoutPerformerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutTechStaffNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedUpdateManyWithoutUserNestedInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedUpdateManyWithoutPerformerNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutHodNestedInput
 }
 
 export type ProfileCreateWithoutEquipmentUpdatedInput = {
@@ -1100,6 +1476,7 @@ export type ProfileCreateWithoutEquipmentUpdatedInput = {
   created_at?: Date | string
   updated_at?: Date | string
   department?: Prisma.DepartmentCreateNestedOneWithoutProfilesInput
+  hod_of_department?: Prisma.DepartmentCreateNestedOneWithoutHod_profileInput
   user?: Prisma.UserCreateNestedOneWithoutProfileInput
   roles?: Prisma.UserRoleAssignmentCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffCreateNestedManyWithoutTech_staffInput
@@ -1108,7 +1485,10 @@ export type ProfileCreateWithoutEquipmentUpdatedInput = {
   hodBookings?: Prisma.BookingCreateNestedManyWithoutHodInput
   bookingLogsPerformed?: Prisma.BookingLogCreateNestedManyWithoutPerformerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestCreateNestedManyWithoutTechStaffInput
+  favoriteHalls?: Prisma.FavoriteHallCreateNestedManyWithoutUserInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogCreateNestedManyWithoutPerformerInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutHodInput
 }
 
 export type ProfileUncheckedCreateWithoutEquipmentUpdatedInput = {
@@ -1122,6 +1502,7 @@ export type ProfileUncheckedCreateWithoutEquipmentUpdatedInput = {
   updated_at?: Date | string
   department_id?: string | null
   user_id?: string | null
+  hod_of_department?: Prisma.DepartmentUncheckedCreateNestedOneWithoutHod_profileInput
   roles?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutTech_staffInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutUserInput
@@ -1129,7 +1510,10 @@ export type ProfileUncheckedCreateWithoutEquipmentUpdatedInput = {
   hodBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutHodInput
   bookingLogsPerformed?: Prisma.BookingLogUncheckedCreateNestedManyWithoutPerformerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutTechStaffInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedCreateNestedManyWithoutUserInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedCreateNestedManyWithoutPerformerInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutHodInput
 }
 
 export type ProfileCreateOrConnectWithoutEquipmentUpdatedInput = {
@@ -1158,6 +1542,7 @@ export type ProfileUpdateWithoutEquipmentUpdatedInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneWithoutProfilesNestedInput
+  hod_of_department?: Prisma.DepartmentUpdateOneWithoutHod_profileNestedInput
   user?: Prisma.UserUpdateOneWithoutProfileNestedInput
   roles?: Prisma.UserRoleAssignmentUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUpdateManyWithoutTech_staffNestedInput
@@ -1166,7 +1551,10 @@ export type ProfileUpdateWithoutEquipmentUpdatedInput = {
   hodBookings?: Prisma.BookingUpdateManyWithoutHodNestedInput
   bookingLogsPerformed?: Prisma.BookingLogUpdateManyWithoutPerformerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUpdateManyWithoutTechStaffNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUpdateManyWithoutUserNestedInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUpdateManyWithoutPerformerNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutHodNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutEquipmentUpdatedInput = {
@@ -1180,6 +1568,7 @@ export type ProfileUncheckedUpdateWithoutEquipmentUpdatedInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hod_of_department?: Prisma.DepartmentUncheckedUpdateOneWithoutHod_profileNestedInput
   roles?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUncheckedUpdateManyWithoutTech_staffNestedInput
   equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutUserNestedInput
@@ -1187,7 +1576,10 @@ export type ProfileUncheckedUpdateWithoutEquipmentUpdatedInput = {
   hodBookings?: Prisma.BookingUncheckedUpdateManyWithoutHodNestedInput
   bookingLogsPerformed?: Prisma.BookingLogUncheckedUpdateManyWithoutPerformerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutTechStaffNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedUpdateManyWithoutUserNestedInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedUpdateManyWithoutPerformerNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutHodNestedInput
 }
 
 export type ProfileCreateWithoutEquipmentLogsInput = {
@@ -1200,6 +1592,7 @@ export type ProfileCreateWithoutEquipmentLogsInput = {
   created_at?: Date | string
   updated_at?: Date | string
   department?: Prisma.DepartmentCreateNestedOneWithoutProfilesInput
+  hod_of_department?: Prisma.DepartmentCreateNestedOneWithoutHod_profileInput
   user?: Prisma.UserCreateNestedOneWithoutProfileInput
   roles?: Prisma.UserRoleAssignmentCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffCreateNestedManyWithoutTech_staffInput
@@ -1208,7 +1601,10 @@ export type ProfileCreateWithoutEquipmentLogsInput = {
   hodBookings?: Prisma.BookingCreateNestedManyWithoutHodInput
   bookingLogsPerformed?: Prisma.BookingLogCreateNestedManyWithoutPerformerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestCreateNestedManyWithoutTechStaffInput
+  favoriteHalls?: Prisma.FavoriteHallCreateNestedManyWithoutUserInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogCreateNestedManyWithoutPerformerInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutHodInput
 }
 
 export type ProfileUncheckedCreateWithoutEquipmentLogsInput = {
@@ -1222,6 +1618,7 @@ export type ProfileUncheckedCreateWithoutEquipmentLogsInput = {
   updated_at?: Date | string
   department_id?: string | null
   user_id?: string | null
+  hod_of_department?: Prisma.DepartmentUncheckedCreateNestedOneWithoutHod_profileInput
   roles?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentUncheckedCreateNestedManyWithoutUpdated_byInput
@@ -1229,7 +1626,10 @@ export type ProfileUncheckedCreateWithoutEquipmentLogsInput = {
   hodBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutHodInput
   bookingLogsPerformed?: Prisma.BookingLogUncheckedCreateNestedManyWithoutPerformerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutTechStaffInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedCreateNestedManyWithoutUserInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedCreateNestedManyWithoutPerformerInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutHodInput
 }
 
 export type ProfileCreateOrConnectWithoutEquipmentLogsInput = {
@@ -1258,6 +1658,7 @@ export type ProfileUpdateWithoutEquipmentLogsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneWithoutProfilesNestedInput
+  hod_of_department?: Prisma.DepartmentUpdateOneWithoutHod_profileNestedInput
   user?: Prisma.UserUpdateOneWithoutProfileNestedInput
   roles?: Prisma.UserRoleAssignmentUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUpdateManyWithoutTech_staffNestedInput
@@ -1266,7 +1667,10 @@ export type ProfileUpdateWithoutEquipmentLogsInput = {
   hodBookings?: Prisma.BookingUpdateManyWithoutHodNestedInput
   bookingLogsPerformed?: Prisma.BookingLogUpdateManyWithoutPerformerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUpdateManyWithoutTechStaffNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUpdateManyWithoutUserNestedInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUpdateManyWithoutPerformerNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutHodNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutEquipmentLogsInput = {
@@ -1280,6 +1684,7 @@ export type ProfileUncheckedUpdateWithoutEquipmentLogsInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hod_of_department?: Prisma.DepartmentUncheckedUpdateOneWithoutHod_profileNestedInput
   roles?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUncheckedUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUncheckedUpdateManyWithoutUpdated_byNestedInput
@@ -1287,7 +1692,10 @@ export type ProfileUncheckedUpdateWithoutEquipmentLogsInput = {
   hodBookings?: Prisma.BookingUncheckedUpdateManyWithoutHodNestedInput
   bookingLogsPerformed?: Prisma.BookingLogUncheckedUpdateManyWithoutPerformerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutTechStaffNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedUpdateManyWithoutUserNestedInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedUpdateManyWithoutPerformerNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutHodNestedInput
 }
 
 export type ProfileCreateWithoutTeacherBookingsInput = {
@@ -1300,6 +1708,7 @@ export type ProfileCreateWithoutTeacherBookingsInput = {
   created_at?: Date | string
   updated_at?: Date | string
   department?: Prisma.DepartmentCreateNestedOneWithoutProfilesInput
+  hod_of_department?: Prisma.DepartmentCreateNestedOneWithoutHod_profileInput
   user?: Prisma.UserCreateNestedOneWithoutProfileInput
   roles?: Prisma.UserRoleAssignmentCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffCreateNestedManyWithoutTech_staffInput
@@ -1308,7 +1717,10 @@ export type ProfileCreateWithoutTeacherBookingsInput = {
   hodBookings?: Prisma.BookingCreateNestedManyWithoutHodInput
   bookingLogsPerformed?: Prisma.BookingLogCreateNestedManyWithoutPerformerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestCreateNestedManyWithoutTechStaffInput
+  favoriteHalls?: Prisma.FavoriteHallCreateNestedManyWithoutUserInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogCreateNestedManyWithoutPerformerInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutHodInput
 }
 
 export type ProfileUncheckedCreateWithoutTeacherBookingsInput = {
@@ -1322,6 +1734,7 @@ export type ProfileUncheckedCreateWithoutTeacherBookingsInput = {
   updated_at?: Date | string
   department_id?: string | null
   user_id?: string | null
+  hod_of_department?: Prisma.DepartmentUncheckedCreateNestedOneWithoutHod_profileInput
   roles?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentUncheckedCreateNestedManyWithoutUpdated_byInput
@@ -1329,7 +1742,10 @@ export type ProfileUncheckedCreateWithoutTeacherBookingsInput = {
   hodBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutHodInput
   bookingLogsPerformed?: Prisma.BookingLogUncheckedCreateNestedManyWithoutPerformerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutTechStaffInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedCreateNestedManyWithoutUserInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedCreateNestedManyWithoutPerformerInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutHodInput
 }
 
 export type ProfileCreateOrConnectWithoutTeacherBookingsInput = {
@@ -1347,6 +1763,7 @@ export type ProfileCreateWithoutHodBookingsInput = {
   created_at?: Date | string
   updated_at?: Date | string
   department?: Prisma.DepartmentCreateNestedOneWithoutProfilesInput
+  hod_of_department?: Prisma.DepartmentCreateNestedOneWithoutHod_profileInput
   user?: Prisma.UserCreateNestedOneWithoutProfileInput
   roles?: Prisma.UserRoleAssignmentCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffCreateNestedManyWithoutTech_staffInput
@@ -1355,7 +1772,10 @@ export type ProfileCreateWithoutHodBookingsInput = {
   teacherBookings?: Prisma.BookingCreateNestedManyWithoutTeacherInput
   bookingLogsPerformed?: Prisma.BookingLogCreateNestedManyWithoutPerformerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestCreateNestedManyWithoutTechStaffInput
+  favoriteHalls?: Prisma.FavoriteHallCreateNestedManyWithoutUserInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogCreateNestedManyWithoutPerformerInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutHodInput
 }
 
 export type ProfileUncheckedCreateWithoutHodBookingsInput = {
@@ -1369,6 +1789,7 @@ export type ProfileUncheckedCreateWithoutHodBookingsInput = {
   updated_at?: Date | string
   department_id?: string | null
   user_id?: string | null
+  hod_of_department?: Prisma.DepartmentUncheckedCreateNestedOneWithoutHod_profileInput
   roles?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentUncheckedCreateNestedManyWithoutUpdated_byInput
@@ -1376,7 +1797,10 @@ export type ProfileUncheckedCreateWithoutHodBookingsInput = {
   teacherBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutTeacherInput
   bookingLogsPerformed?: Prisma.BookingLogUncheckedCreateNestedManyWithoutPerformerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutTechStaffInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedCreateNestedManyWithoutUserInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedCreateNestedManyWithoutPerformerInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutHodInput
 }
 
 export type ProfileCreateOrConnectWithoutHodBookingsInput = {
@@ -1405,6 +1829,7 @@ export type ProfileUpdateWithoutTeacherBookingsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneWithoutProfilesNestedInput
+  hod_of_department?: Prisma.DepartmentUpdateOneWithoutHod_profileNestedInput
   user?: Prisma.UserUpdateOneWithoutProfileNestedInput
   roles?: Prisma.UserRoleAssignmentUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUpdateManyWithoutTech_staffNestedInput
@@ -1413,7 +1838,10 @@ export type ProfileUpdateWithoutTeacherBookingsInput = {
   hodBookings?: Prisma.BookingUpdateManyWithoutHodNestedInput
   bookingLogsPerformed?: Prisma.BookingLogUpdateManyWithoutPerformerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUpdateManyWithoutTechStaffNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUpdateManyWithoutUserNestedInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUpdateManyWithoutPerformerNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutHodNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutTeacherBookingsInput = {
@@ -1427,6 +1855,7 @@ export type ProfileUncheckedUpdateWithoutTeacherBookingsInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hod_of_department?: Prisma.DepartmentUncheckedUpdateOneWithoutHod_profileNestedInput
   roles?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUncheckedUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUncheckedUpdateManyWithoutUpdated_byNestedInput
@@ -1434,7 +1863,10 @@ export type ProfileUncheckedUpdateWithoutTeacherBookingsInput = {
   hodBookings?: Prisma.BookingUncheckedUpdateManyWithoutHodNestedInput
   bookingLogsPerformed?: Prisma.BookingLogUncheckedUpdateManyWithoutPerformerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutTechStaffNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedUpdateManyWithoutUserNestedInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedUpdateManyWithoutPerformerNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutHodNestedInput
 }
 
 export type ProfileUpsertWithoutHodBookingsInput = {
@@ -1458,6 +1890,7 @@ export type ProfileUpdateWithoutHodBookingsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneWithoutProfilesNestedInput
+  hod_of_department?: Prisma.DepartmentUpdateOneWithoutHod_profileNestedInput
   user?: Prisma.UserUpdateOneWithoutProfileNestedInput
   roles?: Prisma.UserRoleAssignmentUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUpdateManyWithoutTech_staffNestedInput
@@ -1466,7 +1899,10 @@ export type ProfileUpdateWithoutHodBookingsInput = {
   teacherBookings?: Prisma.BookingUpdateManyWithoutTeacherNestedInput
   bookingLogsPerformed?: Prisma.BookingLogUpdateManyWithoutPerformerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUpdateManyWithoutTechStaffNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUpdateManyWithoutUserNestedInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUpdateManyWithoutPerformerNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutHodNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutHodBookingsInput = {
@@ -1480,6 +1916,7 @@ export type ProfileUncheckedUpdateWithoutHodBookingsInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hod_of_department?: Prisma.DepartmentUncheckedUpdateOneWithoutHod_profileNestedInput
   roles?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUncheckedUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUncheckedUpdateManyWithoutUpdated_byNestedInput
@@ -1487,7 +1924,10 @@ export type ProfileUncheckedUpdateWithoutHodBookingsInput = {
   teacherBookings?: Prisma.BookingUncheckedUpdateManyWithoutTeacherNestedInput
   bookingLogsPerformed?: Prisma.BookingLogUncheckedUpdateManyWithoutPerformerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutTechStaffNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedUpdateManyWithoutUserNestedInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedUpdateManyWithoutPerformerNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutHodNestedInput
 }
 
 export type ProfileCreateWithoutBookingLogsPerformedInput = {
@@ -1500,6 +1940,7 @@ export type ProfileCreateWithoutBookingLogsPerformedInput = {
   created_at?: Date | string
   updated_at?: Date | string
   department?: Prisma.DepartmentCreateNestedOneWithoutProfilesInput
+  hod_of_department?: Prisma.DepartmentCreateNestedOneWithoutHod_profileInput
   user?: Prisma.UserCreateNestedOneWithoutProfileInput
   roles?: Prisma.UserRoleAssignmentCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffCreateNestedManyWithoutTech_staffInput
@@ -1508,7 +1949,10 @@ export type ProfileCreateWithoutBookingLogsPerformedInput = {
   teacherBookings?: Prisma.BookingCreateNestedManyWithoutTeacherInput
   hodBookings?: Prisma.BookingCreateNestedManyWithoutHodInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestCreateNestedManyWithoutTechStaffInput
+  favoriteHalls?: Prisma.FavoriteHallCreateNestedManyWithoutUserInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogCreateNestedManyWithoutPerformerInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutHodInput
 }
 
 export type ProfileUncheckedCreateWithoutBookingLogsPerformedInput = {
@@ -1522,6 +1966,7 @@ export type ProfileUncheckedCreateWithoutBookingLogsPerformedInput = {
   updated_at?: Date | string
   department_id?: string | null
   user_id?: string | null
+  hod_of_department?: Prisma.DepartmentUncheckedCreateNestedOneWithoutHod_profileInput
   roles?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentUncheckedCreateNestedManyWithoutUpdated_byInput
@@ -1529,7 +1974,10 @@ export type ProfileUncheckedCreateWithoutBookingLogsPerformedInput = {
   teacherBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutTeacherInput
   hodBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutHodInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutTechStaffInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedCreateNestedManyWithoutUserInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedCreateNestedManyWithoutPerformerInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutHodInput
 }
 
 export type ProfileCreateOrConnectWithoutBookingLogsPerformedInput = {
@@ -1558,6 +2006,7 @@ export type ProfileUpdateWithoutBookingLogsPerformedInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneWithoutProfilesNestedInput
+  hod_of_department?: Prisma.DepartmentUpdateOneWithoutHod_profileNestedInput
   user?: Prisma.UserUpdateOneWithoutProfileNestedInput
   roles?: Prisma.UserRoleAssignmentUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUpdateManyWithoutTech_staffNestedInput
@@ -1566,7 +2015,10 @@ export type ProfileUpdateWithoutBookingLogsPerformedInput = {
   teacherBookings?: Prisma.BookingUpdateManyWithoutTeacherNestedInput
   hodBookings?: Prisma.BookingUpdateManyWithoutHodNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUpdateManyWithoutTechStaffNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUpdateManyWithoutUserNestedInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUpdateManyWithoutPerformerNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutHodNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutBookingLogsPerformedInput = {
@@ -1580,6 +2032,7 @@ export type ProfileUncheckedUpdateWithoutBookingLogsPerformedInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hod_of_department?: Prisma.DepartmentUncheckedUpdateOneWithoutHod_profileNestedInput
   roles?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUncheckedUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUncheckedUpdateManyWithoutUpdated_byNestedInput
@@ -1587,7 +2040,10 @@ export type ProfileUncheckedUpdateWithoutBookingLogsPerformedInput = {
   teacherBookings?: Prisma.BookingUncheckedUpdateManyWithoutTeacherNestedInput
   hodBookings?: Prisma.BookingUncheckedUpdateManyWithoutHodNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutTechStaffNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedUpdateManyWithoutUserNestedInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedUpdateManyWithoutPerformerNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutHodNestedInput
 }
 
 export type ProfileCreateWithoutNotificationsInput = {
@@ -1600,6 +2056,7 @@ export type ProfileCreateWithoutNotificationsInput = {
   created_at?: Date | string
   updated_at?: Date | string
   department?: Prisma.DepartmentCreateNestedOneWithoutProfilesInput
+  hod_of_department?: Prisma.DepartmentCreateNestedOneWithoutHod_profileInput
   user?: Prisma.UserCreateNestedOneWithoutProfileInput
   roles?: Prisma.UserRoleAssignmentCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffCreateNestedManyWithoutTech_staffInput
@@ -1608,7 +2065,10 @@ export type ProfileCreateWithoutNotificationsInput = {
   teacherBookings?: Prisma.BookingCreateNestedManyWithoutTeacherInput
   hodBookings?: Prisma.BookingCreateNestedManyWithoutHodInput
   bookingLogsPerformed?: Prisma.BookingLogCreateNestedManyWithoutPerformerInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestCreateNestedManyWithoutTechStaffInput
+  favoriteHalls?: Prisma.FavoriteHallCreateNestedManyWithoutUserInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogCreateNestedManyWithoutPerformerInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutHodInput
 }
 
 export type ProfileUncheckedCreateWithoutNotificationsInput = {
@@ -1622,6 +2082,7 @@ export type ProfileUncheckedCreateWithoutNotificationsInput = {
   updated_at?: Date | string
   department_id?: string | null
   user_id?: string | null
+  hod_of_department?: Prisma.DepartmentUncheckedCreateNestedOneWithoutHod_profileInput
   roles?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentUncheckedCreateNestedManyWithoutUpdated_byInput
@@ -1629,7 +2090,10 @@ export type ProfileUncheckedCreateWithoutNotificationsInput = {
   teacherBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutTeacherInput
   hodBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutHodInput
   bookingLogsPerformed?: Prisma.BookingLogUncheckedCreateNestedManyWithoutPerformerInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutTechStaffInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedCreateNestedManyWithoutUserInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedCreateNestedManyWithoutPerformerInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutHodInput
 }
 
 export type ProfileCreateOrConnectWithoutNotificationsInput = {
@@ -1658,6 +2122,7 @@ export type ProfileUpdateWithoutNotificationsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneWithoutProfilesNestedInput
+  hod_of_department?: Prisma.DepartmentUpdateOneWithoutHod_profileNestedInput
   user?: Prisma.UserUpdateOneWithoutProfileNestedInput
   roles?: Prisma.UserRoleAssignmentUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUpdateManyWithoutTech_staffNestedInput
@@ -1666,7 +2131,10 @@ export type ProfileUpdateWithoutNotificationsInput = {
   teacherBookings?: Prisma.BookingUpdateManyWithoutTeacherNestedInput
   hodBookings?: Prisma.BookingUpdateManyWithoutHodNestedInput
   bookingLogsPerformed?: Prisma.BookingLogUpdateManyWithoutPerformerNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUpdateManyWithoutTechStaffNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUpdateManyWithoutUserNestedInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUpdateManyWithoutPerformerNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutHodNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutNotificationsInput = {
@@ -1680,6 +2148,7 @@ export type ProfileUncheckedUpdateWithoutNotificationsInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hod_of_department?: Prisma.DepartmentUncheckedUpdateOneWithoutHod_profileNestedInput
   roles?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUncheckedUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUncheckedUpdateManyWithoutUpdated_byNestedInput
@@ -1687,7 +2156,10 @@ export type ProfileUncheckedUpdateWithoutNotificationsInput = {
   teacherBookings?: Prisma.BookingUncheckedUpdateManyWithoutTeacherNestedInput
   hodBookings?: Prisma.BookingUncheckedUpdateManyWithoutHodNestedInput
   bookingLogsPerformed?: Prisma.BookingLogUncheckedUpdateManyWithoutPerformerNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutTechStaffNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedUpdateManyWithoutUserNestedInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedUpdateManyWithoutPerformerNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutHodNestedInput
 }
 
 export type ProfileCreateWithoutComponentMaintenanceLogsInput = {
@@ -1700,6 +2172,7 @@ export type ProfileCreateWithoutComponentMaintenanceLogsInput = {
   created_at?: Date | string
   updated_at?: Date | string
   department?: Prisma.DepartmentCreateNestedOneWithoutProfilesInput
+  hod_of_department?: Prisma.DepartmentCreateNestedOneWithoutHod_profileInput
   user?: Prisma.UserCreateNestedOneWithoutProfileInput
   roles?: Prisma.UserRoleAssignmentCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffCreateNestedManyWithoutTech_staffInput
@@ -1709,6 +2182,9 @@ export type ProfileCreateWithoutComponentMaintenanceLogsInput = {
   hodBookings?: Prisma.BookingCreateNestedManyWithoutHodInput
   bookingLogsPerformed?: Prisma.BookingLogCreateNestedManyWithoutPerformerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestCreateNestedManyWithoutTechStaffInput
+  favoriteHalls?: Prisma.FavoriteHallCreateNestedManyWithoutUserInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutHodInput
 }
 
 export type ProfileUncheckedCreateWithoutComponentMaintenanceLogsInput = {
@@ -1722,6 +2198,7 @@ export type ProfileUncheckedCreateWithoutComponentMaintenanceLogsInput = {
   updated_at?: Date | string
   department_id?: string | null
   user_id?: string | null
+  hod_of_department?: Prisma.DepartmentUncheckedCreateNestedOneWithoutHod_profileInput
   roles?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutProfileInput
   hallAssignments?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutTech_staffInput
   equipmentUpdated?: Prisma.EquipmentUncheckedCreateNestedManyWithoutUpdated_byInput
@@ -1730,6 +2207,9 @@ export type ProfileUncheckedCreateWithoutComponentMaintenanceLogsInput = {
   hodBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutHodInput
   bookingLogsPerformed?: Prisma.BookingLogUncheckedCreateNestedManyWithoutPerformerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutTechStaffInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedCreateNestedManyWithoutUserInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutHodInput
 }
 
 export type ProfileCreateOrConnectWithoutComponentMaintenanceLogsInput = {
@@ -1758,6 +2238,7 @@ export type ProfileUpdateWithoutComponentMaintenanceLogsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneWithoutProfilesNestedInput
+  hod_of_department?: Prisma.DepartmentUpdateOneWithoutHod_profileNestedInput
   user?: Prisma.UserUpdateOneWithoutProfileNestedInput
   roles?: Prisma.UserRoleAssignmentUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUpdateManyWithoutTech_staffNestedInput
@@ -1767,6 +2248,9 @@ export type ProfileUpdateWithoutComponentMaintenanceLogsInput = {
   hodBookings?: Prisma.BookingUpdateManyWithoutHodNestedInput
   bookingLogsPerformed?: Prisma.BookingLogUpdateManyWithoutPerformerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUpdateManyWithoutTechStaffNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUpdateManyWithoutUserNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutHodNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutComponentMaintenanceLogsInput = {
@@ -1780,6 +2264,7 @@ export type ProfileUncheckedUpdateWithoutComponentMaintenanceLogsInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hod_of_department?: Prisma.DepartmentUncheckedUpdateOneWithoutHod_profileNestedInput
   roles?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUncheckedUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUncheckedUpdateManyWithoutUpdated_byNestedInput
@@ -1788,6 +2273,241 @@ export type ProfileUncheckedUpdateWithoutComponentMaintenanceLogsInput = {
   hodBookings?: Prisma.BookingUncheckedUpdateManyWithoutHodNestedInput
   bookingLogsPerformed?: Prisma.BookingLogUncheckedUpdateManyWithoutPerformerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutTechStaffNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedUpdateManyWithoutUserNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutHodNestedInput
+}
+
+export type ProfileCreateWithoutMaintenanceRequestsCreatedInput = {
+  id?: string
+  clerkId: string
+  email: string
+  name: string
+  phone?: string | null
+  avatar_url?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  department?: Prisma.DepartmentCreateNestedOneWithoutProfilesInput
+  hod_of_department?: Prisma.DepartmentCreateNestedOneWithoutHod_profileInput
+  user?: Prisma.UserCreateNestedOneWithoutProfileInput
+  roles?: Prisma.UserRoleAssignmentCreateNestedManyWithoutProfileInput
+  hallAssignments?: Prisma.HallTechStaffCreateNestedManyWithoutTech_staffInput
+  equipmentUpdated?: Prisma.EquipmentCreateNestedManyWithoutUpdated_byInput
+  equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutUserInput
+  teacherBookings?: Prisma.BookingCreateNestedManyWithoutTeacherInput
+  hodBookings?: Prisma.BookingCreateNestedManyWithoutHodInput
+  bookingLogsPerformed?: Prisma.BookingLogCreateNestedManyWithoutPerformerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  favoriteHalls?: Prisma.FavoriteHallCreateNestedManyWithoutUserInput
+  componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogCreateNestedManyWithoutPerformerInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutHodInput
+}
+
+export type ProfileUncheckedCreateWithoutMaintenanceRequestsCreatedInput = {
+  id?: string
+  clerkId: string
+  email: string
+  name: string
+  phone?: string | null
+  avatar_url?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  department_id?: string | null
+  user_id?: string | null
+  hod_of_department?: Prisma.DepartmentUncheckedCreateNestedOneWithoutHod_profileInput
+  roles?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutProfileInput
+  hallAssignments?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutTech_staffInput
+  equipmentUpdated?: Prisma.EquipmentUncheckedCreateNestedManyWithoutUpdated_byInput
+  equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutUserInput
+  teacherBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutTeacherInput
+  hodBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutHodInput
+  bookingLogsPerformed?: Prisma.BookingLogUncheckedCreateNestedManyWithoutPerformerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedCreateNestedManyWithoutUserInput
+  componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedCreateNestedManyWithoutPerformerInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutHodInput
+}
+
+export type ProfileCreateOrConnectWithoutMaintenanceRequestsCreatedInput = {
+  where: Prisma.ProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutMaintenanceRequestsCreatedInput, Prisma.ProfileUncheckedCreateWithoutMaintenanceRequestsCreatedInput>
+}
+
+export type ProfileCreateWithoutMaintenanceRequestsInput = {
+  id?: string
+  clerkId: string
+  email: string
+  name: string
+  phone?: string | null
+  avatar_url?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  department?: Prisma.DepartmentCreateNestedOneWithoutProfilesInput
+  hod_of_department?: Prisma.DepartmentCreateNestedOneWithoutHod_profileInput
+  user?: Prisma.UserCreateNestedOneWithoutProfileInput
+  roles?: Prisma.UserRoleAssignmentCreateNestedManyWithoutProfileInput
+  hallAssignments?: Prisma.HallTechStaffCreateNestedManyWithoutTech_staffInput
+  equipmentUpdated?: Prisma.EquipmentCreateNestedManyWithoutUpdated_byInput
+  equipmentLogs?: Prisma.EquipmentLogCreateNestedManyWithoutUserInput
+  teacherBookings?: Prisma.BookingCreateNestedManyWithoutTeacherInput
+  hodBookings?: Prisma.BookingCreateNestedManyWithoutHodInput
+  bookingLogsPerformed?: Prisma.BookingLogCreateNestedManyWithoutPerformerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestCreateNestedManyWithoutTechStaffInput
+  favoriteHalls?: Prisma.FavoriteHallCreateNestedManyWithoutUserInput
+  componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogCreateNestedManyWithoutPerformerInput
+}
+
+export type ProfileUncheckedCreateWithoutMaintenanceRequestsInput = {
+  id?: string
+  clerkId: string
+  email: string
+  name: string
+  phone?: string | null
+  avatar_url?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  department_id?: string | null
+  user_id?: string | null
+  hod_of_department?: Prisma.DepartmentUncheckedCreateNestedOneWithoutHod_profileInput
+  roles?: Prisma.UserRoleAssignmentUncheckedCreateNestedManyWithoutProfileInput
+  hallAssignments?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutTech_staffInput
+  equipmentUpdated?: Prisma.EquipmentUncheckedCreateNestedManyWithoutUpdated_byInput
+  equipmentLogs?: Prisma.EquipmentLogUncheckedCreateNestedManyWithoutUserInput
+  teacherBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutTeacherInput
+  hodBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutHodInput
+  bookingLogsPerformed?: Prisma.BookingLogUncheckedCreateNestedManyWithoutPerformerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutTechStaffInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedCreateNestedManyWithoutUserInput
+  componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedCreateNestedManyWithoutPerformerInput
+}
+
+export type ProfileCreateOrConnectWithoutMaintenanceRequestsInput = {
+  where: Prisma.ProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutMaintenanceRequestsInput, Prisma.ProfileUncheckedCreateWithoutMaintenanceRequestsInput>
+}
+
+export type ProfileUpsertWithoutMaintenanceRequestsCreatedInput = {
+  update: Prisma.XOR<Prisma.ProfileUpdateWithoutMaintenanceRequestsCreatedInput, Prisma.ProfileUncheckedUpdateWithoutMaintenanceRequestsCreatedInput>
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutMaintenanceRequestsCreatedInput, Prisma.ProfileUncheckedCreateWithoutMaintenanceRequestsCreatedInput>
+  where?: Prisma.ProfileWhereInput
+}
+
+export type ProfileUpdateToOneWithWhereWithoutMaintenanceRequestsCreatedInput = {
+  where?: Prisma.ProfileWhereInput
+  data: Prisma.XOR<Prisma.ProfileUpdateWithoutMaintenanceRequestsCreatedInput, Prisma.ProfileUncheckedUpdateWithoutMaintenanceRequestsCreatedInput>
+}
+
+export type ProfileUpdateWithoutMaintenanceRequestsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  department?: Prisma.DepartmentUpdateOneWithoutProfilesNestedInput
+  hod_of_department?: Prisma.DepartmentUpdateOneWithoutHod_profileNestedInput
+  user?: Prisma.UserUpdateOneWithoutProfileNestedInput
+  roles?: Prisma.UserRoleAssignmentUpdateManyWithoutProfileNestedInput
+  hallAssignments?: Prisma.HallTechStaffUpdateManyWithoutTech_staffNestedInput
+  equipmentUpdated?: Prisma.EquipmentUpdateManyWithoutUpdated_byNestedInput
+  equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutUserNestedInput
+  teacherBookings?: Prisma.BookingUpdateManyWithoutTeacherNestedInput
+  hodBookings?: Prisma.BookingUpdateManyWithoutHodNestedInput
+  bookingLogsPerformed?: Prisma.BookingLogUpdateManyWithoutPerformerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUpdateManyWithoutUserNestedInput
+  componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUpdateManyWithoutPerformerNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutHodNestedInput
+}
+
+export type ProfileUncheckedUpdateWithoutMaintenanceRequestsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  department_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hod_of_department?: Prisma.DepartmentUncheckedUpdateOneWithoutHod_profileNestedInput
+  roles?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutProfileNestedInput
+  hallAssignments?: Prisma.HallTechStaffUncheckedUpdateManyWithoutTech_staffNestedInput
+  equipmentUpdated?: Prisma.EquipmentUncheckedUpdateManyWithoutUpdated_byNestedInput
+  equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutUserNestedInput
+  teacherBookings?: Prisma.BookingUncheckedUpdateManyWithoutTeacherNestedInput
+  hodBookings?: Prisma.BookingUncheckedUpdateManyWithoutHodNestedInput
+  bookingLogsPerformed?: Prisma.BookingLogUncheckedUpdateManyWithoutPerformerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedUpdateManyWithoutUserNestedInput
+  componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedUpdateManyWithoutPerformerNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutHodNestedInput
+}
+
+export type ProfileUpsertWithoutMaintenanceRequestsInput = {
+  update: Prisma.XOR<Prisma.ProfileUpdateWithoutMaintenanceRequestsInput, Prisma.ProfileUncheckedUpdateWithoutMaintenanceRequestsInput>
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutMaintenanceRequestsInput, Prisma.ProfileUncheckedCreateWithoutMaintenanceRequestsInput>
+  where?: Prisma.ProfileWhereInput
+}
+
+export type ProfileUpdateToOneWithWhereWithoutMaintenanceRequestsInput = {
+  where?: Prisma.ProfileWhereInput
+  data: Prisma.XOR<Prisma.ProfileUpdateWithoutMaintenanceRequestsInput, Prisma.ProfileUncheckedUpdateWithoutMaintenanceRequestsInput>
+}
+
+export type ProfileUpdateWithoutMaintenanceRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  department?: Prisma.DepartmentUpdateOneWithoutProfilesNestedInput
+  hod_of_department?: Prisma.DepartmentUpdateOneWithoutHod_profileNestedInput
+  user?: Prisma.UserUpdateOneWithoutProfileNestedInput
+  roles?: Prisma.UserRoleAssignmentUpdateManyWithoutProfileNestedInput
+  hallAssignments?: Prisma.HallTechStaffUpdateManyWithoutTech_staffNestedInput
+  equipmentUpdated?: Prisma.EquipmentUpdateManyWithoutUpdated_byNestedInput
+  equipmentLogs?: Prisma.EquipmentLogUpdateManyWithoutUserNestedInput
+  teacherBookings?: Prisma.BookingUpdateManyWithoutTeacherNestedInput
+  hodBookings?: Prisma.BookingUpdateManyWithoutHodNestedInput
+  bookingLogsPerformed?: Prisma.BookingLogUpdateManyWithoutPerformerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUpdateManyWithoutTechStaffNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUpdateManyWithoutUserNestedInput
+  componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUpdateManyWithoutPerformerNestedInput
+}
+
+export type ProfileUncheckedUpdateWithoutMaintenanceRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  department_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hod_of_department?: Prisma.DepartmentUncheckedUpdateOneWithoutHod_profileNestedInput
+  roles?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutProfileNestedInput
+  hallAssignments?: Prisma.HallTechStaffUncheckedUpdateManyWithoutTech_staffNestedInput
+  equipmentUpdated?: Prisma.EquipmentUncheckedUpdateManyWithoutUpdated_byNestedInput
+  equipmentLogs?: Prisma.EquipmentLogUncheckedUpdateManyWithoutUserNestedInput
+  teacherBookings?: Prisma.BookingUncheckedUpdateManyWithoutTeacherNestedInput
+  hodBookings?: Prisma.BookingUncheckedUpdateManyWithoutHodNestedInput
+  bookingLogsPerformed?: Prisma.BookingLogUncheckedUpdateManyWithoutPerformerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutTechStaffNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedUpdateManyWithoutUserNestedInput
+  componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedUpdateManyWithoutPerformerNestedInput
 }
 
 export type ProfileCreateManyDepartmentInput = {
@@ -1811,6 +2531,7 @@ export type ProfileUpdateWithoutDepartmentInput = {
   avatar_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  hod_of_department?: Prisma.DepartmentUpdateOneWithoutHod_profileNestedInput
   user?: Prisma.UserUpdateOneWithoutProfileNestedInput
   roles?: Prisma.UserRoleAssignmentUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUpdateManyWithoutTech_staffNestedInput
@@ -1820,7 +2541,10 @@ export type ProfileUpdateWithoutDepartmentInput = {
   hodBookings?: Prisma.BookingUpdateManyWithoutHodNestedInput
   bookingLogsPerformed?: Prisma.BookingLogUpdateManyWithoutPerformerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUpdateManyWithoutTechStaffNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUpdateManyWithoutUserNestedInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUpdateManyWithoutPerformerNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutHodNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutDepartmentInput = {
@@ -1833,6 +2557,7 @@ export type ProfileUncheckedUpdateWithoutDepartmentInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hod_of_department?: Prisma.DepartmentUncheckedUpdateOneWithoutHod_profileNestedInput
   roles?: Prisma.UserRoleAssignmentUncheckedUpdateManyWithoutProfileNestedInput
   hallAssignments?: Prisma.HallTechStaffUncheckedUpdateManyWithoutTech_staffNestedInput
   equipmentUpdated?: Prisma.EquipmentUncheckedUpdateManyWithoutUpdated_byNestedInput
@@ -1841,7 +2566,10 @@ export type ProfileUncheckedUpdateWithoutDepartmentInput = {
   hodBookings?: Prisma.BookingUncheckedUpdateManyWithoutHodNestedInput
   bookingLogsPerformed?: Prisma.BookingLogUncheckedUpdateManyWithoutPerformerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  maintenanceRequestsCreated?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutTechStaffNestedInput
+  favoriteHalls?: Prisma.FavoriteHallUncheckedUpdateManyWithoutUserNestedInput
   componentMaintenanceLogs?: Prisma.ComponentMaintenanceLogUncheckedUpdateManyWithoutPerformerNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutHodNestedInput
 }
 
 export type ProfileUncheckedUpdateManyWithoutDepartmentInput = {
@@ -1870,7 +2598,10 @@ export type ProfileCountOutputType = {
   hodBookings: number
   bookingLogsPerformed: number
   notifications: number
+  maintenanceRequestsCreated: number
+  favoriteHalls: number
   componentMaintenanceLogs: number
+  maintenanceRequests: number
 }
 
 export type ProfileCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1882,7 +2613,10 @@ export type ProfileCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   hodBookings?: boolean | ProfileCountOutputTypeCountHodBookingsArgs
   bookingLogsPerformed?: boolean | ProfileCountOutputTypeCountBookingLogsPerformedArgs
   notifications?: boolean | ProfileCountOutputTypeCountNotificationsArgs
+  maintenanceRequestsCreated?: boolean | ProfileCountOutputTypeCountMaintenanceRequestsCreatedArgs
+  favoriteHalls?: boolean | ProfileCountOutputTypeCountFavoriteHallsArgs
   componentMaintenanceLogs?: boolean | ProfileCountOutputTypeCountComponentMaintenanceLogsArgs
+  maintenanceRequests?: boolean | ProfileCountOutputTypeCountMaintenanceRequestsArgs
 }
 
 /**
@@ -1954,8 +2688,29 @@ export type ProfileCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime
 /**
  * ProfileCountOutputType without action
  */
+export type ProfileCountOutputTypeCountMaintenanceRequestsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MaintenanceRequestWhereInput
+}
+
+/**
+ * ProfileCountOutputType without action
+ */
+export type ProfileCountOutputTypeCountFavoriteHallsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FavoriteHallWhereInput
+}
+
+/**
+ * ProfileCountOutputType without action
+ */
 export type ProfileCountOutputTypeCountComponentMaintenanceLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ComponentMaintenanceLogWhereInput
+}
+
+/**
+ * ProfileCountOutputType without action
+ */
+export type ProfileCountOutputTypeCountMaintenanceRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MaintenanceRequestWhereInput
 }
 
 
@@ -1971,6 +2726,7 @@ export type ProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   department_id?: boolean
   user_id?: boolean
   department?: boolean | Prisma.Profile$departmentArgs<ExtArgs>
+  hod_of_department?: boolean | Prisma.Profile$hod_of_departmentArgs<ExtArgs>
   user?: boolean | Prisma.Profile$userArgs<ExtArgs>
   roles?: boolean | Prisma.Profile$rolesArgs<ExtArgs>
   hallAssignments?: boolean | Prisma.Profile$hallAssignmentsArgs<ExtArgs>
@@ -1980,7 +2736,10 @@ export type ProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   hodBookings?: boolean | Prisma.Profile$hodBookingsArgs<ExtArgs>
   bookingLogsPerformed?: boolean | Prisma.Profile$bookingLogsPerformedArgs<ExtArgs>
   notifications?: boolean | Prisma.Profile$notificationsArgs<ExtArgs>
+  maintenanceRequestsCreated?: boolean | Prisma.Profile$maintenanceRequestsCreatedArgs<ExtArgs>
+  favoriteHalls?: boolean | Prisma.Profile$favoriteHallsArgs<ExtArgs>
   componentMaintenanceLogs?: boolean | Prisma.Profile$componentMaintenanceLogsArgs<ExtArgs>
+  maintenanceRequests?: boolean | Prisma.Profile$maintenanceRequestsArgs<ExtArgs>
   _count?: boolean | Prisma.ProfileCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["profile"]>
 
@@ -2030,6 +2789,7 @@ export type ProfileSelectScalar = {
 export type ProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clerkId" | "email" | "name" | "phone" | "avatar_url" | "created_at" | "updated_at" | "department_id" | "user_id", ExtArgs["result"]["profile"]>
 export type ProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   department?: boolean | Prisma.Profile$departmentArgs<ExtArgs>
+  hod_of_department?: boolean | Prisma.Profile$hod_of_departmentArgs<ExtArgs>
   user?: boolean | Prisma.Profile$userArgs<ExtArgs>
   roles?: boolean | Prisma.Profile$rolesArgs<ExtArgs>
   hallAssignments?: boolean | Prisma.Profile$hallAssignmentsArgs<ExtArgs>
@@ -2039,7 +2799,10 @@ export type ProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   hodBookings?: boolean | Prisma.Profile$hodBookingsArgs<ExtArgs>
   bookingLogsPerformed?: boolean | Prisma.Profile$bookingLogsPerformedArgs<ExtArgs>
   notifications?: boolean | Prisma.Profile$notificationsArgs<ExtArgs>
+  maintenanceRequestsCreated?: boolean | Prisma.Profile$maintenanceRequestsCreatedArgs<ExtArgs>
+  favoriteHalls?: boolean | Prisma.Profile$favoriteHallsArgs<ExtArgs>
   componentMaintenanceLogs?: boolean | Prisma.Profile$componentMaintenanceLogsArgs<ExtArgs>
+  maintenanceRequests?: boolean | Prisma.Profile$maintenanceRequestsArgs<ExtArgs>
   _count?: boolean | Prisma.ProfileCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ProfileIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2055,6 +2818,7 @@ export type $ProfilePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   name: "Profile"
   objects: {
     department: Prisma.$DepartmentPayload<ExtArgs> | null
+    hod_of_department: Prisma.$DepartmentPayload<ExtArgs> | null
     user: Prisma.$UserPayload<ExtArgs> | null
     roles: Prisma.$UserRoleAssignmentPayload<ExtArgs>[]
     hallAssignments: Prisma.$HallTechStaffPayload<ExtArgs>[]
@@ -2064,7 +2828,10 @@ export type $ProfilePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     hodBookings: Prisma.$BookingPayload<ExtArgs>[]
     bookingLogsPerformed: Prisma.$BookingLogPayload<ExtArgs>[]
     notifications: Prisma.$NotificationPayload<ExtArgs>[]
+    maintenanceRequestsCreated: Prisma.$MaintenanceRequestPayload<ExtArgs>[]
+    favoriteHalls: Prisma.$FavoriteHallPayload<ExtArgs>[]
     componentMaintenanceLogs: Prisma.$ComponentMaintenanceLogPayload<ExtArgs>[]
+    maintenanceRequests: Prisma.$MaintenanceRequestPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2472,6 +3239,7 @@ readonly fields: ProfileFieldRefs;
 export interface Prisma__ProfileClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   department<T extends Prisma.Profile$departmentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$departmentArgs<ExtArgs>>): Prisma.Prisma__DepartmentClient<runtime.Types.Result.GetResult<Prisma.$DepartmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  hod_of_department<T extends Prisma.Profile$hod_of_departmentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$hod_of_departmentArgs<ExtArgs>>): Prisma.Prisma__DepartmentClient<runtime.Types.Result.GetResult<Prisma.$DepartmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   user<T extends Prisma.Profile$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   roles<T extends Prisma.Profile$rolesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$rolesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserRoleAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   hallAssignments<T extends Prisma.Profile$hallAssignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$hallAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HallTechStaffPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2481,7 +3249,10 @@ export interface Prisma__ProfileClient<T, Null = never, ExtArgs extends runtime.
   hodBookings<T extends Prisma.Profile$hodBookingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$hodBookingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   bookingLogsPerformed<T extends Prisma.Profile$bookingLogsPerformedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$bookingLogsPerformedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notifications<T extends Prisma.Profile$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  maintenanceRequestsCreated<T extends Prisma.Profile$maintenanceRequestsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$maintenanceRequestsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MaintenanceRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  favoriteHalls<T extends Prisma.Profile$favoriteHallsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$favoriteHallsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoriteHallPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   componentMaintenanceLogs<T extends Prisma.Profile$componentMaintenanceLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$componentMaintenanceLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ComponentMaintenanceLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  maintenanceRequests<T extends Prisma.Profile$maintenanceRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$maintenanceRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MaintenanceRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2936,6 +3707,25 @@ export type Profile$departmentArgs<ExtArgs extends runtime.Types.Extensions.Inte
 }
 
 /**
+ * Profile.hod_of_department
+ */
+export type Profile$hod_of_departmentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Department
+   */
+  select?: Prisma.DepartmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Department
+   */
+  omit?: Prisma.DepartmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DepartmentInclude<ExtArgs> | null
+  where?: Prisma.DepartmentWhereInput
+}
+
+/**
  * Profile.user
  */
 export type Profile$userArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3147,6 +3937,54 @@ export type Profile$notificationsArgs<ExtArgs extends runtime.Types.Extensions.I
 }
 
 /**
+ * Profile.maintenanceRequestsCreated
+ */
+export type Profile$maintenanceRequestsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MaintenanceRequest
+   */
+  select?: Prisma.MaintenanceRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MaintenanceRequest
+   */
+  omit?: Prisma.MaintenanceRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MaintenanceRequestInclude<ExtArgs> | null
+  where?: Prisma.MaintenanceRequestWhereInput
+  orderBy?: Prisma.MaintenanceRequestOrderByWithRelationInput | Prisma.MaintenanceRequestOrderByWithRelationInput[]
+  cursor?: Prisma.MaintenanceRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MaintenanceRequestScalarFieldEnum | Prisma.MaintenanceRequestScalarFieldEnum[]
+}
+
+/**
+ * Profile.favoriteHalls
+ */
+export type Profile$favoriteHallsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FavoriteHall
+   */
+  select?: Prisma.FavoriteHallSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FavoriteHall
+   */
+  omit?: Prisma.FavoriteHallOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FavoriteHallInclude<ExtArgs> | null
+  where?: Prisma.FavoriteHallWhereInput
+  orderBy?: Prisma.FavoriteHallOrderByWithRelationInput | Prisma.FavoriteHallOrderByWithRelationInput[]
+  cursor?: Prisma.FavoriteHallWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FavoriteHallScalarFieldEnum | Prisma.FavoriteHallScalarFieldEnum[]
+}
+
+/**
  * Profile.componentMaintenanceLogs
  */
 export type Profile$componentMaintenanceLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3168,6 +4006,30 @@ export type Profile$componentMaintenanceLogsArgs<ExtArgs extends runtime.Types.E
   take?: number
   skip?: number
   distinct?: Prisma.ComponentMaintenanceLogScalarFieldEnum | Prisma.ComponentMaintenanceLogScalarFieldEnum[]
+}
+
+/**
+ * Profile.maintenanceRequests
+ */
+export type Profile$maintenanceRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MaintenanceRequest
+   */
+  select?: Prisma.MaintenanceRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MaintenanceRequest
+   */
+  omit?: Prisma.MaintenanceRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MaintenanceRequestInclude<ExtArgs> | null
+  where?: Prisma.MaintenanceRequestWhereInput
+  orderBy?: Prisma.MaintenanceRequestOrderByWithRelationInput | Prisma.MaintenanceRequestOrderByWithRelationInput[]
+  cursor?: Prisma.MaintenanceRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MaintenanceRequestScalarFieldEnum | Prisma.MaintenanceRequestScalarFieldEnum[]
 }
 
 /**

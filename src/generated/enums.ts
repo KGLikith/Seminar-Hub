@@ -48,25 +48,70 @@ export const HallStatus = {
 export type HallStatus = (typeof HallStatus)[keyof typeof HallStatus]
 
 
+export const ComponentType = {
+  projector: 'projector',
+  screen: 'screen',
+  audio_system: 'audio_system',
+  microphone: 'microphone',
+  whiteboard: 'whiteboard',
+  smartboard: 'smartboard',
+  ac: 'ac',
+  lighting: 'lighting',
+  camera: 'camera',
+  other: 'other'
+} as const
+
+export type ComponentType = (typeof ComponentType)[keyof typeof ComponentType]
+
+
+export const EquipmentType = {
+  speaker: 'speaker',
+  microphone: 'microphone',
+  mixer: 'mixer',
+  amplifier: 'amplifier',
+  laptop: 'laptop',
+  pointer: 'pointer',
+  cable: 'cable',
+  adapter: 'adapter',
+  router: 'router',
+  tablet: 'tablet',
+  camera: 'camera',
+  stand: 'stand',
+  projector: 'projector',
+  other: 'other'
+} as const
+
+export type EquipmentType = (typeof EquipmentType)[keyof typeof EquipmentType]
+
+
 export const ComponentStatus = {
   operational: 'operational',
-  faulty: 'faulty',
-  maintenance: 'maintenance'
+  maintenance_required: 'maintenance_required',
+  under_maintenance: 'under_maintenance',
+  non_operational: 'non_operational'
 } as const
 
 export type ComponentStatus = (typeof ComponentStatus)[keyof typeof ComponentStatus]
 
 
-export const ComponentType = {
-  projector: 'projector',
-  whiteboard: 'whiteboard',
-  speaker: 'speaker',
-  microphone: 'microphone',
-  lighting: 'lighting',
-  ac: 'ac',
-  door_lock: 'door_lock',
-  wifi_router: 'wifi_router',
-  other: 'other'
+export const MaintenanceRequestStatus = {
+  pending: 'pending',
+  approved: 'approved',
+  rejected: 'rejected',
+  completed: 'completed'
 } as const
 
-export type ComponentType = (typeof ComponentType)[keyof typeof ComponentType]
+export type MaintenanceRequestStatus = (typeof MaintenanceRequestStatus)[keyof typeof MaintenanceRequestStatus]
+
+
+export const DepartmentName = {
+  Computer_Science: 'Computer_Science',
+  Electrical_Engineering: 'Electrical_Engineering',
+  Mechanical_Engineering: 'Mechanical_Engineering',
+  Civil_Engineering: 'Civil_Engineering',
+  Chemistry: 'Chemistry',
+  Physics: 'Physics',
+  IEM: 'IEM'
+} as const
+
+export type DepartmentName = (typeof DepartmentName)[keyof typeof DepartmentName]

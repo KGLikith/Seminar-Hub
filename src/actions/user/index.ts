@@ -14,9 +14,52 @@ export async function getProfile(clerkId: string) {
       user: { clerkId: clerkId },
     },
     include: {
-      department: true,
+      department: {
+        include: {
+          hod_profile: true,
+        },
+      },
       roles: true,
     },
   });
   return user;
+}
+
+export async function updateProfile(
+  profileId: string,
+  updates: {
+    name?: string;
+    phone?: string;
+  }
+) {
+  try {
+    await prisma.profile.update({
+      where: { id: profileId },
+      data: {
+        ...updates,
+      },
+    });
+
+    return { error: null };
+  } catch (err) {
+    console.log("Error updating profile:", err);
+    return { error: "Failed to update profile" };
+  }
+}
+
+export async function fetchProfilesByDepartment(departmentId: string) {
+  const profiles = await prisma.profile.findMany({
+    where: {
+      department_id: departmentId,
+      roles: {
+        some: {
+          role: { in: ["teacher", "tech_staff"] },
+        },
+      },
+    },
+    include: {
+      roles: true,
+    },
+  });
+  return profiles;
 }

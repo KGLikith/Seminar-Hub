@@ -1,4 +1,4 @@
-import { ComponentType, PrismaClient } from "../src/generated/client";
+import { ComponentType, EquipmentType, PrismaClient } from "../src/generated/client";
 
 const prisma = new PrismaClient();
 
@@ -8,26 +8,25 @@ async function main() {
   // -------------------------------
   // 1. Departments
   // -------------------------------
-  const departments = await Promise.all([
-    prisma.department.create({
-      data: { name: "Computer Science", description: "CSE department" },
-    }),
-    prisma.department.create({
-      data: { name: "Electronics", description: "ECE department" },
-    }),
-    prisma.department.create({
-      data: { name: "Mechanical", description: "ME department" },
-    }),
-    prisma.department.create({
-      data: { name: "Civil", description: "Civil Engineering" },
-    }),
-    prisma.department.create({
-      data: { name: "Information Science", description: "ISE department" },
-    }),
-    prisma.department.create({
-      data: { name: "Electrical", description: "EEE department" },
-    }),
-  ]);
+  const departmentNames = [
+    { name: "Computer Science", description: "CSE department" },
+    { name: "Electronics", description: "ECE department" },
+    { name: "Mechanical", description: "ME department" },
+    { name: "Civil", description: "Civil Engineering" },
+    { name: "Information Science", description: "ISE department" },
+    { name: "Electrical", description: "EEE department" },
+  ];
+
+  const departments = await Promise.all(
+    departmentNames.map((dept) =>
+      prisma.department.upsert({
+        where: { name: dept.name },
+        update: {}, // nothing to update
+        create: dept,
+      })
+    )
+  );
+
 
   console.log("✔ Departments created:", departments.length);
 
@@ -80,13 +79,13 @@ async function main() {
   console.log("✔ Seminar halls created:", halls.length);
 
   // -------------------------------
-  // 3. Equipment
+  // 3. Equipment  (Uses EquipmentType)
   // -------------------------------
   const equipment = await Promise.all([
     prisma.equipment.create({
       data: {
-        name: "Projector",
-        type: ComponentType.ac,
+        name: "Portable Projector",
+        type: EquipmentType.projector ?? EquipmentType.other, // fallback if missing
         serial_number: "PROJ-CSE-001",
         condition: "active",
         hall_id: halls[0].id,
@@ -95,7 +94,7 @@ async function main() {
     prisma.equipment.create({
       data: {
         name: "Sound System",
-        type: ComponentType.speaker,
+        type: EquipmentType.speaker,
         serial_number: "AUD-MAIN-002",
         condition: "active",
         hall_id: halls[0].id,
@@ -104,7 +103,7 @@ async function main() {
     prisma.equipment.create({
       data: {
         name: "Conference Mic Set",
-        type: ComponentType.microphone,
+        type: EquipmentType.microphone,
         serial_number: "MIC-CONF-003",
         condition: "active",
         hall_id: halls[1].id,
@@ -113,7 +112,7 @@ async function main() {
     prisma.equipment.create({
       data: {
         name: "LED Screen",
-        type: ComponentType.projector,
+        type: EquipmentType.other,
         serial_number: "LED-ECE-004",
         condition: "active",
         hall_id: halls[2].id,
@@ -121,8 +120,8 @@ async function main() {
     }),
     prisma.equipment.create({
       data: {
-        name: "Portable AC",
-        type: ComponentType.ac,
+        name: "Portable AC Unit",
+        type: EquipmentType.other,
         serial_number: "AC-MECH-005",
         condition: "active",
         hall_id: halls[3].id,
@@ -132,11 +131,14 @@ async function main() {
 
   console.log("✔ Equipment created:", equipment.length);
 
+  // -------------------------------
+  // 4. Components (Uses ComponentType)
+  // -------------------------------
   const components = await Promise.all([
     prisma.hallComponent.create({
       data: {
         name: "Ceiling Projector",
-        type: "projector",
+        type: ComponentType.projector,
         status: "operational",
         location: "Ceiling Center",
         hall_id: halls[0].id,
@@ -146,7 +148,7 @@ async function main() {
     prisma.hallComponent.create({
       data: {
         name: "Stage Lighting System",
-        type: "lighting",
+        type: ComponentType.lighting,
         status: "operational",
         location: "Stage Front",
         hall_id: halls[0].id,
@@ -155,7 +157,7 @@ async function main() {
     prisma.hallComponent.create({
       data: {
         name: "WiFi Router",
-        type: "wifi_router",
+        type: ComponentType.other, // Not part of component enum → mapped safely
         status: "operational",
         location: "Ceiling Corner",
         hall_id: halls[1].id,
@@ -164,7 +166,7 @@ async function main() {
     prisma.hallComponent.create({
       data: {
         name: "AC Unit",
-        type: "ac",
+        type: ComponentType.ac,
         status: "operational",
         location: "Back Wall",
         hall_id: halls[2].id,
@@ -174,7 +176,7 @@ async function main() {
     prisma.hallComponent.create({
       data: {
         name: "Surround Speakers",
-        type: "speaker",
+        type: ComponentType.audio_system,
         status: "operational",
         location: "Side Walls",
         hall_id: halls[3].id,

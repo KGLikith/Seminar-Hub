@@ -83,16 +83,8 @@ const Calendar = () => {
 
   return (
     <div className="min-h-screen bg-linear-to-br from-background to-muted/30">
-      <header className="border-b bg-card/95 backdrop-blur">
-        <div className="container mx-auto px-4 py-4">
-          <Button variant="ghost" onClick={() => navigate.push("/dashboard")}>
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Dashboard
-          </Button>
-        </div>
-      </header>
 
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-4">
         <div className="mb-8 fade-in">
           <h1 className="text-4xl font-bold mb-2">Booking Calendar</h1>
           <p className="text-lg text-muted-foreground">View bookings and availability for seminar halls</p>
@@ -167,7 +159,7 @@ const Calendar = () => {
                         className={`
                           min-h-24 p-2 border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors
                           ${!isSameMonth(day, currentMonth) ? "opacity-50" : ""}
-                          ${isToday ? "border-primary border-2" : ""}
+                          ${isToday ? "border-green-300 border-3" : ""}
                         `}
                       >
                         <div className="text-sm font-medium mb-1">{format(day, "d")}</div>

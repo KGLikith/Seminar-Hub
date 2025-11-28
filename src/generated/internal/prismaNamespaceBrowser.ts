@@ -54,6 +54,7 @@ export const ModelName = {
   Profile: 'Profile',
   UserRoleAssignment: 'UserRoleAssignment',
   SeminarHall: 'SeminarHall',
+  FavoriteHall: 'FavoriteHall',
   HallTechStaff: 'HallTechStaff',
   Equipment: 'Equipment',
   EquipmentLog: 'EquipmentLog',
@@ -62,6 +63,7 @@ export const ModelName = {
   Notification: 'Notification',
   HallComponent: 'HallComponent',
   ComponentMaintenanceLog: 'ComponentMaintenanceLog',
+  MaintenanceRequest: 'MaintenanceRequest',
   EmailLog: 'EmailLog'
 } as const
 
@@ -86,7 +88,8 @@ export const DepartmentScalarFieldEnum = {
   name: 'name',
   description: 'description',
   created_at: 'created_at',
-  updated_at: 'updated_at'
+  updated_at: 'updated_at',
+  hod_id: 'hod_id'
 } as const
 
 export type DepartmentScalarFieldEnum = (typeof DepartmentScalarFieldEnum)[keyof typeof DepartmentScalarFieldEnum]
@@ -144,6 +147,16 @@ export const SeminarHallScalarFieldEnum = {
 } as const
 
 export type SeminarHallScalarFieldEnum = (typeof SeminarHallScalarFieldEnum)[keyof typeof SeminarHallScalarFieldEnum]
+
+
+export const FavoriteHallScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  hall_id: 'hall_id',
+  created_at: 'created_at'
+} as const
+
+export type FavoriteHallScalarFieldEnum = (typeof FavoriteHallScalarFieldEnum)[keyof typeof FavoriteHallScalarFieldEnum]
 
 
 export const HallTechStaffScalarFieldEnum = {
@@ -239,6 +252,7 @@ export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[k
 
 export const HallComponentScalarFieldEnum = {
   id: 'id',
+  hall_id: 'hall_id',
   name: 'name',
   type: 'type',
   status: 'status',
@@ -247,8 +261,7 @@ export const HallComponentScalarFieldEnum = {
   last_maintenance: 'last_maintenance',
   notes: 'notes',
   created_at: 'created_at',
-  updated_at: 'updated_at',
-  hall_id: 'hall_id'
+  updated_at: 'updated_at'
 } as const
 
 export type HallComponentScalarFieldEnum = (typeof HallComponentScalarFieldEnum)[keyof typeof HallComponentScalarFieldEnum]
@@ -256,16 +269,37 @@ export type HallComponentScalarFieldEnum = (typeof HallComponentScalarFieldEnum)
 
 export const ComponentMaintenanceLogScalarFieldEnum = {
   id: 'id',
+  component_id: 'component_id',
   action: 'action',
   previous_status: 'previous_status',
   new_status: 'new_status',
   notes: 'notes',
-  created_at: 'created_at',
-  component_id: 'component_id',
-  performed_by: 'performed_by'
+  performed_by: 'performed_by',
+  created_at: 'created_at'
 } as const
 
 export type ComponentMaintenanceLogScalarFieldEnum = (typeof ComponentMaintenanceLogScalarFieldEnum)[keyof typeof ComponentMaintenanceLogScalarFieldEnum]
+
+
+export const MaintenanceRequestScalarFieldEnum = {
+  id: 'id',
+  hall_id: 'hall_id',
+  tech_staff_id: 'tech_staff_id',
+  component_id: 'component_id',
+  equipment_id: 'equipment_id',
+  request_type: 'request_type',
+  title: 'title',
+  description: 'description',
+  priority: 'priority',
+  status: 'status',
+  hod_id: 'hod_id',
+  approved_at: 'approved_at',
+  rejection_reason: 'rejection_reason',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type MaintenanceRequestScalarFieldEnum = (typeof MaintenanceRequestScalarFieldEnum)[keyof typeof MaintenanceRequestScalarFieldEnum]
 
 
 export const EmailLogScalarFieldEnum = {

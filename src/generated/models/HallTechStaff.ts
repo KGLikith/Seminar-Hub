@@ -223,7 +223,7 @@ export type HallTechStaffScalarWhereWithAggregatesInput = {
 export type HallTechStaffCreateInput = {
   id?: string
   created_at?: Date | string
-  hall: Prisma.SeminarHallCreateNestedOneWithoutTech_staffInput
+  hall: Prisma.SeminarHallCreateNestedOneWithoutHallTechStaffsInput
   tech_staff: Prisma.ProfileCreateNestedOneWithoutHallAssignmentsInput
 }
 
@@ -237,7 +237,7 @@ export type HallTechStaffUncheckedCreateInput = {
 export type HallTechStaffUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  hall?: Prisma.SeminarHallUpdateOneRequiredWithoutTech_staffNestedInput
+  hall?: Prisma.SeminarHallUpdateOneRequiredWithoutHallTechStaffsNestedInput
   tech_staff?: Prisma.ProfileUpdateOneRequiredWithoutHallAssignmentsNestedInput
 }
 
@@ -390,7 +390,7 @@ export type HallTechStaffUncheckedUpdateManyWithoutHallNestedInput = {
 export type HallTechStaffCreateWithoutTech_staffInput = {
   id?: string
   created_at?: Date | string
-  hall: Prisma.SeminarHallCreateNestedOneWithoutTech_staffInput
+  hall: Prisma.SeminarHallCreateNestedOneWithoutHallTechStaffsInput
 }
 
 export type HallTechStaffUncheckedCreateWithoutTech_staffInput = {
@@ -482,7 +482,7 @@ export type HallTechStaffCreateManyTech_staffInput = {
 export type HallTechStaffUpdateWithoutTech_staffInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  hall?: Prisma.SeminarHallUpdateOneRequiredWithoutTech_staffNestedInput
+  hall?: Prisma.SeminarHallUpdateOneRequiredWithoutHallTechStaffsNestedInput
 }
 
 export type HallTechStaffUncheckedUpdateWithoutTech_staffInput = {

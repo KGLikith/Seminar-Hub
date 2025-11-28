@@ -35,22 +35,56 @@ enum HallStatus {
   maintenance
 }
 
-enum ComponentStatus {
-  operational
-  faulty
-  maintenance
-}
-
 enum ComponentType {
   projector
+  screen
+  audio_system
+  microphone
   whiteboard
+  smartboard
+  ac
+  lighting
+  camera
+  other
+
+  @@map("component_type")
+}
+
+enum EquipmentType {
   speaker
   microphone
-  lighting
-  ac
-  door_lock
-  wifi_router
+  mixer
+  amplifier
+  laptop
+  pointer
+  cable
+  adapter
+  router
+  tablet
+  camera
+  stand
+  projector
   other
+
+  @@map("equipment_type")
+}
+
+enum ComponentStatus {
+  operational
+  maintenance_required
+  under_maintenance
+  non_operational
+
+  @@map("component_status")
+}
+
+enum MaintenanceRequestStatus {
+  pending
+  approved
+  rejected
+  completed
+
+  @@map("maintenance_request_status")
 }
 
 model Department {
@@ -59,6 +93,9 @@ model Department {
   description String?
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
+
+  hod_id      String?  @unique
+  hod_profile Profile? @relation("DepartmentHOD", fields: [hod_id], references: [id], onDelete: SetNull)
 
   profiles Profile[]
   halls    SeminarHall[]
@@ -84,7 +121,7 @@ model User {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  profile             Profile?
+  profile Profile?
 }
 
 model Profile {
@@ -100,6 +137,8 @@ model Profile {
   department_id String?
   department    Department? @relation(fields: [department_id], references: [id], onDelete: SetNull)
 
+  hod_of_department Department? @relation("DepartmentHOD")
+
   user_id String? @unique
   user    User?   @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
@@ -112,9 +151,13 @@ model Profile {
   teacherBookings Booking[] @relation("teacher_bookings")
   hodBookings     Booking[] @relation("hod_approval")
 
-  bookingLogsPerformed     BookingLog[]              @relation("log_performed_by")
-  notifications            Notification[]
-  componentMaintenanceLogs ComponentMaintenanceLog[]
+  bookingLogsPerformed BookingLog[]   @relation("log_performed_by")
+  notifications        Notification[]
+
+  maintenanceRequestsCreated MaintenanceRequest[]      @relation("tech_staff_fk")
+  favoriteHalls              FavoriteHall[]
+  componentMaintenanceLogs   ComponentMaintenanceLog[] @relation("PerformedByProfile")
+  maintenanceRequests        MaintenanceRequest[]
 }
 
 model UserRoleAssignment {
@@ -128,7 +171,7 @@ model UserRoleAssignment {
   @@unique([profile_id, role])
 }
 
-model SeminarHall {
+model SeminarHall { 
   id               String     @id @default(uuid())
   name             String
   seating_capacity Int
@@ -140,14 +183,31 @@ model SeminarHall {
   updated_at       DateTime   @updatedAt
 
   department_id String
-  department    Department @relation(fields: [department_id], references: [id], onDelete: Cascade)
+  department    Department @relation(fields: [department_id], references: [id])
 
-  tech_staff HallTechStaff[]
-  equipment  Equipment[]
-  bookings   Booking[]
-  components HallComponent[]
+  components          HallComponent[]
+  maintenanceRequests MaintenanceRequest[]
+  favoriteUsers       FavoriteHall[]
+  hallTechStaffs      HallTechStaff[]
+  equipment           Equipment[]
+  bookings            Booking[]
 
-  @@index([department_id])
+  @@map("seminar_halls")
+}
+
+model FavoriteHall {
+  id         String   @id @default(uuid())
+  user_id    String
+  hall_id    String
+  created_at DateTime @default(now())
+
+  user Profile     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  hall SeminarHall @relation(fields: [hall_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, hall_id])
+  @@index([user_id])
+  @@index([hall_id])
+  @@map("favorite_halls")
 }
 
 model HallTechStaff {
@@ -167,7 +227,7 @@ model HallTechStaff {
 model Equipment {
   id              String             @id @default(uuid())
   name            String
-  type            ComponentType
+  type            EquipmentType
   serial_number   String?
   condition       EquipmentCondition @default(active)
   last_updated_at DateTime           @default(now())
@@ -179,7 +239,8 @@ model Equipment {
   last_updated_by String?
   updated_by      Profile? @relation("updated_by_equipment", fields: [last_updated_by], references: [id], onDelete: SetNull)
 
-  logs EquipmentLog[]
+  logs                EquipmentLog[]
+  maintenanceRequests MaintenanceRequest[]
 
   @@index([hall_id])
 }
@@ -273,40 +334,70 @@ model Notification {
 
 model HallComponent {
   id                String          @id @default(uuid())
+  hall_id           String
   name              String
   type              ComponentType
   status            ComponentStatus @default(operational)
   location          String?
-  installation_date DateTime?
+  installation_date DateTime?       @db.Date
   last_maintenance  DateTime?
   notes             String?
   created_at        DateTime        @default(now())
   updated_at        DateTime        @updatedAt
 
-  hall_id String
-  hall    SeminarHall @relation(fields: [hall_id], references: [id], onDelete: Cascade)
-
-  maintenance_logs ComponentMaintenanceLog[]
+  hall                SeminarHall               @relation(fields: [hall_id], references: [id], onDelete: Cascade)
+  logs                ComponentMaintenanceLog[]
+  maintenanceRequests MaintenanceRequest[]
 
   @@index([hall_id])
   @@index([status])
+  @@map("hall_components")
 }
 
 model ComponentMaintenanceLog {
   id              String          @id @default(uuid())
+  component_id    String
   action          String
   previous_status ComponentStatus
   new_status      ComponentStatus
   notes           String?
+  performed_by    String
   created_at      DateTime        @default(now())
 
-  component_id String
-  component    HallComponent @relation(fields: [component_id], references: [id], onDelete: Cascade)
-
-  performed_by String
-  performer    Profile @relation(fields: [performed_by], references: [id], onDelete: Cascade)
+  component HallComponent @relation(fields: [component_id], references: [id], onDelete: Cascade)
+  performer Profile       @relation("PerformedByProfile", fields: [performed_by], references: [id], onDelete: Cascade)
 
   @@index([component_id])
+  @@map("component_maintenance_logs")
+}
+
+model MaintenanceRequest {
+  id               String                   @id @default(uuid())
+  hall_id          String
+  tech_staff_id    String
+  component_id     String?
+  equipment_id     String?
+  request_type     String
+  title            String
+  description      String
+  priority         String                   @default("medium")
+  status           MaintenanceRequestStatus @default(pending)
+  hod_id           String?
+  approved_at      DateTime?
+  rejection_reason String?
+  created_at       DateTime                 @default(now())
+  updated_at       DateTime                 @updatedAt
+
+  hall      SeminarHall    @relation(fields: [hall_id], references: [id], onDelete: Cascade)
+  component HallComponent? @relation(fields: [component_id], references: [id], onDelete: SetNull)
+  equipment Equipment?     @relation(fields: [equipment_id], references: [id], onDelete: SetNull)
+  techStaff Profile        @relation("tech_staff_fk", fields: [tech_staff_id], references: [id], onDelete: Cascade)
+  hod       Profile?       @relation(fields: [hod_id], references: [id], onDelete: SetNull)
+
+  @@index([hall_id])
+  @@index([tech_staff_id])
+  @@index([status])
+  @@map("maintenance_requests")
 }
 
 model EmailLog {

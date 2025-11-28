@@ -257,10 +257,12 @@ export type SeminarHallWhereInput = {
   updated_at?: Prisma.DateTimeFilter<"SeminarHall"> | Date | string
   department_id?: Prisma.StringFilter<"SeminarHall"> | string
   department?: Prisma.XOR<Prisma.DepartmentScalarRelationFilter, Prisma.DepartmentWhereInput>
-  tech_staff?: Prisma.HallTechStaffListRelationFilter
+  components?: Prisma.HallComponentListRelationFilter
+  maintenanceRequests?: Prisma.MaintenanceRequestListRelationFilter
+  favoriteUsers?: Prisma.FavoriteHallListRelationFilter
+  hallTechStaffs?: Prisma.HallTechStaffListRelationFilter
   equipment?: Prisma.EquipmentListRelationFilter
   bookings?: Prisma.BookingListRelationFilter
-  components?: Prisma.HallComponentListRelationFilter
 }
 
 export type SeminarHallOrderByWithRelationInput = {
@@ -275,10 +277,12 @@ export type SeminarHallOrderByWithRelationInput = {
   updated_at?: Prisma.SortOrder
   department_id?: Prisma.SortOrder
   department?: Prisma.DepartmentOrderByWithRelationInput
-  tech_staff?: Prisma.HallTechStaffOrderByRelationAggregateInput
+  components?: Prisma.HallComponentOrderByRelationAggregateInput
+  maintenanceRequests?: Prisma.MaintenanceRequestOrderByRelationAggregateInput
+  favoriteUsers?: Prisma.FavoriteHallOrderByRelationAggregateInput
+  hallTechStaffs?: Prisma.HallTechStaffOrderByRelationAggregateInput
   equipment?: Prisma.EquipmentOrderByRelationAggregateInput
   bookings?: Prisma.BookingOrderByRelationAggregateInput
-  components?: Prisma.HallComponentOrderByRelationAggregateInput
 }
 
 export type SeminarHallWhereUniqueInput = Prisma.AtLeast<{
@@ -296,10 +300,12 @@ export type SeminarHallWhereUniqueInput = Prisma.AtLeast<{
   updated_at?: Prisma.DateTimeFilter<"SeminarHall"> | Date | string
   department_id?: Prisma.StringFilter<"SeminarHall"> | string
   department?: Prisma.XOR<Prisma.DepartmentScalarRelationFilter, Prisma.DepartmentWhereInput>
-  tech_staff?: Prisma.HallTechStaffListRelationFilter
+  components?: Prisma.HallComponentListRelationFilter
+  maintenanceRequests?: Prisma.MaintenanceRequestListRelationFilter
+  favoriteUsers?: Prisma.FavoriteHallListRelationFilter
+  hallTechStaffs?: Prisma.HallTechStaffListRelationFilter
   equipment?: Prisma.EquipmentListRelationFilter
   bookings?: Prisma.BookingListRelationFilter
-  components?: Prisma.HallComponentListRelationFilter
 }, "id">
 
 export type SeminarHallOrderByWithAggregationInput = {
@@ -347,10 +353,12 @@ export type SeminarHallCreateInput = {
   created_at?: Date | string
   updated_at?: Date | string
   department: Prisma.DepartmentCreateNestedOneWithoutHallsInput
-  tech_staff?: Prisma.HallTechStaffCreateNestedManyWithoutHallInput
+  components?: Prisma.HallComponentCreateNestedManyWithoutHallInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutHallInput
+  favoriteUsers?: Prisma.FavoriteHallCreateNestedManyWithoutHallInput
+  hallTechStaffs?: Prisma.HallTechStaffCreateNestedManyWithoutHallInput
   equipment?: Prisma.EquipmentCreateNestedManyWithoutHallInput
   bookings?: Prisma.BookingCreateNestedManyWithoutHallInput
-  components?: Prisma.HallComponentCreateNestedManyWithoutHallInput
 }
 
 export type SeminarHallUncheckedCreateInput = {
@@ -364,10 +372,12 @@ export type SeminarHallUncheckedCreateInput = {
   created_at?: Date | string
   updated_at?: Date | string
   department_id: string
-  tech_staff?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutHallInput
+  components?: Prisma.HallComponentUncheckedCreateNestedManyWithoutHallInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutHallInput
+  favoriteUsers?: Prisma.FavoriteHallUncheckedCreateNestedManyWithoutHallInput
+  hallTechStaffs?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutHallInput
   equipment?: Prisma.EquipmentUncheckedCreateNestedManyWithoutHallInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutHallInput
-  components?: Prisma.HallComponentUncheckedCreateNestedManyWithoutHallInput
 }
 
 export type SeminarHallUpdateInput = {
@@ -381,10 +391,12 @@ export type SeminarHallUpdateInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneRequiredWithoutHallsNestedInput
-  tech_staff?: Prisma.HallTechStaffUpdateManyWithoutHallNestedInput
+  components?: Prisma.HallComponentUpdateManyWithoutHallNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutHallNestedInput
+  favoriteUsers?: Prisma.FavoriteHallUpdateManyWithoutHallNestedInput
+  hallTechStaffs?: Prisma.HallTechStaffUpdateManyWithoutHallNestedInput
   equipment?: Prisma.EquipmentUpdateManyWithoutHallNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutHallNestedInput
-  components?: Prisma.HallComponentUpdateManyWithoutHallNestedInput
 }
 
 export type SeminarHallUncheckedUpdateInput = {
@@ -398,10 +410,12 @@ export type SeminarHallUncheckedUpdateInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department_id?: Prisma.StringFieldUpdateOperationsInput | string
-  tech_staff?: Prisma.HallTechStaffUncheckedUpdateManyWithoutHallNestedInput
+  components?: Prisma.HallComponentUncheckedUpdateManyWithoutHallNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutHallNestedInput
+  favoriteUsers?: Prisma.FavoriteHallUncheckedUpdateManyWithoutHallNestedInput
+  hallTechStaffs?: Prisma.HallTechStaffUncheckedUpdateManyWithoutHallNestedInput
   equipment?: Prisma.EquipmentUncheckedUpdateManyWithoutHallNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutHallNestedInput
-  components?: Prisma.HallComponentUncheckedUpdateManyWithoutHallNestedInput
 }
 
 export type SeminarHallCreateManyInput = {
@@ -558,18 +572,32 @@ export type EnumHallStatusFieldUpdateOperationsInput = {
   set?: $Enums.HallStatus
 }
 
-export type SeminarHallCreateNestedOneWithoutTech_staffInput = {
-  create?: Prisma.XOR<Prisma.SeminarHallCreateWithoutTech_staffInput, Prisma.SeminarHallUncheckedCreateWithoutTech_staffInput>
-  connectOrCreate?: Prisma.SeminarHallCreateOrConnectWithoutTech_staffInput
+export type SeminarHallCreateNestedOneWithoutFavoriteUsersInput = {
+  create?: Prisma.XOR<Prisma.SeminarHallCreateWithoutFavoriteUsersInput, Prisma.SeminarHallUncheckedCreateWithoutFavoriteUsersInput>
+  connectOrCreate?: Prisma.SeminarHallCreateOrConnectWithoutFavoriteUsersInput
   connect?: Prisma.SeminarHallWhereUniqueInput
 }
 
-export type SeminarHallUpdateOneRequiredWithoutTech_staffNestedInput = {
-  create?: Prisma.XOR<Prisma.SeminarHallCreateWithoutTech_staffInput, Prisma.SeminarHallUncheckedCreateWithoutTech_staffInput>
-  connectOrCreate?: Prisma.SeminarHallCreateOrConnectWithoutTech_staffInput
-  upsert?: Prisma.SeminarHallUpsertWithoutTech_staffInput
+export type SeminarHallUpdateOneRequiredWithoutFavoriteUsersNestedInput = {
+  create?: Prisma.XOR<Prisma.SeminarHallCreateWithoutFavoriteUsersInput, Prisma.SeminarHallUncheckedCreateWithoutFavoriteUsersInput>
+  connectOrCreate?: Prisma.SeminarHallCreateOrConnectWithoutFavoriteUsersInput
+  upsert?: Prisma.SeminarHallUpsertWithoutFavoriteUsersInput
   connect?: Prisma.SeminarHallWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.SeminarHallUpdateToOneWithWhereWithoutTech_staffInput, Prisma.SeminarHallUpdateWithoutTech_staffInput>, Prisma.SeminarHallUncheckedUpdateWithoutTech_staffInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SeminarHallUpdateToOneWithWhereWithoutFavoriteUsersInput, Prisma.SeminarHallUpdateWithoutFavoriteUsersInput>, Prisma.SeminarHallUncheckedUpdateWithoutFavoriteUsersInput>
+}
+
+export type SeminarHallCreateNestedOneWithoutHallTechStaffsInput = {
+  create?: Prisma.XOR<Prisma.SeminarHallCreateWithoutHallTechStaffsInput, Prisma.SeminarHallUncheckedCreateWithoutHallTechStaffsInput>
+  connectOrCreate?: Prisma.SeminarHallCreateOrConnectWithoutHallTechStaffsInput
+  connect?: Prisma.SeminarHallWhereUniqueInput
+}
+
+export type SeminarHallUpdateOneRequiredWithoutHallTechStaffsNestedInput = {
+  create?: Prisma.XOR<Prisma.SeminarHallCreateWithoutHallTechStaffsInput, Prisma.SeminarHallUncheckedCreateWithoutHallTechStaffsInput>
+  connectOrCreate?: Prisma.SeminarHallCreateOrConnectWithoutHallTechStaffsInput
+  upsert?: Prisma.SeminarHallUpsertWithoutHallTechStaffsInput
+  connect?: Prisma.SeminarHallWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SeminarHallUpdateToOneWithWhereWithoutHallTechStaffsInput, Prisma.SeminarHallUpdateWithoutHallTechStaffsInput>, Prisma.SeminarHallUncheckedUpdateWithoutHallTechStaffsInput>
 }
 
 export type SeminarHallCreateNestedOneWithoutEquipmentInput = {
@@ -614,6 +642,20 @@ export type SeminarHallUpdateOneRequiredWithoutComponentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.SeminarHallUpdateToOneWithWhereWithoutComponentsInput, Prisma.SeminarHallUpdateWithoutComponentsInput>, Prisma.SeminarHallUncheckedUpdateWithoutComponentsInput>
 }
 
+export type SeminarHallCreateNestedOneWithoutMaintenanceRequestsInput = {
+  create?: Prisma.XOR<Prisma.SeminarHallCreateWithoutMaintenanceRequestsInput, Prisma.SeminarHallUncheckedCreateWithoutMaintenanceRequestsInput>
+  connectOrCreate?: Prisma.SeminarHallCreateOrConnectWithoutMaintenanceRequestsInput
+  connect?: Prisma.SeminarHallWhereUniqueInput
+}
+
+export type SeminarHallUpdateOneRequiredWithoutMaintenanceRequestsNestedInput = {
+  create?: Prisma.XOR<Prisma.SeminarHallCreateWithoutMaintenanceRequestsInput, Prisma.SeminarHallUncheckedCreateWithoutMaintenanceRequestsInput>
+  connectOrCreate?: Prisma.SeminarHallCreateOrConnectWithoutMaintenanceRequestsInput
+  upsert?: Prisma.SeminarHallUpsertWithoutMaintenanceRequestsInput
+  connect?: Prisma.SeminarHallWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SeminarHallUpdateToOneWithWhereWithoutMaintenanceRequestsInput, Prisma.SeminarHallUpdateWithoutMaintenanceRequestsInput>, Prisma.SeminarHallUncheckedUpdateWithoutMaintenanceRequestsInput>
+}
+
 export type SeminarHallCreateWithoutDepartmentInput = {
   id?: string
   name: string
@@ -624,10 +666,12 @@ export type SeminarHallCreateWithoutDepartmentInput = {
   status?: $Enums.HallStatus
   created_at?: Date | string
   updated_at?: Date | string
-  tech_staff?: Prisma.HallTechStaffCreateNestedManyWithoutHallInput
+  components?: Prisma.HallComponentCreateNestedManyWithoutHallInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutHallInput
+  favoriteUsers?: Prisma.FavoriteHallCreateNestedManyWithoutHallInput
+  hallTechStaffs?: Prisma.HallTechStaffCreateNestedManyWithoutHallInput
   equipment?: Prisma.EquipmentCreateNestedManyWithoutHallInput
   bookings?: Prisma.BookingCreateNestedManyWithoutHallInput
-  components?: Prisma.HallComponentCreateNestedManyWithoutHallInput
 }
 
 export type SeminarHallUncheckedCreateWithoutDepartmentInput = {
@@ -640,10 +684,12 @@ export type SeminarHallUncheckedCreateWithoutDepartmentInput = {
   status?: $Enums.HallStatus
   created_at?: Date | string
   updated_at?: Date | string
-  tech_staff?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutHallInput
+  components?: Prisma.HallComponentUncheckedCreateNestedManyWithoutHallInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutHallInput
+  favoriteUsers?: Prisma.FavoriteHallUncheckedCreateNestedManyWithoutHallInput
+  hallTechStaffs?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutHallInput
   equipment?: Prisma.EquipmentUncheckedCreateNestedManyWithoutHallInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutHallInput
-  components?: Prisma.HallComponentUncheckedCreateNestedManyWithoutHallInput
 }
 
 export type SeminarHallCreateOrConnectWithoutDepartmentInput = {
@@ -688,7 +734,7 @@ export type SeminarHallScalarWhereInput = {
   department_id?: Prisma.StringFilter<"SeminarHall"> | string
 }
 
-export type SeminarHallCreateWithoutTech_staffInput = {
+export type SeminarHallCreateWithoutFavoriteUsersInput = {
   id?: string
   name: string
   seating_capacity: number
@@ -699,12 +745,14 @@ export type SeminarHallCreateWithoutTech_staffInput = {
   created_at?: Date | string
   updated_at?: Date | string
   department: Prisma.DepartmentCreateNestedOneWithoutHallsInput
+  components?: Prisma.HallComponentCreateNestedManyWithoutHallInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutHallInput
+  hallTechStaffs?: Prisma.HallTechStaffCreateNestedManyWithoutHallInput
   equipment?: Prisma.EquipmentCreateNestedManyWithoutHallInput
   bookings?: Prisma.BookingCreateNestedManyWithoutHallInput
-  components?: Prisma.HallComponentCreateNestedManyWithoutHallInput
 }
 
-export type SeminarHallUncheckedCreateWithoutTech_staffInput = {
+export type SeminarHallUncheckedCreateWithoutFavoriteUsersInput = {
   id?: string
   name: string
   seating_capacity: number
@@ -715,28 +763,30 @@ export type SeminarHallUncheckedCreateWithoutTech_staffInput = {
   created_at?: Date | string
   updated_at?: Date | string
   department_id: string
+  components?: Prisma.HallComponentUncheckedCreateNestedManyWithoutHallInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutHallInput
+  hallTechStaffs?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutHallInput
   equipment?: Prisma.EquipmentUncheckedCreateNestedManyWithoutHallInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutHallInput
-  components?: Prisma.HallComponentUncheckedCreateNestedManyWithoutHallInput
 }
 
-export type SeminarHallCreateOrConnectWithoutTech_staffInput = {
+export type SeminarHallCreateOrConnectWithoutFavoriteUsersInput = {
   where: Prisma.SeminarHallWhereUniqueInput
-  create: Prisma.XOR<Prisma.SeminarHallCreateWithoutTech_staffInput, Prisma.SeminarHallUncheckedCreateWithoutTech_staffInput>
+  create: Prisma.XOR<Prisma.SeminarHallCreateWithoutFavoriteUsersInput, Prisma.SeminarHallUncheckedCreateWithoutFavoriteUsersInput>
 }
 
-export type SeminarHallUpsertWithoutTech_staffInput = {
-  update: Prisma.XOR<Prisma.SeminarHallUpdateWithoutTech_staffInput, Prisma.SeminarHallUncheckedUpdateWithoutTech_staffInput>
-  create: Prisma.XOR<Prisma.SeminarHallCreateWithoutTech_staffInput, Prisma.SeminarHallUncheckedCreateWithoutTech_staffInput>
+export type SeminarHallUpsertWithoutFavoriteUsersInput = {
+  update: Prisma.XOR<Prisma.SeminarHallUpdateWithoutFavoriteUsersInput, Prisma.SeminarHallUncheckedUpdateWithoutFavoriteUsersInput>
+  create: Prisma.XOR<Prisma.SeminarHallCreateWithoutFavoriteUsersInput, Prisma.SeminarHallUncheckedCreateWithoutFavoriteUsersInput>
   where?: Prisma.SeminarHallWhereInput
 }
 
-export type SeminarHallUpdateToOneWithWhereWithoutTech_staffInput = {
+export type SeminarHallUpdateToOneWithWhereWithoutFavoriteUsersInput = {
   where?: Prisma.SeminarHallWhereInput
-  data: Prisma.XOR<Prisma.SeminarHallUpdateWithoutTech_staffInput, Prisma.SeminarHallUncheckedUpdateWithoutTech_staffInput>
+  data: Prisma.XOR<Prisma.SeminarHallUpdateWithoutFavoriteUsersInput, Prisma.SeminarHallUncheckedUpdateWithoutFavoriteUsersInput>
 }
 
-export type SeminarHallUpdateWithoutTech_staffInput = {
+export type SeminarHallUpdateWithoutFavoriteUsersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   seating_capacity?: Prisma.IntFieldUpdateOperationsInput | number
@@ -747,12 +797,14 @@ export type SeminarHallUpdateWithoutTech_staffInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneRequiredWithoutHallsNestedInput
+  components?: Prisma.HallComponentUpdateManyWithoutHallNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutHallNestedInput
+  hallTechStaffs?: Prisma.HallTechStaffUpdateManyWithoutHallNestedInput
   equipment?: Prisma.EquipmentUpdateManyWithoutHallNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutHallNestedInput
-  components?: Prisma.HallComponentUpdateManyWithoutHallNestedInput
 }
 
-export type SeminarHallUncheckedUpdateWithoutTech_staffInput = {
+export type SeminarHallUncheckedUpdateWithoutFavoriteUsersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   seating_capacity?: Prisma.IntFieldUpdateOperationsInput | number
@@ -763,9 +815,99 @@ export type SeminarHallUncheckedUpdateWithoutTech_staffInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department_id?: Prisma.StringFieldUpdateOperationsInput | string
+  components?: Prisma.HallComponentUncheckedUpdateManyWithoutHallNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutHallNestedInput
+  hallTechStaffs?: Prisma.HallTechStaffUncheckedUpdateManyWithoutHallNestedInput
   equipment?: Prisma.EquipmentUncheckedUpdateManyWithoutHallNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutHallNestedInput
+}
+
+export type SeminarHallCreateWithoutHallTechStaffsInput = {
+  id?: string
+  name: string
+  seating_capacity: number
+  location: string
+  description?: string | null
+  image_url?: string | null
+  status?: $Enums.HallStatus
+  created_at?: Date | string
+  updated_at?: Date | string
+  department: Prisma.DepartmentCreateNestedOneWithoutHallsInput
+  components?: Prisma.HallComponentCreateNestedManyWithoutHallInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutHallInput
+  favoriteUsers?: Prisma.FavoriteHallCreateNestedManyWithoutHallInput
+  equipment?: Prisma.EquipmentCreateNestedManyWithoutHallInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutHallInput
+}
+
+export type SeminarHallUncheckedCreateWithoutHallTechStaffsInput = {
+  id?: string
+  name: string
+  seating_capacity: number
+  location: string
+  description?: string | null
+  image_url?: string | null
+  status?: $Enums.HallStatus
+  created_at?: Date | string
+  updated_at?: Date | string
+  department_id: string
+  components?: Prisma.HallComponentUncheckedCreateNestedManyWithoutHallInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutHallInput
+  favoriteUsers?: Prisma.FavoriteHallUncheckedCreateNestedManyWithoutHallInput
+  equipment?: Prisma.EquipmentUncheckedCreateNestedManyWithoutHallInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutHallInput
+}
+
+export type SeminarHallCreateOrConnectWithoutHallTechStaffsInput = {
+  where: Prisma.SeminarHallWhereUniqueInput
+  create: Prisma.XOR<Prisma.SeminarHallCreateWithoutHallTechStaffsInput, Prisma.SeminarHallUncheckedCreateWithoutHallTechStaffsInput>
+}
+
+export type SeminarHallUpsertWithoutHallTechStaffsInput = {
+  update: Prisma.XOR<Prisma.SeminarHallUpdateWithoutHallTechStaffsInput, Prisma.SeminarHallUncheckedUpdateWithoutHallTechStaffsInput>
+  create: Prisma.XOR<Prisma.SeminarHallCreateWithoutHallTechStaffsInput, Prisma.SeminarHallUncheckedCreateWithoutHallTechStaffsInput>
+  where?: Prisma.SeminarHallWhereInput
+}
+
+export type SeminarHallUpdateToOneWithWhereWithoutHallTechStaffsInput = {
+  where?: Prisma.SeminarHallWhereInput
+  data: Prisma.XOR<Prisma.SeminarHallUpdateWithoutHallTechStaffsInput, Prisma.SeminarHallUncheckedUpdateWithoutHallTechStaffsInput>
+}
+
+export type SeminarHallUpdateWithoutHallTechStaffsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  seating_capacity?: Prisma.IntFieldUpdateOperationsInput | number
+  location?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumHallStatusFieldUpdateOperationsInput | $Enums.HallStatus
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  department?: Prisma.DepartmentUpdateOneRequiredWithoutHallsNestedInput
+  components?: Prisma.HallComponentUpdateManyWithoutHallNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutHallNestedInput
+  favoriteUsers?: Prisma.FavoriteHallUpdateManyWithoutHallNestedInput
+  equipment?: Prisma.EquipmentUpdateManyWithoutHallNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutHallNestedInput
+}
+
+export type SeminarHallUncheckedUpdateWithoutHallTechStaffsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  seating_capacity?: Prisma.IntFieldUpdateOperationsInput | number
+  location?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumHallStatusFieldUpdateOperationsInput | $Enums.HallStatus
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  department_id?: Prisma.StringFieldUpdateOperationsInput | string
   components?: Prisma.HallComponentUncheckedUpdateManyWithoutHallNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutHallNestedInput
+  favoriteUsers?: Prisma.FavoriteHallUncheckedUpdateManyWithoutHallNestedInput
+  equipment?: Prisma.EquipmentUncheckedUpdateManyWithoutHallNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutHallNestedInput
 }
 
 export type SeminarHallCreateWithoutEquipmentInput = {
@@ -779,9 +921,11 @@ export type SeminarHallCreateWithoutEquipmentInput = {
   created_at?: Date | string
   updated_at?: Date | string
   department: Prisma.DepartmentCreateNestedOneWithoutHallsInput
-  tech_staff?: Prisma.HallTechStaffCreateNestedManyWithoutHallInput
-  bookings?: Prisma.BookingCreateNestedManyWithoutHallInput
   components?: Prisma.HallComponentCreateNestedManyWithoutHallInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutHallInput
+  favoriteUsers?: Prisma.FavoriteHallCreateNestedManyWithoutHallInput
+  hallTechStaffs?: Prisma.HallTechStaffCreateNestedManyWithoutHallInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutHallInput
 }
 
 export type SeminarHallUncheckedCreateWithoutEquipmentInput = {
@@ -795,9 +939,11 @@ export type SeminarHallUncheckedCreateWithoutEquipmentInput = {
   created_at?: Date | string
   updated_at?: Date | string
   department_id: string
-  tech_staff?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutHallInput
-  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutHallInput
   components?: Prisma.HallComponentUncheckedCreateNestedManyWithoutHallInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutHallInput
+  favoriteUsers?: Prisma.FavoriteHallUncheckedCreateNestedManyWithoutHallInput
+  hallTechStaffs?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutHallInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutHallInput
 }
 
 export type SeminarHallCreateOrConnectWithoutEquipmentInput = {
@@ -827,9 +973,11 @@ export type SeminarHallUpdateWithoutEquipmentInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneRequiredWithoutHallsNestedInput
-  tech_staff?: Prisma.HallTechStaffUpdateManyWithoutHallNestedInput
-  bookings?: Prisma.BookingUpdateManyWithoutHallNestedInput
   components?: Prisma.HallComponentUpdateManyWithoutHallNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutHallNestedInput
+  favoriteUsers?: Prisma.FavoriteHallUpdateManyWithoutHallNestedInput
+  hallTechStaffs?: Prisma.HallTechStaffUpdateManyWithoutHallNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutHallNestedInput
 }
 
 export type SeminarHallUncheckedUpdateWithoutEquipmentInput = {
@@ -843,9 +991,11 @@ export type SeminarHallUncheckedUpdateWithoutEquipmentInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department_id?: Prisma.StringFieldUpdateOperationsInput | string
-  tech_staff?: Prisma.HallTechStaffUncheckedUpdateManyWithoutHallNestedInput
-  bookings?: Prisma.BookingUncheckedUpdateManyWithoutHallNestedInput
   components?: Prisma.HallComponentUncheckedUpdateManyWithoutHallNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutHallNestedInput
+  favoriteUsers?: Prisma.FavoriteHallUncheckedUpdateManyWithoutHallNestedInput
+  hallTechStaffs?: Prisma.HallTechStaffUncheckedUpdateManyWithoutHallNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutHallNestedInput
 }
 
 export type SeminarHallCreateWithoutBookingsInput = {
@@ -859,9 +1009,11 @@ export type SeminarHallCreateWithoutBookingsInput = {
   created_at?: Date | string
   updated_at?: Date | string
   department: Prisma.DepartmentCreateNestedOneWithoutHallsInput
-  tech_staff?: Prisma.HallTechStaffCreateNestedManyWithoutHallInput
-  equipment?: Prisma.EquipmentCreateNestedManyWithoutHallInput
   components?: Prisma.HallComponentCreateNestedManyWithoutHallInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutHallInput
+  favoriteUsers?: Prisma.FavoriteHallCreateNestedManyWithoutHallInput
+  hallTechStaffs?: Prisma.HallTechStaffCreateNestedManyWithoutHallInput
+  equipment?: Prisma.EquipmentCreateNestedManyWithoutHallInput
 }
 
 export type SeminarHallUncheckedCreateWithoutBookingsInput = {
@@ -875,9 +1027,11 @@ export type SeminarHallUncheckedCreateWithoutBookingsInput = {
   created_at?: Date | string
   updated_at?: Date | string
   department_id: string
-  tech_staff?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutHallInput
-  equipment?: Prisma.EquipmentUncheckedCreateNestedManyWithoutHallInput
   components?: Prisma.HallComponentUncheckedCreateNestedManyWithoutHallInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutHallInput
+  favoriteUsers?: Prisma.FavoriteHallUncheckedCreateNestedManyWithoutHallInput
+  hallTechStaffs?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutHallInput
+  equipment?: Prisma.EquipmentUncheckedCreateNestedManyWithoutHallInput
 }
 
 export type SeminarHallCreateOrConnectWithoutBookingsInput = {
@@ -907,9 +1061,11 @@ export type SeminarHallUpdateWithoutBookingsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneRequiredWithoutHallsNestedInput
-  tech_staff?: Prisma.HallTechStaffUpdateManyWithoutHallNestedInput
-  equipment?: Prisma.EquipmentUpdateManyWithoutHallNestedInput
   components?: Prisma.HallComponentUpdateManyWithoutHallNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutHallNestedInput
+  favoriteUsers?: Prisma.FavoriteHallUpdateManyWithoutHallNestedInput
+  hallTechStaffs?: Prisma.HallTechStaffUpdateManyWithoutHallNestedInput
+  equipment?: Prisma.EquipmentUpdateManyWithoutHallNestedInput
 }
 
 export type SeminarHallUncheckedUpdateWithoutBookingsInput = {
@@ -923,9 +1079,11 @@ export type SeminarHallUncheckedUpdateWithoutBookingsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department_id?: Prisma.StringFieldUpdateOperationsInput | string
-  tech_staff?: Prisma.HallTechStaffUncheckedUpdateManyWithoutHallNestedInput
-  equipment?: Prisma.EquipmentUncheckedUpdateManyWithoutHallNestedInput
   components?: Prisma.HallComponentUncheckedUpdateManyWithoutHallNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutHallNestedInput
+  favoriteUsers?: Prisma.FavoriteHallUncheckedUpdateManyWithoutHallNestedInput
+  hallTechStaffs?: Prisma.HallTechStaffUncheckedUpdateManyWithoutHallNestedInput
+  equipment?: Prisma.EquipmentUncheckedUpdateManyWithoutHallNestedInput
 }
 
 export type SeminarHallCreateWithoutComponentsInput = {
@@ -939,7 +1097,9 @@ export type SeminarHallCreateWithoutComponentsInput = {
   created_at?: Date | string
   updated_at?: Date | string
   department: Prisma.DepartmentCreateNestedOneWithoutHallsInput
-  tech_staff?: Prisma.HallTechStaffCreateNestedManyWithoutHallInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutHallInput
+  favoriteUsers?: Prisma.FavoriteHallCreateNestedManyWithoutHallInput
+  hallTechStaffs?: Prisma.HallTechStaffCreateNestedManyWithoutHallInput
   equipment?: Prisma.EquipmentCreateNestedManyWithoutHallInput
   bookings?: Prisma.BookingCreateNestedManyWithoutHallInput
 }
@@ -955,7 +1115,9 @@ export type SeminarHallUncheckedCreateWithoutComponentsInput = {
   created_at?: Date | string
   updated_at?: Date | string
   department_id: string
-  tech_staff?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutHallInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutHallInput
+  favoriteUsers?: Prisma.FavoriteHallUncheckedCreateNestedManyWithoutHallInput
+  hallTechStaffs?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutHallInput
   equipment?: Prisma.EquipmentUncheckedCreateNestedManyWithoutHallInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutHallInput
 }
@@ -987,7 +1149,9 @@ export type SeminarHallUpdateWithoutComponentsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneRequiredWithoutHallsNestedInput
-  tech_staff?: Prisma.HallTechStaffUpdateManyWithoutHallNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutHallNestedInput
+  favoriteUsers?: Prisma.FavoriteHallUpdateManyWithoutHallNestedInput
+  hallTechStaffs?: Prisma.HallTechStaffUpdateManyWithoutHallNestedInput
   equipment?: Prisma.EquipmentUpdateManyWithoutHallNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutHallNestedInput
 }
@@ -1003,7 +1167,97 @@ export type SeminarHallUncheckedUpdateWithoutComponentsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department_id?: Prisma.StringFieldUpdateOperationsInput | string
-  tech_staff?: Prisma.HallTechStaffUncheckedUpdateManyWithoutHallNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutHallNestedInput
+  favoriteUsers?: Prisma.FavoriteHallUncheckedUpdateManyWithoutHallNestedInput
+  hallTechStaffs?: Prisma.HallTechStaffUncheckedUpdateManyWithoutHallNestedInput
+  equipment?: Prisma.EquipmentUncheckedUpdateManyWithoutHallNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutHallNestedInput
+}
+
+export type SeminarHallCreateWithoutMaintenanceRequestsInput = {
+  id?: string
+  name: string
+  seating_capacity: number
+  location: string
+  description?: string | null
+  image_url?: string | null
+  status?: $Enums.HallStatus
+  created_at?: Date | string
+  updated_at?: Date | string
+  department: Prisma.DepartmentCreateNestedOneWithoutHallsInput
+  components?: Prisma.HallComponentCreateNestedManyWithoutHallInput
+  favoriteUsers?: Prisma.FavoriteHallCreateNestedManyWithoutHallInput
+  hallTechStaffs?: Prisma.HallTechStaffCreateNestedManyWithoutHallInput
+  equipment?: Prisma.EquipmentCreateNestedManyWithoutHallInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutHallInput
+}
+
+export type SeminarHallUncheckedCreateWithoutMaintenanceRequestsInput = {
+  id?: string
+  name: string
+  seating_capacity: number
+  location: string
+  description?: string | null
+  image_url?: string | null
+  status?: $Enums.HallStatus
+  created_at?: Date | string
+  updated_at?: Date | string
+  department_id: string
+  components?: Prisma.HallComponentUncheckedCreateNestedManyWithoutHallInput
+  favoriteUsers?: Prisma.FavoriteHallUncheckedCreateNestedManyWithoutHallInput
+  hallTechStaffs?: Prisma.HallTechStaffUncheckedCreateNestedManyWithoutHallInput
+  equipment?: Prisma.EquipmentUncheckedCreateNestedManyWithoutHallInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutHallInput
+}
+
+export type SeminarHallCreateOrConnectWithoutMaintenanceRequestsInput = {
+  where: Prisma.SeminarHallWhereUniqueInput
+  create: Prisma.XOR<Prisma.SeminarHallCreateWithoutMaintenanceRequestsInput, Prisma.SeminarHallUncheckedCreateWithoutMaintenanceRequestsInput>
+}
+
+export type SeminarHallUpsertWithoutMaintenanceRequestsInput = {
+  update: Prisma.XOR<Prisma.SeminarHallUpdateWithoutMaintenanceRequestsInput, Prisma.SeminarHallUncheckedUpdateWithoutMaintenanceRequestsInput>
+  create: Prisma.XOR<Prisma.SeminarHallCreateWithoutMaintenanceRequestsInput, Prisma.SeminarHallUncheckedCreateWithoutMaintenanceRequestsInput>
+  where?: Prisma.SeminarHallWhereInput
+}
+
+export type SeminarHallUpdateToOneWithWhereWithoutMaintenanceRequestsInput = {
+  where?: Prisma.SeminarHallWhereInput
+  data: Prisma.XOR<Prisma.SeminarHallUpdateWithoutMaintenanceRequestsInput, Prisma.SeminarHallUncheckedUpdateWithoutMaintenanceRequestsInput>
+}
+
+export type SeminarHallUpdateWithoutMaintenanceRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  seating_capacity?: Prisma.IntFieldUpdateOperationsInput | number
+  location?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumHallStatusFieldUpdateOperationsInput | $Enums.HallStatus
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  department?: Prisma.DepartmentUpdateOneRequiredWithoutHallsNestedInput
+  components?: Prisma.HallComponentUpdateManyWithoutHallNestedInput
+  favoriteUsers?: Prisma.FavoriteHallUpdateManyWithoutHallNestedInput
+  hallTechStaffs?: Prisma.HallTechStaffUpdateManyWithoutHallNestedInput
+  equipment?: Prisma.EquipmentUpdateManyWithoutHallNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutHallNestedInput
+}
+
+export type SeminarHallUncheckedUpdateWithoutMaintenanceRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  seating_capacity?: Prisma.IntFieldUpdateOperationsInput | number
+  location?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumHallStatusFieldUpdateOperationsInput | $Enums.HallStatus
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  department_id?: Prisma.StringFieldUpdateOperationsInput | string
+  components?: Prisma.HallComponentUncheckedUpdateManyWithoutHallNestedInput
+  favoriteUsers?: Prisma.FavoriteHallUncheckedUpdateManyWithoutHallNestedInput
+  hallTechStaffs?: Prisma.HallTechStaffUncheckedUpdateManyWithoutHallNestedInput
   equipment?: Prisma.EquipmentUncheckedUpdateManyWithoutHallNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutHallNestedInput
 }
@@ -1030,10 +1284,12 @@ export type SeminarHallUpdateWithoutDepartmentInput = {
   status?: Prisma.EnumHallStatusFieldUpdateOperationsInput | $Enums.HallStatus
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  tech_staff?: Prisma.HallTechStaffUpdateManyWithoutHallNestedInput
+  components?: Prisma.HallComponentUpdateManyWithoutHallNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutHallNestedInput
+  favoriteUsers?: Prisma.FavoriteHallUpdateManyWithoutHallNestedInput
+  hallTechStaffs?: Prisma.HallTechStaffUpdateManyWithoutHallNestedInput
   equipment?: Prisma.EquipmentUpdateManyWithoutHallNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutHallNestedInput
-  components?: Prisma.HallComponentUpdateManyWithoutHallNestedInput
 }
 
 export type SeminarHallUncheckedUpdateWithoutDepartmentInput = {
@@ -1046,10 +1302,12 @@ export type SeminarHallUncheckedUpdateWithoutDepartmentInput = {
   status?: Prisma.EnumHallStatusFieldUpdateOperationsInput | $Enums.HallStatus
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  tech_staff?: Prisma.HallTechStaffUncheckedUpdateManyWithoutHallNestedInput
+  components?: Prisma.HallComponentUncheckedUpdateManyWithoutHallNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutHallNestedInput
+  favoriteUsers?: Prisma.FavoriteHallUncheckedUpdateManyWithoutHallNestedInput
+  hallTechStaffs?: Prisma.HallTechStaffUncheckedUpdateManyWithoutHallNestedInput
   equipment?: Prisma.EquipmentUncheckedUpdateManyWithoutHallNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutHallNestedInput
-  components?: Prisma.HallComponentUncheckedUpdateManyWithoutHallNestedInput
 }
 
 export type SeminarHallUncheckedUpdateManyWithoutDepartmentInput = {
@@ -1070,17 +1328,21 @@ export type SeminarHallUncheckedUpdateManyWithoutDepartmentInput = {
  */
 
 export type SeminarHallCountOutputType = {
-  tech_staff: number
+  components: number
+  maintenanceRequests: number
+  favoriteUsers: number
+  hallTechStaffs: number
   equipment: number
   bookings: number
-  components: number
 }
 
 export type SeminarHallCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  tech_staff?: boolean | SeminarHallCountOutputTypeCountTech_staffArgs
+  components?: boolean | SeminarHallCountOutputTypeCountComponentsArgs
+  maintenanceRequests?: boolean | SeminarHallCountOutputTypeCountMaintenanceRequestsArgs
+  favoriteUsers?: boolean | SeminarHallCountOutputTypeCountFavoriteUsersArgs
+  hallTechStaffs?: boolean | SeminarHallCountOutputTypeCountHallTechStaffsArgs
   equipment?: boolean | SeminarHallCountOutputTypeCountEquipmentArgs
   bookings?: boolean | SeminarHallCountOutputTypeCountBookingsArgs
-  components?: boolean | SeminarHallCountOutputTypeCountComponentsArgs
 }
 
 /**
@@ -1096,7 +1358,28 @@ export type SeminarHallCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.
 /**
  * SeminarHallCountOutputType without action
  */
-export type SeminarHallCountOutputTypeCountTech_staffArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type SeminarHallCountOutputTypeCountComponentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.HallComponentWhereInput
+}
+
+/**
+ * SeminarHallCountOutputType without action
+ */
+export type SeminarHallCountOutputTypeCountMaintenanceRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MaintenanceRequestWhereInput
+}
+
+/**
+ * SeminarHallCountOutputType without action
+ */
+export type SeminarHallCountOutputTypeCountFavoriteUsersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FavoriteHallWhereInput
+}
+
+/**
+ * SeminarHallCountOutputType without action
+ */
+export type SeminarHallCountOutputTypeCountHallTechStaffsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.HallTechStaffWhereInput
 }
 
@@ -1114,13 +1397,6 @@ export type SeminarHallCountOutputTypeCountBookingsArgs<ExtArgs extends runtime.
   where?: Prisma.BookingWhereInput
 }
 
-/**
- * SeminarHallCountOutputType without action
- */
-export type SeminarHallCountOutputTypeCountComponentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.HallComponentWhereInput
-}
-
 
 export type SeminarHallSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1134,10 +1410,12 @@ export type SeminarHallSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   updated_at?: boolean
   department_id?: boolean
   department?: boolean | Prisma.DepartmentDefaultArgs<ExtArgs>
-  tech_staff?: boolean | Prisma.SeminarHall$tech_staffArgs<ExtArgs>
+  components?: boolean | Prisma.SeminarHall$componentsArgs<ExtArgs>
+  maintenanceRequests?: boolean | Prisma.SeminarHall$maintenanceRequestsArgs<ExtArgs>
+  favoriteUsers?: boolean | Prisma.SeminarHall$favoriteUsersArgs<ExtArgs>
+  hallTechStaffs?: boolean | Prisma.SeminarHall$hallTechStaffsArgs<ExtArgs>
   equipment?: boolean | Prisma.SeminarHall$equipmentArgs<ExtArgs>
   bookings?: boolean | Prisma.SeminarHall$bookingsArgs<ExtArgs>
-  components?: boolean | Prisma.SeminarHall$componentsArgs<ExtArgs>
   _count?: boolean | Prisma.SeminarHallCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["seminarHall"]>
 
@@ -1185,10 +1463,12 @@ export type SeminarHallSelectScalar = {
 export type SeminarHallOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "seating_capacity" | "location" | "description" | "image_url" | "status" | "created_at" | "updated_at" | "department_id", ExtArgs["result"]["seminarHall"]>
 export type SeminarHallInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   department?: boolean | Prisma.DepartmentDefaultArgs<ExtArgs>
-  tech_staff?: boolean | Prisma.SeminarHall$tech_staffArgs<ExtArgs>
+  components?: boolean | Prisma.SeminarHall$componentsArgs<ExtArgs>
+  maintenanceRequests?: boolean | Prisma.SeminarHall$maintenanceRequestsArgs<ExtArgs>
+  favoriteUsers?: boolean | Prisma.SeminarHall$favoriteUsersArgs<ExtArgs>
+  hallTechStaffs?: boolean | Prisma.SeminarHall$hallTechStaffsArgs<ExtArgs>
   equipment?: boolean | Prisma.SeminarHall$equipmentArgs<ExtArgs>
   bookings?: boolean | Prisma.SeminarHall$bookingsArgs<ExtArgs>
-  components?: boolean | Prisma.SeminarHall$componentsArgs<ExtArgs>
   _count?: boolean | Prisma.SeminarHallCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SeminarHallIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1202,10 +1482,12 @@ export type $SeminarHallPayload<ExtArgs extends runtime.Types.Extensions.Interna
   name: "SeminarHall"
   objects: {
     department: Prisma.$DepartmentPayload<ExtArgs>
-    tech_staff: Prisma.$HallTechStaffPayload<ExtArgs>[]
+    components: Prisma.$HallComponentPayload<ExtArgs>[]
+    maintenanceRequests: Prisma.$MaintenanceRequestPayload<ExtArgs>[]
+    favoriteUsers: Prisma.$FavoriteHallPayload<ExtArgs>[]
+    hallTechStaffs: Prisma.$HallTechStaffPayload<ExtArgs>[]
     equipment: Prisma.$EquipmentPayload<ExtArgs>[]
     bookings: Prisma.$BookingPayload<ExtArgs>[]
-    components: Prisma.$HallComponentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1613,10 +1895,12 @@ readonly fields: SeminarHallFieldRefs;
 export interface Prisma__SeminarHallClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   department<T extends Prisma.DepartmentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DepartmentDefaultArgs<ExtArgs>>): Prisma.Prisma__DepartmentClient<runtime.Types.Result.GetResult<Prisma.$DepartmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  tech_staff<T extends Prisma.SeminarHall$tech_staffArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SeminarHall$tech_staffArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HallTechStaffPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  components<T extends Prisma.SeminarHall$componentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SeminarHall$componentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HallComponentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  maintenanceRequests<T extends Prisma.SeminarHall$maintenanceRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SeminarHall$maintenanceRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MaintenanceRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  favoriteUsers<T extends Prisma.SeminarHall$favoriteUsersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SeminarHall$favoriteUsersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoriteHallPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  hallTechStaffs<T extends Prisma.SeminarHall$hallTechStaffsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SeminarHall$hallTechStaffsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HallTechStaffPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   equipment<T extends Prisma.SeminarHall$equipmentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SeminarHall$equipmentArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EquipmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   bookings<T extends Prisma.SeminarHall$bookingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SeminarHall$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  components<T extends Prisma.SeminarHall$componentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SeminarHall$componentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$HallComponentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2052,9 +2336,81 @@ export type SeminarHallDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.I
 }
 
 /**
- * SeminarHall.tech_staff
+ * SeminarHall.components
  */
-export type SeminarHall$tech_staffArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type SeminarHall$componentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the HallComponent
+   */
+  select?: Prisma.HallComponentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the HallComponent
+   */
+  omit?: Prisma.HallComponentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.HallComponentInclude<ExtArgs> | null
+  where?: Prisma.HallComponentWhereInput
+  orderBy?: Prisma.HallComponentOrderByWithRelationInput | Prisma.HallComponentOrderByWithRelationInput[]
+  cursor?: Prisma.HallComponentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.HallComponentScalarFieldEnum | Prisma.HallComponentScalarFieldEnum[]
+}
+
+/**
+ * SeminarHall.maintenanceRequests
+ */
+export type SeminarHall$maintenanceRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MaintenanceRequest
+   */
+  select?: Prisma.MaintenanceRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MaintenanceRequest
+   */
+  omit?: Prisma.MaintenanceRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MaintenanceRequestInclude<ExtArgs> | null
+  where?: Prisma.MaintenanceRequestWhereInput
+  orderBy?: Prisma.MaintenanceRequestOrderByWithRelationInput | Prisma.MaintenanceRequestOrderByWithRelationInput[]
+  cursor?: Prisma.MaintenanceRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MaintenanceRequestScalarFieldEnum | Prisma.MaintenanceRequestScalarFieldEnum[]
+}
+
+/**
+ * SeminarHall.favoriteUsers
+ */
+export type SeminarHall$favoriteUsersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FavoriteHall
+   */
+  select?: Prisma.FavoriteHallSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FavoriteHall
+   */
+  omit?: Prisma.FavoriteHallOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FavoriteHallInclude<ExtArgs> | null
+  where?: Prisma.FavoriteHallWhereInput
+  orderBy?: Prisma.FavoriteHallOrderByWithRelationInput | Prisma.FavoriteHallOrderByWithRelationInput[]
+  cursor?: Prisma.FavoriteHallWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FavoriteHallScalarFieldEnum | Prisma.FavoriteHallScalarFieldEnum[]
+}
+
+/**
+ * SeminarHall.hallTechStaffs
+ */
+export type SeminarHall$hallTechStaffsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the HallTechStaff
    */
@@ -2121,30 +2477,6 @@ export type SeminarHall$bookingsArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.BookingScalarFieldEnum | Prisma.BookingScalarFieldEnum[]
-}
-
-/**
- * SeminarHall.components
- */
-export type SeminarHall$componentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the HallComponent
-   */
-  select?: Prisma.HallComponentSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the HallComponent
-   */
-  omit?: Prisma.HallComponentOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.HallComponentInclude<ExtArgs> | null
-  where?: Prisma.HallComponentWhereInput
-  orderBy?: Prisma.HallComponentOrderByWithRelationInput | Prisma.HallComponentOrderByWithRelationInput[]
-  cursor?: Prisma.HallComponentWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.HallComponentScalarFieldEnum | Prisma.HallComponentScalarFieldEnum[]
 }
 
 /**

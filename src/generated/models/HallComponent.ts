@@ -26,6 +26,7 @@ export type AggregateHallComponent = {
 
 export type HallComponentMinAggregateOutputType = {
   id: string | null
+  hall_id: string | null
   name: string | null
   type: $Enums.ComponentType | null
   status: $Enums.ComponentStatus | null
@@ -35,11 +36,11 @@ export type HallComponentMinAggregateOutputType = {
   notes: string | null
   created_at: Date | null
   updated_at: Date | null
-  hall_id: string | null
 }
 
 export type HallComponentMaxAggregateOutputType = {
   id: string | null
+  hall_id: string | null
   name: string | null
   type: $Enums.ComponentType | null
   status: $Enums.ComponentStatus | null
@@ -49,11 +50,11 @@ export type HallComponentMaxAggregateOutputType = {
   notes: string | null
   created_at: Date | null
   updated_at: Date | null
-  hall_id: string | null
 }
 
 export type HallComponentCountAggregateOutputType = {
   id: number
+  hall_id: number
   name: number
   type: number
   status: number
@@ -63,13 +64,13 @@ export type HallComponentCountAggregateOutputType = {
   notes: number
   created_at: number
   updated_at: number
-  hall_id: number
   _all: number
 }
 
 
 export type HallComponentMinAggregateInputType = {
   id?: true
+  hall_id?: true
   name?: true
   type?: true
   status?: true
@@ -79,11 +80,11 @@ export type HallComponentMinAggregateInputType = {
   notes?: true
   created_at?: true
   updated_at?: true
-  hall_id?: true
 }
 
 export type HallComponentMaxAggregateInputType = {
   id?: true
+  hall_id?: true
   name?: true
   type?: true
   status?: true
@@ -93,11 +94,11 @@ export type HallComponentMaxAggregateInputType = {
   notes?: true
   created_at?: true
   updated_at?: true
-  hall_id?: true
 }
 
 export type HallComponentCountAggregateInputType = {
   id?: true
+  hall_id?: true
   name?: true
   type?: true
   status?: true
@@ -107,7 +108,6 @@ export type HallComponentCountAggregateInputType = {
   notes?: true
   created_at?: true
   updated_at?: true
-  hall_id?: true
   _all?: true
 }
 
@@ -185,6 +185,7 @@ export type HallComponentGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 
 export type HallComponentGroupByOutputType = {
   id: string
+  hall_id: string
   name: string
   type: $Enums.ComponentType
   status: $Enums.ComponentStatus
@@ -194,7 +195,6 @@ export type HallComponentGroupByOutputType = {
   notes: string | null
   created_at: Date
   updated_at: Date
-  hall_id: string
   _count: HallComponentCountAggregateOutputType | null
   _min: HallComponentMinAggregateOutputType | null
   _max: HallComponentMaxAggregateOutputType | null
@@ -220,6 +220,7 @@ export type HallComponentWhereInput = {
   OR?: Prisma.HallComponentWhereInput[]
   NOT?: Prisma.HallComponentWhereInput | Prisma.HallComponentWhereInput[]
   id?: Prisma.StringFilter<"HallComponent"> | string
+  hall_id?: Prisma.StringFilter<"HallComponent"> | string
   name?: Prisma.StringFilter<"HallComponent"> | string
   type?: Prisma.EnumComponentTypeFilter<"HallComponent"> | $Enums.ComponentType
   status?: Prisma.EnumComponentStatusFilter<"HallComponent"> | $Enums.ComponentStatus
@@ -229,13 +230,14 @@ export type HallComponentWhereInput = {
   notes?: Prisma.StringNullableFilter<"HallComponent"> | string | null
   created_at?: Prisma.DateTimeFilter<"HallComponent"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"HallComponent"> | Date | string
-  hall_id?: Prisma.StringFilter<"HallComponent"> | string
   hall?: Prisma.XOR<Prisma.SeminarHallScalarRelationFilter, Prisma.SeminarHallWhereInput>
-  maintenance_logs?: Prisma.ComponentMaintenanceLogListRelationFilter
+  logs?: Prisma.ComponentMaintenanceLogListRelationFilter
+  maintenanceRequests?: Prisma.MaintenanceRequestListRelationFilter
 }
 
 export type HallComponentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  hall_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -245,9 +247,9 @@ export type HallComponentOrderByWithRelationInput = {
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
-  hall_id?: Prisma.SortOrder
   hall?: Prisma.SeminarHallOrderByWithRelationInput
-  maintenance_logs?: Prisma.ComponentMaintenanceLogOrderByRelationAggregateInput
+  logs?: Prisma.ComponentMaintenanceLogOrderByRelationAggregateInput
+  maintenanceRequests?: Prisma.MaintenanceRequestOrderByRelationAggregateInput
 }
 
 export type HallComponentWhereUniqueInput = Prisma.AtLeast<{
@@ -255,6 +257,7 @@ export type HallComponentWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.HallComponentWhereInput | Prisma.HallComponentWhereInput[]
   OR?: Prisma.HallComponentWhereInput[]
   NOT?: Prisma.HallComponentWhereInput | Prisma.HallComponentWhereInput[]
+  hall_id?: Prisma.StringFilter<"HallComponent"> | string
   name?: Prisma.StringFilter<"HallComponent"> | string
   type?: Prisma.EnumComponentTypeFilter<"HallComponent"> | $Enums.ComponentType
   status?: Prisma.EnumComponentStatusFilter<"HallComponent"> | $Enums.ComponentStatus
@@ -264,13 +267,14 @@ export type HallComponentWhereUniqueInput = Prisma.AtLeast<{
   notes?: Prisma.StringNullableFilter<"HallComponent"> | string | null
   created_at?: Prisma.DateTimeFilter<"HallComponent"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"HallComponent"> | Date | string
-  hall_id?: Prisma.StringFilter<"HallComponent"> | string
   hall?: Prisma.XOR<Prisma.SeminarHallScalarRelationFilter, Prisma.SeminarHallWhereInput>
-  maintenance_logs?: Prisma.ComponentMaintenanceLogListRelationFilter
+  logs?: Prisma.ComponentMaintenanceLogListRelationFilter
+  maintenanceRequests?: Prisma.MaintenanceRequestListRelationFilter
 }, "id">
 
 export type HallComponentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  hall_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -280,7 +284,6 @@ export type HallComponentOrderByWithAggregationInput = {
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
-  hall_id?: Prisma.SortOrder
   _count?: Prisma.HallComponentCountOrderByAggregateInput
   _max?: Prisma.HallComponentMaxOrderByAggregateInput
   _min?: Prisma.HallComponentMinOrderByAggregateInput
@@ -291,6 +294,7 @@ export type HallComponentScalarWhereWithAggregatesInput = {
   OR?: Prisma.HallComponentScalarWhereWithAggregatesInput[]
   NOT?: Prisma.HallComponentScalarWhereWithAggregatesInput | Prisma.HallComponentScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"HallComponent"> | string
+  hall_id?: Prisma.StringWithAggregatesFilter<"HallComponent"> | string
   name?: Prisma.StringWithAggregatesFilter<"HallComponent"> | string
   type?: Prisma.EnumComponentTypeWithAggregatesFilter<"HallComponent"> | $Enums.ComponentType
   status?: Prisma.EnumComponentStatusWithAggregatesFilter<"HallComponent"> | $Enums.ComponentStatus
@@ -300,7 +304,6 @@ export type HallComponentScalarWhereWithAggregatesInput = {
   notes?: Prisma.StringNullableWithAggregatesFilter<"HallComponent"> | string | null
   created_at?: Prisma.DateTimeWithAggregatesFilter<"HallComponent"> | Date | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"HallComponent"> | Date | string
-  hall_id?: Prisma.StringWithAggregatesFilter<"HallComponent"> | string
 }
 
 export type HallComponentCreateInput = {
@@ -315,11 +318,13 @@ export type HallComponentCreateInput = {
   created_at?: Date | string
   updated_at?: Date | string
   hall: Prisma.SeminarHallCreateNestedOneWithoutComponentsInput
-  maintenance_logs?: Prisma.ComponentMaintenanceLogCreateNestedManyWithoutComponentInput
+  logs?: Prisma.ComponentMaintenanceLogCreateNestedManyWithoutComponentInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutComponentInput
 }
 
 export type HallComponentUncheckedCreateInput = {
   id?: string
+  hall_id: string
   name: string
   type: $Enums.ComponentType
   status?: $Enums.ComponentStatus
@@ -329,8 +334,8 @@ export type HallComponentUncheckedCreateInput = {
   notes?: string | null
   created_at?: Date | string
   updated_at?: Date | string
-  hall_id: string
-  maintenance_logs?: Prisma.ComponentMaintenanceLogUncheckedCreateNestedManyWithoutComponentInput
+  logs?: Prisma.ComponentMaintenanceLogUncheckedCreateNestedManyWithoutComponentInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutComponentInput
 }
 
 export type HallComponentUpdateInput = {
@@ -345,11 +350,13 @@ export type HallComponentUpdateInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   hall?: Prisma.SeminarHallUpdateOneRequiredWithoutComponentsNestedInput
-  maintenance_logs?: Prisma.ComponentMaintenanceLogUpdateManyWithoutComponentNestedInput
+  logs?: Prisma.ComponentMaintenanceLogUpdateManyWithoutComponentNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutComponentNestedInput
 }
 
 export type HallComponentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  hall_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType
   status?: Prisma.EnumComponentStatusFieldUpdateOperationsInput | $Enums.ComponentStatus
@@ -359,12 +366,13 @@ export type HallComponentUncheckedUpdateInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  hall_id?: Prisma.StringFieldUpdateOperationsInput | string
-  maintenance_logs?: Prisma.ComponentMaintenanceLogUncheckedUpdateManyWithoutComponentNestedInput
+  logs?: Prisma.ComponentMaintenanceLogUncheckedUpdateManyWithoutComponentNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutComponentNestedInput
 }
 
 export type HallComponentCreateManyInput = {
   id?: string
+  hall_id: string
   name: string
   type: $Enums.ComponentType
   status?: $Enums.ComponentStatus
@@ -374,7 +382,6 @@ export type HallComponentCreateManyInput = {
   notes?: string | null
   created_at?: Date | string
   updated_at?: Date | string
-  hall_id: string
 }
 
 export type HallComponentUpdateManyMutationInput = {
@@ -392,6 +399,7 @@ export type HallComponentUpdateManyMutationInput = {
 
 export type HallComponentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  hall_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType
   status?: Prisma.EnumComponentStatusFieldUpdateOperationsInput | $Enums.ComponentStatus
@@ -401,7 +409,6 @@ export type HallComponentUncheckedUpdateManyInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  hall_id?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type HallComponentListRelationFilter = {
@@ -416,6 +423,7 @@ export type HallComponentOrderByRelationAggregateInput = {
 
 export type HallComponentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  hall_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -425,11 +433,11 @@ export type HallComponentCountOrderByAggregateInput = {
   notes?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
-  hall_id?: Prisma.SortOrder
 }
 
 export type HallComponentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  hall_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -439,11 +447,11 @@ export type HallComponentMaxOrderByAggregateInput = {
   notes?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
-  hall_id?: Prisma.SortOrder
 }
 
 export type HallComponentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  hall_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -453,12 +461,16 @@ export type HallComponentMinOrderByAggregateInput = {
   notes?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
-  hall_id?: Prisma.SortOrder
 }
 
 export type HallComponentScalarRelationFilter = {
   is?: Prisma.HallComponentWhereInput
   isNot?: Prisma.HallComponentWhereInput
+}
+
+export type HallComponentNullableScalarRelationFilter = {
+  is?: Prisma.HallComponentWhereInput | null
+  isNot?: Prisma.HallComponentWhereInput | null
 }
 
 export type HallComponentCreateNestedManyWithoutHallInput = {
@@ -503,22 +515,42 @@ export type HallComponentUncheckedUpdateManyWithoutHallNestedInput = {
   deleteMany?: Prisma.HallComponentScalarWhereInput | Prisma.HallComponentScalarWhereInput[]
 }
 
+export type EnumComponentTypeFieldUpdateOperationsInput = {
+  set?: $Enums.ComponentType
+}
+
 export type EnumComponentStatusFieldUpdateOperationsInput = {
   set?: $Enums.ComponentStatus
 }
 
-export type HallComponentCreateNestedOneWithoutMaintenance_logsInput = {
-  create?: Prisma.XOR<Prisma.HallComponentCreateWithoutMaintenance_logsInput, Prisma.HallComponentUncheckedCreateWithoutMaintenance_logsInput>
-  connectOrCreate?: Prisma.HallComponentCreateOrConnectWithoutMaintenance_logsInput
+export type HallComponentCreateNestedOneWithoutLogsInput = {
+  create?: Prisma.XOR<Prisma.HallComponentCreateWithoutLogsInput, Prisma.HallComponentUncheckedCreateWithoutLogsInput>
+  connectOrCreate?: Prisma.HallComponentCreateOrConnectWithoutLogsInput
   connect?: Prisma.HallComponentWhereUniqueInput
 }
 
-export type HallComponentUpdateOneRequiredWithoutMaintenance_logsNestedInput = {
-  create?: Prisma.XOR<Prisma.HallComponentCreateWithoutMaintenance_logsInput, Prisma.HallComponentUncheckedCreateWithoutMaintenance_logsInput>
-  connectOrCreate?: Prisma.HallComponentCreateOrConnectWithoutMaintenance_logsInput
-  upsert?: Prisma.HallComponentUpsertWithoutMaintenance_logsInput
+export type HallComponentUpdateOneRequiredWithoutLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.HallComponentCreateWithoutLogsInput, Prisma.HallComponentUncheckedCreateWithoutLogsInput>
+  connectOrCreate?: Prisma.HallComponentCreateOrConnectWithoutLogsInput
+  upsert?: Prisma.HallComponentUpsertWithoutLogsInput
   connect?: Prisma.HallComponentWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.HallComponentUpdateToOneWithWhereWithoutMaintenance_logsInput, Prisma.HallComponentUpdateWithoutMaintenance_logsInput>, Prisma.HallComponentUncheckedUpdateWithoutMaintenance_logsInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.HallComponentUpdateToOneWithWhereWithoutLogsInput, Prisma.HallComponentUpdateWithoutLogsInput>, Prisma.HallComponentUncheckedUpdateWithoutLogsInput>
+}
+
+export type HallComponentCreateNestedOneWithoutMaintenanceRequestsInput = {
+  create?: Prisma.XOR<Prisma.HallComponentCreateWithoutMaintenanceRequestsInput, Prisma.HallComponentUncheckedCreateWithoutMaintenanceRequestsInput>
+  connectOrCreate?: Prisma.HallComponentCreateOrConnectWithoutMaintenanceRequestsInput
+  connect?: Prisma.HallComponentWhereUniqueInput
+}
+
+export type HallComponentUpdateOneWithoutMaintenanceRequestsNestedInput = {
+  create?: Prisma.XOR<Prisma.HallComponentCreateWithoutMaintenanceRequestsInput, Prisma.HallComponentUncheckedCreateWithoutMaintenanceRequestsInput>
+  connectOrCreate?: Prisma.HallComponentCreateOrConnectWithoutMaintenanceRequestsInput
+  upsert?: Prisma.HallComponentUpsertWithoutMaintenanceRequestsInput
+  disconnect?: Prisma.HallComponentWhereInput | boolean
+  delete?: Prisma.HallComponentWhereInput | boolean
+  connect?: Prisma.HallComponentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.HallComponentUpdateToOneWithWhereWithoutMaintenanceRequestsInput, Prisma.HallComponentUpdateWithoutMaintenanceRequestsInput>, Prisma.HallComponentUncheckedUpdateWithoutMaintenanceRequestsInput>
 }
 
 export type HallComponentCreateWithoutHallInput = {
@@ -532,7 +564,8 @@ export type HallComponentCreateWithoutHallInput = {
   notes?: string | null
   created_at?: Date | string
   updated_at?: Date | string
-  maintenance_logs?: Prisma.ComponentMaintenanceLogCreateNestedManyWithoutComponentInput
+  logs?: Prisma.ComponentMaintenanceLogCreateNestedManyWithoutComponentInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutComponentInput
 }
 
 export type HallComponentUncheckedCreateWithoutHallInput = {
@@ -546,7 +579,8 @@ export type HallComponentUncheckedCreateWithoutHallInput = {
   notes?: string | null
   created_at?: Date | string
   updated_at?: Date | string
-  maintenance_logs?: Prisma.ComponentMaintenanceLogUncheckedCreateNestedManyWithoutComponentInput
+  logs?: Prisma.ComponentMaintenanceLogUncheckedCreateNestedManyWithoutComponentInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutComponentInput
 }
 
 export type HallComponentCreateOrConnectWithoutHallInput = {
@@ -580,6 +614,7 @@ export type HallComponentScalarWhereInput = {
   OR?: Prisma.HallComponentScalarWhereInput[]
   NOT?: Prisma.HallComponentScalarWhereInput | Prisma.HallComponentScalarWhereInput[]
   id?: Prisma.StringFilter<"HallComponent"> | string
+  hall_id?: Prisma.StringFilter<"HallComponent"> | string
   name?: Prisma.StringFilter<"HallComponent"> | string
   type?: Prisma.EnumComponentTypeFilter<"HallComponent"> | $Enums.ComponentType
   status?: Prisma.EnumComponentStatusFilter<"HallComponent"> | $Enums.ComponentStatus
@@ -589,10 +624,9 @@ export type HallComponentScalarWhereInput = {
   notes?: Prisma.StringNullableFilter<"HallComponent"> | string | null
   created_at?: Prisma.DateTimeFilter<"HallComponent"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"HallComponent"> | Date | string
-  hall_id?: Prisma.StringFilter<"HallComponent"> | string
 }
 
-export type HallComponentCreateWithoutMaintenance_logsInput = {
+export type HallComponentCreateWithoutLogsInput = {
   id?: string
   name: string
   type: $Enums.ComponentType
@@ -604,10 +638,12 @@ export type HallComponentCreateWithoutMaintenance_logsInput = {
   created_at?: Date | string
   updated_at?: Date | string
   hall: Prisma.SeminarHallCreateNestedOneWithoutComponentsInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutComponentInput
 }
 
-export type HallComponentUncheckedCreateWithoutMaintenance_logsInput = {
+export type HallComponentUncheckedCreateWithoutLogsInput = {
   id?: string
+  hall_id: string
   name: string
   type: $Enums.ComponentType
   status?: $Enums.ComponentStatus
@@ -617,26 +653,26 @@ export type HallComponentUncheckedCreateWithoutMaintenance_logsInput = {
   notes?: string | null
   created_at?: Date | string
   updated_at?: Date | string
-  hall_id: string
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutComponentInput
 }
 
-export type HallComponentCreateOrConnectWithoutMaintenance_logsInput = {
+export type HallComponentCreateOrConnectWithoutLogsInput = {
   where: Prisma.HallComponentWhereUniqueInput
-  create: Prisma.XOR<Prisma.HallComponentCreateWithoutMaintenance_logsInput, Prisma.HallComponentUncheckedCreateWithoutMaintenance_logsInput>
+  create: Prisma.XOR<Prisma.HallComponentCreateWithoutLogsInput, Prisma.HallComponentUncheckedCreateWithoutLogsInput>
 }
 
-export type HallComponentUpsertWithoutMaintenance_logsInput = {
-  update: Prisma.XOR<Prisma.HallComponentUpdateWithoutMaintenance_logsInput, Prisma.HallComponentUncheckedUpdateWithoutMaintenance_logsInput>
-  create: Prisma.XOR<Prisma.HallComponentCreateWithoutMaintenance_logsInput, Prisma.HallComponentUncheckedCreateWithoutMaintenance_logsInput>
+export type HallComponentUpsertWithoutLogsInput = {
+  update: Prisma.XOR<Prisma.HallComponentUpdateWithoutLogsInput, Prisma.HallComponentUncheckedUpdateWithoutLogsInput>
+  create: Prisma.XOR<Prisma.HallComponentCreateWithoutLogsInput, Prisma.HallComponentUncheckedCreateWithoutLogsInput>
   where?: Prisma.HallComponentWhereInput
 }
 
-export type HallComponentUpdateToOneWithWhereWithoutMaintenance_logsInput = {
+export type HallComponentUpdateToOneWithWhereWithoutLogsInput = {
   where?: Prisma.HallComponentWhereInput
-  data: Prisma.XOR<Prisma.HallComponentUpdateWithoutMaintenance_logsInput, Prisma.HallComponentUncheckedUpdateWithoutMaintenance_logsInput>
+  data: Prisma.XOR<Prisma.HallComponentUpdateWithoutLogsInput, Prisma.HallComponentUncheckedUpdateWithoutLogsInput>
 }
 
-export type HallComponentUpdateWithoutMaintenance_logsInput = {
+export type HallComponentUpdateWithoutLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType
@@ -648,9 +684,71 @@ export type HallComponentUpdateWithoutMaintenance_logsInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   hall?: Prisma.SeminarHallUpdateOneRequiredWithoutComponentsNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutComponentNestedInput
 }
 
-export type HallComponentUncheckedUpdateWithoutMaintenance_logsInput = {
+export type HallComponentUncheckedUpdateWithoutLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  hall_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType
+  status?: Prisma.EnumComponentStatusFieldUpdateOperationsInput | $Enums.ComponentStatus
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  installation_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  last_maintenance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutComponentNestedInput
+}
+
+export type HallComponentCreateWithoutMaintenanceRequestsInput = {
+  id?: string
+  name: string
+  type: $Enums.ComponentType
+  status?: $Enums.ComponentStatus
+  location?: string | null
+  installation_date?: Date | string | null
+  last_maintenance?: Date | string | null
+  notes?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  hall: Prisma.SeminarHallCreateNestedOneWithoutComponentsInput
+  logs?: Prisma.ComponentMaintenanceLogCreateNestedManyWithoutComponentInput
+}
+
+export type HallComponentUncheckedCreateWithoutMaintenanceRequestsInput = {
+  id?: string
+  hall_id: string
+  name: string
+  type: $Enums.ComponentType
+  status?: $Enums.ComponentStatus
+  location?: string | null
+  installation_date?: Date | string | null
+  last_maintenance?: Date | string | null
+  notes?: string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  logs?: Prisma.ComponentMaintenanceLogUncheckedCreateNestedManyWithoutComponentInput
+}
+
+export type HallComponentCreateOrConnectWithoutMaintenanceRequestsInput = {
+  where: Prisma.HallComponentWhereUniqueInput
+  create: Prisma.XOR<Prisma.HallComponentCreateWithoutMaintenanceRequestsInput, Prisma.HallComponentUncheckedCreateWithoutMaintenanceRequestsInput>
+}
+
+export type HallComponentUpsertWithoutMaintenanceRequestsInput = {
+  update: Prisma.XOR<Prisma.HallComponentUpdateWithoutMaintenanceRequestsInput, Prisma.HallComponentUncheckedUpdateWithoutMaintenanceRequestsInput>
+  create: Prisma.XOR<Prisma.HallComponentCreateWithoutMaintenanceRequestsInput, Prisma.HallComponentUncheckedCreateWithoutMaintenanceRequestsInput>
+  where?: Prisma.HallComponentWhereInput
+}
+
+export type HallComponentUpdateToOneWithWhereWithoutMaintenanceRequestsInput = {
+  where?: Prisma.HallComponentWhereInput
+  data: Prisma.XOR<Prisma.HallComponentUpdateWithoutMaintenanceRequestsInput, Prisma.HallComponentUncheckedUpdateWithoutMaintenanceRequestsInput>
+}
+
+export type HallComponentUpdateWithoutMaintenanceRequestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType
@@ -661,7 +759,23 @@ export type HallComponentUncheckedUpdateWithoutMaintenance_logsInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  hall?: Prisma.SeminarHallUpdateOneRequiredWithoutComponentsNestedInput
+  logs?: Prisma.ComponentMaintenanceLogUpdateManyWithoutComponentNestedInput
+}
+
+export type HallComponentUncheckedUpdateWithoutMaintenanceRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   hall_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType
+  status?: Prisma.EnumComponentStatusFieldUpdateOperationsInput | $Enums.ComponentStatus
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  installation_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  last_maintenance?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  logs?: Prisma.ComponentMaintenanceLogUncheckedUpdateManyWithoutComponentNestedInput
 }
 
 export type HallComponentCreateManyHallInput = {
@@ -688,7 +802,8 @@ export type HallComponentUpdateWithoutHallInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  maintenance_logs?: Prisma.ComponentMaintenanceLogUpdateManyWithoutComponentNestedInput
+  logs?: Prisma.ComponentMaintenanceLogUpdateManyWithoutComponentNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutComponentNestedInput
 }
 
 export type HallComponentUncheckedUpdateWithoutHallInput = {
@@ -702,7 +817,8 @@ export type HallComponentUncheckedUpdateWithoutHallInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  maintenance_logs?: Prisma.ComponentMaintenanceLogUncheckedUpdateManyWithoutComponentNestedInput
+  logs?: Prisma.ComponentMaintenanceLogUncheckedUpdateManyWithoutComponentNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutComponentNestedInput
 }
 
 export type HallComponentUncheckedUpdateManyWithoutHallInput = {
@@ -724,11 +840,13 @@ export type HallComponentUncheckedUpdateManyWithoutHallInput = {
  */
 
 export type HallComponentCountOutputType = {
-  maintenance_logs: number
+  logs: number
+  maintenanceRequests: number
 }
 
 export type HallComponentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  maintenance_logs?: boolean | HallComponentCountOutputTypeCountMaintenance_logsArgs
+  logs?: boolean | HallComponentCountOutputTypeCountLogsArgs
+  maintenanceRequests?: boolean | HallComponentCountOutputTypeCountMaintenanceRequestsArgs
 }
 
 /**
@@ -744,13 +862,21 @@ export type HallComponentCountOutputTypeDefaultArgs<ExtArgs extends runtime.Type
 /**
  * HallComponentCountOutputType without action
  */
-export type HallComponentCountOutputTypeCountMaintenance_logsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type HallComponentCountOutputTypeCountLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ComponentMaintenanceLogWhereInput
+}
+
+/**
+ * HallComponentCountOutputType without action
+ */
+export type HallComponentCountOutputTypeCountMaintenanceRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MaintenanceRequestWhereInput
 }
 
 
 export type HallComponentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  hall_id?: boolean
   name?: boolean
   type?: boolean
   status?: boolean
@@ -760,14 +886,15 @@ export type HallComponentSelect<ExtArgs extends runtime.Types.Extensions.Interna
   notes?: boolean
   created_at?: boolean
   updated_at?: boolean
-  hall_id?: boolean
   hall?: boolean | Prisma.SeminarHallDefaultArgs<ExtArgs>
-  maintenance_logs?: boolean | Prisma.HallComponent$maintenance_logsArgs<ExtArgs>
+  logs?: boolean | Prisma.HallComponent$logsArgs<ExtArgs>
+  maintenanceRequests?: boolean | Prisma.HallComponent$maintenanceRequestsArgs<ExtArgs>
   _count?: boolean | Prisma.HallComponentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["hallComponent"]>
 
 export type HallComponentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  hall_id?: boolean
   name?: boolean
   type?: boolean
   status?: boolean
@@ -777,12 +904,12 @@ export type HallComponentSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   notes?: boolean
   created_at?: boolean
   updated_at?: boolean
-  hall_id?: boolean
   hall?: boolean | Prisma.SeminarHallDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["hallComponent"]>
 
 export type HallComponentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  hall_id?: boolean
   name?: boolean
   type?: boolean
   status?: boolean
@@ -792,12 +919,12 @@ export type HallComponentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   notes?: boolean
   created_at?: boolean
   updated_at?: boolean
-  hall_id?: boolean
   hall?: boolean | Prisma.SeminarHallDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["hallComponent"]>
 
 export type HallComponentSelectScalar = {
   id?: boolean
+  hall_id?: boolean
   name?: boolean
   type?: boolean
   status?: boolean
@@ -807,13 +934,13 @@ export type HallComponentSelectScalar = {
   notes?: boolean
   created_at?: boolean
   updated_at?: boolean
-  hall_id?: boolean
 }
 
-export type HallComponentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "type" | "status" | "location" | "installation_date" | "last_maintenance" | "notes" | "created_at" | "updated_at" | "hall_id", ExtArgs["result"]["hallComponent"]>
+export type HallComponentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "hall_id" | "name" | "type" | "status" | "location" | "installation_date" | "last_maintenance" | "notes" | "created_at" | "updated_at", ExtArgs["result"]["hallComponent"]>
 export type HallComponentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   hall?: boolean | Prisma.SeminarHallDefaultArgs<ExtArgs>
-  maintenance_logs?: boolean | Prisma.HallComponent$maintenance_logsArgs<ExtArgs>
+  logs?: boolean | Prisma.HallComponent$logsArgs<ExtArgs>
+  maintenanceRequests?: boolean | Prisma.HallComponent$maintenanceRequestsArgs<ExtArgs>
   _count?: boolean | Prisma.HallComponentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type HallComponentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -827,10 +954,12 @@ export type $HallComponentPayload<ExtArgs extends runtime.Types.Extensions.Inter
   name: "HallComponent"
   objects: {
     hall: Prisma.$SeminarHallPayload<ExtArgs>
-    maintenance_logs: Prisma.$ComponentMaintenanceLogPayload<ExtArgs>[]
+    logs: Prisma.$ComponentMaintenanceLogPayload<ExtArgs>[]
+    maintenanceRequests: Prisma.$MaintenanceRequestPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    hall_id: string
     name: string
     type: $Enums.ComponentType
     status: $Enums.ComponentStatus
@@ -840,7 +969,6 @@ export type $HallComponentPayload<ExtArgs extends runtime.Types.Extensions.Inter
     notes: string | null
     created_at: Date
     updated_at: Date
-    hall_id: string
   }, ExtArgs["result"]["hallComponent"]>
   composites: {}
 }
@@ -1236,7 +1364,8 @@ readonly fields: HallComponentFieldRefs;
 export interface Prisma__HallComponentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   hall<T extends Prisma.SeminarHallDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SeminarHallDefaultArgs<ExtArgs>>): Prisma.Prisma__SeminarHallClient<runtime.Types.Result.GetResult<Prisma.$SeminarHallPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  maintenance_logs<T extends Prisma.HallComponent$maintenance_logsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.HallComponent$maintenance_logsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ComponentMaintenanceLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  logs<T extends Prisma.HallComponent$logsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.HallComponent$logsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ComponentMaintenanceLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  maintenanceRequests<T extends Prisma.HallComponent$maintenanceRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.HallComponent$maintenanceRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MaintenanceRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1267,6 +1396,7 @@ export interface Prisma__HallComponentClient<T, Null = never, ExtArgs extends ru
  */
 export interface HallComponentFieldRefs {
   readonly id: Prisma.FieldRef<"HallComponent", 'String'>
+  readonly hall_id: Prisma.FieldRef<"HallComponent", 'String'>
   readonly name: Prisma.FieldRef<"HallComponent", 'String'>
   readonly type: Prisma.FieldRef<"HallComponent", 'ComponentType'>
   readonly status: Prisma.FieldRef<"HallComponent", 'ComponentStatus'>
@@ -1276,7 +1406,6 @@ export interface HallComponentFieldRefs {
   readonly notes: Prisma.FieldRef<"HallComponent", 'String'>
   readonly created_at: Prisma.FieldRef<"HallComponent", 'DateTime'>
   readonly updated_at: Prisma.FieldRef<"HallComponent", 'DateTime'>
-  readonly hall_id: Prisma.FieldRef<"HallComponent", 'String'>
 }
     
 
@@ -1673,9 +1802,9 @@ export type HallComponentDeleteManyArgs<ExtArgs extends runtime.Types.Extensions
 }
 
 /**
- * HallComponent.maintenance_logs
+ * HallComponent.logs
  */
-export type HallComponent$maintenance_logsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type HallComponent$logsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the ComponentMaintenanceLog
    */
@@ -1694,6 +1823,30 @@ export type HallComponent$maintenance_logsArgs<ExtArgs extends runtime.Types.Ext
   take?: number
   skip?: number
   distinct?: Prisma.ComponentMaintenanceLogScalarFieldEnum | Prisma.ComponentMaintenanceLogScalarFieldEnum[]
+}
+
+/**
+ * HallComponent.maintenanceRequests
+ */
+export type HallComponent$maintenanceRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MaintenanceRequest
+   */
+  select?: Prisma.MaintenanceRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MaintenanceRequest
+   */
+  omit?: Prisma.MaintenanceRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MaintenanceRequestInclude<ExtArgs> | null
+  where?: Prisma.MaintenanceRequestWhereInput
+  orderBy?: Prisma.MaintenanceRequestOrderByWithRelationInput | Prisma.MaintenanceRequestOrderByWithRelationInput[]
+  cursor?: Prisma.MaintenanceRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MaintenanceRequestScalarFieldEnum | Prisma.MaintenanceRequestScalarFieldEnum[]
 }
 
 /**

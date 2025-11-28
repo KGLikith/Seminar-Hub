@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { getProfile, getUserRole } from "@/actions/user"
+import { fetchProfilesByDepartment, getProfile, getUserRole } from "@/actions/user"
 
 export const useProfile = (userId: string | undefined) => {
   return useQuery({
@@ -16,3 +16,13 @@ export const useUserRole = (userId: string | undefined) => {
     enabled: !!userId,
   })
 }
+
+export const useGetUsersFromDepartment = (departmentId: string | undefined) => {
+  return useQuery({
+    queryKey: ["departmentUsers", departmentId],
+    queryFn: () => (departmentId ? fetchProfilesByDepartment(departmentId) : null),
+    enabled: !!departmentId,
+  })
+}
+
+

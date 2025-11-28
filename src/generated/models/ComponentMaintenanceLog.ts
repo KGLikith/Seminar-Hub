@@ -26,70 +26,70 @@ export type AggregateComponentMaintenanceLog = {
 
 export type ComponentMaintenanceLogMinAggregateOutputType = {
   id: string | null
+  component_id: string | null
   action: string | null
   previous_status: $Enums.ComponentStatus | null
   new_status: $Enums.ComponentStatus | null
   notes: string | null
-  created_at: Date | null
-  component_id: string | null
   performed_by: string | null
+  created_at: Date | null
 }
 
 export type ComponentMaintenanceLogMaxAggregateOutputType = {
   id: string | null
+  component_id: string | null
   action: string | null
   previous_status: $Enums.ComponentStatus | null
   new_status: $Enums.ComponentStatus | null
   notes: string | null
-  created_at: Date | null
-  component_id: string | null
   performed_by: string | null
+  created_at: Date | null
 }
 
 export type ComponentMaintenanceLogCountAggregateOutputType = {
   id: number
+  component_id: number
   action: number
   previous_status: number
   new_status: number
   notes: number
-  created_at: number
-  component_id: number
   performed_by: number
+  created_at: number
   _all: number
 }
 
 
 export type ComponentMaintenanceLogMinAggregateInputType = {
   id?: true
+  component_id?: true
   action?: true
   previous_status?: true
   new_status?: true
   notes?: true
-  created_at?: true
-  component_id?: true
   performed_by?: true
+  created_at?: true
 }
 
 export type ComponentMaintenanceLogMaxAggregateInputType = {
   id?: true
+  component_id?: true
   action?: true
   previous_status?: true
   new_status?: true
   notes?: true
-  created_at?: true
-  component_id?: true
   performed_by?: true
+  created_at?: true
 }
 
 export type ComponentMaintenanceLogCountAggregateInputType = {
   id?: true
+  component_id?: true
   action?: true
   previous_status?: true
   new_status?: true
   notes?: true
-  created_at?: true
-  component_id?: true
   performed_by?: true
+  created_at?: true
   _all?: true
 }
 
@@ -167,13 +167,13 @@ export type ComponentMaintenanceLogGroupByArgs<ExtArgs extends runtime.Types.Ext
 
 export type ComponentMaintenanceLogGroupByOutputType = {
   id: string
+  component_id: string
   action: string
   previous_status: $Enums.ComponentStatus
   new_status: $Enums.ComponentStatus
   notes: string | null
-  created_at: Date
-  component_id: string
   performed_by: string
+  created_at: Date
   _count: ComponentMaintenanceLogCountAggregateOutputType | null
   _min: ComponentMaintenanceLogMinAggregateOutputType | null
   _max: ComponentMaintenanceLogMaxAggregateOutputType | null
@@ -199,26 +199,26 @@ export type ComponentMaintenanceLogWhereInput = {
   OR?: Prisma.ComponentMaintenanceLogWhereInput[]
   NOT?: Prisma.ComponentMaintenanceLogWhereInput | Prisma.ComponentMaintenanceLogWhereInput[]
   id?: Prisma.StringFilter<"ComponentMaintenanceLog"> | string
+  component_id?: Prisma.StringFilter<"ComponentMaintenanceLog"> | string
   action?: Prisma.StringFilter<"ComponentMaintenanceLog"> | string
   previous_status?: Prisma.EnumComponentStatusFilter<"ComponentMaintenanceLog"> | $Enums.ComponentStatus
   new_status?: Prisma.EnumComponentStatusFilter<"ComponentMaintenanceLog"> | $Enums.ComponentStatus
   notes?: Prisma.StringNullableFilter<"ComponentMaintenanceLog"> | string | null
-  created_at?: Prisma.DateTimeFilter<"ComponentMaintenanceLog"> | Date | string
-  component_id?: Prisma.StringFilter<"ComponentMaintenanceLog"> | string
   performed_by?: Prisma.StringFilter<"ComponentMaintenanceLog"> | string
+  created_at?: Prisma.DateTimeFilter<"ComponentMaintenanceLog"> | Date | string
   component?: Prisma.XOR<Prisma.HallComponentScalarRelationFilter, Prisma.HallComponentWhereInput>
   performer?: Prisma.XOR<Prisma.ProfileScalarRelationFilter, Prisma.ProfileWhereInput>
 }
 
 export type ComponentMaintenanceLogOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  component_id?: Prisma.SortOrder
   action?: Prisma.SortOrder
   previous_status?: Prisma.SortOrder
   new_status?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
-  created_at?: Prisma.SortOrder
-  component_id?: Prisma.SortOrder
   performed_by?: Prisma.SortOrder
+  created_at?: Prisma.SortOrder
   component?: Prisma.HallComponentOrderByWithRelationInput
   performer?: Prisma.ProfileOrderByWithRelationInput
 }
@@ -228,26 +228,26 @@ export type ComponentMaintenanceLogWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.ComponentMaintenanceLogWhereInput | Prisma.ComponentMaintenanceLogWhereInput[]
   OR?: Prisma.ComponentMaintenanceLogWhereInput[]
   NOT?: Prisma.ComponentMaintenanceLogWhereInput | Prisma.ComponentMaintenanceLogWhereInput[]
+  component_id?: Prisma.StringFilter<"ComponentMaintenanceLog"> | string
   action?: Prisma.StringFilter<"ComponentMaintenanceLog"> | string
   previous_status?: Prisma.EnumComponentStatusFilter<"ComponentMaintenanceLog"> | $Enums.ComponentStatus
   new_status?: Prisma.EnumComponentStatusFilter<"ComponentMaintenanceLog"> | $Enums.ComponentStatus
   notes?: Prisma.StringNullableFilter<"ComponentMaintenanceLog"> | string | null
-  created_at?: Prisma.DateTimeFilter<"ComponentMaintenanceLog"> | Date | string
-  component_id?: Prisma.StringFilter<"ComponentMaintenanceLog"> | string
   performed_by?: Prisma.StringFilter<"ComponentMaintenanceLog"> | string
+  created_at?: Prisma.DateTimeFilter<"ComponentMaintenanceLog"> | Date | string
   component?: Prisma.XOR<Prisma.HallComponentScalarRelationFilter, Prisma.HallComponentWhereInput>
   performer?: Prisma.XOR<Prisma.ProfileScalarRelationFilter, Prisma.ProfileWhereInput>
 }, "id">
 
 export type ComponentMaintenanceLogOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  component_id?: Prisma.SortOrder
   action?: Prisma.SortOrder
   previous_status?: Prisma.SortOrder
   new_status?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
-  created_at?: Prisma.SortOrder
-  component_id?: Prisma.SortOrder
   performed_by?: Prisma.SortOrder
+  created_at?: Prisma.SortOrder
   _count?: Prisma.ComponentMaintenanceLogCountOrderByAggregateInput
   _max?: Prisma.ComponentMaintenanceLogMaxOrderByAggregateInput
   _min?: Prisma.ComponentMaintenanceLogMinOrderByAggregateInput
@@ -258,13 +258,13 @@ export type ComponentMaintenanceLogScalarWhereWithAggregatesInput = {
   OR?: Prisma.ComponentMaintenanceLogScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ComponentMaintenanceLogScalarWhereWithAggregatesInput | Prisma.ComponentMaintenanceLogScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"ComponentMaintenanceLog"> | string
+  component_id?: Prisma.StringWithAggregatesFilter<"ComponentMaintenanceLog"> | string
   action?: Prisma.StringWithAggregatesFilter<"ComponentMaintenanceLog"> | string
   previous_status?: Prisma.EnumComponentStatusWithAggregatesFilter<"ComponentMaintenanceLog"> | $Enums.ComponentStatus
   new_status?: Prisma.EnumComponentStatusWithAggregatesFilter<"ComponentMaintenanceLog"> | $Enums.ComponentStatus
   notes?: Prisma.StringNullableWithAggregatesFilter<"ComponentMaintenanceLog"> | string | null
-  created_at?: Prisma.DateTimeWithAggregatesFilter<"ComponentMaintenanceLog"> | Date | string
-  component_id?: Prisma.StringWithAggregatesFilter<"ComponentMaintenanceLog"> | string
   performed_by?: Prisma.StringWithAggregatesFilter<"ComponentMaintenanceLog"> | string
+  created_at?: Prisma.DateTimeWithAggregatesFilter<"ComponentMaintenanceLog"> | Date | string
 }
 
 export type ComponentMaintenanceLogCreateInput = {
@@ -274,19 +274,19 @@ export type ComponentMaintenanceLogCreateInput = {
   new_status: $Enums.ComponentStatus
   notes?: string | null
   created_at?: Date | string
-  component: Prisma.HallComponentCreateNestedOneWithoutMaintenance_logsInput
+  component: Prisma.HallComponentCreateNestedOneWithoutLogsInput
   performer: Prisma.ProfileCreateNestedOneWithoutComponentMaintenanceLogsInput
 }
 
 export type ComponentMaintenanceLogUncheckedCreateInput = {
   id?: string
+  component_id: string
   action: string
   previous_status: $Enums.ComponentStatus
   new_status: $Enums.ComponentStatus
   notes?: string | null
-  created_at?: Date | string
-  component_id: string
   performed_by: string
+  created_at?: Date | string
 }
 
 export type ComponentMaintenanceLogUpdateInput = {
@@ -296,30 +296,30 @@ export type ComponentMaintenanceLogUpdateInput = {
   new_status?: Prisma.EnumComponentStatusFieldUpdateOperationsInput | $Enums.ComponentStatus
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  component?: Prisma.HallComponentUpdateOneRequiredWithoutMaintenance_logsNestedInput
+  component?: Prisma.HallComponentUpdateOneRequiredWithoutLogsNestedInput
   performer?: Prisma.ProfileUpdateOneRequiredWithoutComponentMaintenanceLogsNestedInput
 }
 
 export type ComponentMaintenanceLogUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  component_id?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.StringFieldUpdateOperationsInput | string
   previous_status?: Prisma.EnumComponentStatusFieldUpdateOperationsInput | $Enums.ComponentStatus
   new_status?: Prisma.EnumComponentStatusFieldUpdateOperationsInput | $Enums.ComponentStatus
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  component_id?: Prisma.StringFieldUpdateOperationsInput | string
   performed_by?: Prisma.StringFieldUpdateOperationsInput | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ComponentMaintenanceLogCreateManyInput = {
   id?: string
+  component_id: string
   action: string
   previous_status: $Enums.ComponentStatus
   new_status: $Enums.ComponentStatus
   notes?: string | null
-  created_at?: Date | string
-  component_id: string
   performed_by: string
+  created_at?: Date | string
 }
 
 export type ComponentMaintenanceLogUpdateManyMutationInput = {
@@ -333,13 +333,13 @@ export type ComponentMaintenanceLogUpdateManyMutationInput = {
 
 export type ComponentMaintenanceLogUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  component_id?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.StringFieldUpdateOperationsInput | string
   previous_status?: Prisma.EnumComponentStatusFieldUpdateOperationsInput | $Enums.ComponentStatus
   new_status?: Prisma.EnumComponentStatusFieldUpdateOperationsInput | $Enums.ComponentStatus
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  component_id?: Prisma.StringFieldUpdateOperationsInput | string
   performed_by?: Prisma.StringFieldUpdateOperationsInput | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ComponentMaintenanceLogListRelationFilter = {
@@ -354,35 +354,35 @@ export type ComponentMaintenanceLogOrderByRelationAggregateInput = {
 
 export type ComponentMaintenanceLogCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  component_id?: Prisma.SortOrder
   action?: Prisma.SortOrder
   previous_status?: Prisma.SortOrder
   new_status?: Prisma.SortOrder
   notes?: Prisma.SortOrder
-  created_at?: Prisma.SortOrder
-  component_id?: Prisma.SortOrder
   performed_by?: Prisma.SortOrder
+  created_at?: Prisma.SortOrder
 }
 
 export type ComponentMaintenanceLogMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  component_id?: Prisma.SortOrder
   action?: Prisma.SortOrder
   previous_status?: Prisma.SortOrder
   new_status?: Prisma.SortOrder
   notes?: Prisma.SortOrder
-  created_at?: Prisma.SortOrder
-  component_id?: Prisma.SortOrder
   performed_by?: Prisma.SortOrder
+  created_at?: Prisma.SortOrder
 }
 
 export type ComponentMaintenanceLogMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  component_id?: Prisma.SortOrder
   action?: Prisma.SortOrder
   previous_status?: Prisma.SortOrder
   new_status?: Prisma.SortOrder
   notes?: Prisma.SortOrder
-  created_at?: Prisma.SortOrder
-  component_id?: Prisma.SortOrder
   performed_by?: Prisma.SortOrder
+  created_at?: Prisma.SortOrder
 }
 
 export type ComponentMaintenanceLogCreateNestedManyWithoutPerformerInput = {
@@ -476,17 +476,17 @@ export type ComponentMaintenanceLogCreateWithoutPerformerInput = {
   new_status: $Enums.ComponentStatus
   notes?: string | null
   created_at?: Date | string
-  component: Prisma.HallComponentCreateNestedOneWithoutMaintenance_logsInput
+  component: Prisma.HallComponentCreateNestedOneWithoutLogsInput
 }
 
 export type ComponentMaintenanceLogUncheckedCreateWithoutPerformerInput = {
   id?: string
+  component_id: string
   action: string
   previous_status: $Enums.ComponentStatus
   new_status: $Enums.ComponentStatus
   notes?: string | null
   created_at?: Date | string
-  component_id: string
 }
 
 export type ComponentMaintenanceLogCreateOrConnectWithoutPerformerInput = {
@@ -520,13 +520,13 @@ export type ComponentMaintenanceLogScalarWhereInput = {
   OR?: Prisma.ComponentMaintenanceLogScalarWhereInput[]
   NOT?: Prisma.ComponentMaintenanceLogScalarWhereInput | Prisma.ComponentMaintenanceLogScalarWhereInput[]
   id?: Prisma.StringFilter<"ComponentMaintenanceLog"> | string
+  component_id?: Prisma.StringFilter<"ComponentMaintenanceLog"> | string
   action?: Prisma.StringFilter<"ComponentMaintenanceLog"> | string
   previous_status?: Prisma.EnumComponentStatusFilter<"ComponentMaintenanceLog"> | $Enums.ComponentStatus
   new_status?: Prisma.EnumComponentStatusFilter<"ComponentMaintenanceLog"> | $Enums.ComponentStatus
   notes?: Prisma.StringNullableFilter<"ComponentMaintenanceLog"> | string | null
-  created_at?: Prisma.DateTimeFilter<"ComponentMaintenanceLog"> | Date | string
-  component_id?: Prisma.StringFilter<"ComponentMaintenanceLog"> | string
   performed_by?: Prisma.StringFilter<"ComponentMaintenanceLog"> | string
+  created_at?: Prisma.DateTimeFilter<"ComponentMaintenanceLog"> | Date | string
 }
 
 export type ComponentMaintenanceLogCreateWithoutComponentInput = {
@@ -545,8 +545,8 @@ export type ComponentMaintenanceLogUncheckedCreateWithoutComponentInput = {
   previous_status: $Enums.ComponentStatus
   new_status: $Enums.ComponentStatus
   notes?: string | null
-  created_at?: Date | string
   performed_by: string
+  created_at?: Date | string
 }
 
 export type ComponentMaintenanceLogCreateOrConnectWithoutComponentInput = {
@@ -577,12 +577,12 @@ export type ComponentMaintenanceLogUpdateManyWithWhereWithoutComponentInput = {
 
 export type ComponentMaintenanceLogCreateManyPerformerInput = {
   id?: string
+  component_id: string
   action: string
   previous_status: $Enums.ComponentStatus
   new_status: $Enums.ComponentStatus
   notes?: string | null
   created_at?: Date | string
-  component_id: string
 }
 
 export type ComponentMaintenanceLogUpdateWithoutPerformerInput = {
@@ -592,27 +592,27 @@ export type ComponentMaintenanceLogUpdateWithoutPerformerInput = {
   new_status?: Prisma.EnumComponentStatusFieldUpdateOperationsInput | $Enums.ComponentStatus
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  component?: Prisma.HallComponentUpdateOneRequiredWithoutMaintenance_logsNestedInput
+  component?: Prisma.HallComponentUpdateOneRequiredWithoutLogsNestedInput
 }
 
 export type ComponentMaintenanceLogUncheckedUpdateWithoutPerformerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  component_id?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.StringFieldUpdateOperationsInput | string
   previous_status?: Prisma.EnumComponentStatusFieldUpdateOperationsInput | $Enums.ComponentStatus
   new_status?: Prisma.EnumComponentStatusFieldUpdateOperationsInput | $Enums.ComponentStatus
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  component_id?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ComponentMaintenanceLogUncheckedUpdateManyWithoutPerformerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  component_id?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.StringFieldUpdateOperationsInput | string
   previous_status?: Prisma.EnumComponentStatusFieldUpdateOperationsInput | $Enums.ComponentStatus
   new_status?: Prisma.EnumComponentStatusFieldUpdateOperationsInput | $Enums.ComponentStatus
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  component_id?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ComponentMaintenanceLogCreateManyComponentInput = {
@@ -621,8 +621,8 @@ export type ComponentMaintenanceLogCreateManyComponentInput = {
   previous_status: $Enums.ComponentStatus
   new_status: $Enums.ComponentStatus
   notes?: string | null
-  created_at?: Date | string
   performed_by: string
+  created_at?: Date | string
 }
 
 export type ComponentMaintenanceLogUpdateWithoutComponentInput = {
@@ -641,8 +641,8 @@ export type ComponentMaintenanceLogUncheckedUpdateWithoutComponentInput = {
   previous_status?: Prisma.EnumComponentStatusFieldUpdateOperationsInput | $Enums.ComponentStatus
   new_status?: Prisma.EnumComponentStatusFieldUpdateOperationsInput | $Enums.ComponentStatus
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   performed_by?: Prisma.StringFieldUpdateOperationsInput | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ComponentMaintenanceLogUncheckedUpdateManyWithoutComponentInput = {
@@ -651,63 +651,63 @@ export type ComponentMaintenanceLogUncheckedUpdateManyWithoutComponentInput = {
   previous_status?: Prisma.EnumComponentStatusFieldUpdateOperationsInput | $Enums.ComponentStatus
   new_status?: Prisma.EnumComponentStatusFieldUpdateOperationsInput | $Enums.ComponentStatus
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   performed_by?: Prisma.StringFieldUpdateOperationsInput | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
 
 export type ComponentMaintenanceLogSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  component_id?: boolean
   action?: boolean
   previous_status?: boolean
   new_status?: boolean
   notes?: boolean
-  created_at?: boolean
-  component_id?: boolean
   performed_by?: boolean
+  created_at?: boolean
   component?: boolean | Prisma.HallComponentDefaultArgs<ExtArgs>
   performer?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["componentMaintenanceLog"]>
 
 export type ComponentMaintenanceLogSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  component_id?: boolean
   action?: boolean
   previous_status?: boolean
   new_status?: boolean
   notes?: boolean
-  created_at?: boolean
-  component_id?: boolean
   performed_by?: boolean
+  created_at?: boolean
   component?: boolean | Prisma.HallComponentDefaultArgs<ExtArgs>
   performer?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["componentMaintenanceLog"]>
 
 export type ComponentMaintenanceLogSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  component_id?: boolean
   action?: boolean
   previous_status?: boolean
   new_status?: boolean
   notes?: boolean
-  created_at?: boolean
-  component_id?: boolean
   performed_by?: boolean
+  created_at?: boolean
   component?: boolean | Prisma.HallComponentDefaultArgs<ExtArgs>
   performer?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["componentMaintenanceLog"]>
 
 export type ComponentMaintenanceLogSelectScalar = {
   id?: boolean
+  component_id?: boolean
   action?: boolean
   previous_status?: boolean
   new_status?: boolean
   notes?: boolean
-  created_at?: boolean
-  component_id?: boolean
   performed_by?: boolean
+  created_at?: boolean
 }
 
-export type ComponentMaintenanceLogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "action" | "previous_status" | "new_status" | "notes" | "created_at" | "component_id" | "performed_by", ExtArgs["result"]["componentMaintenanceLog"]>
+export type ComponentMaintenanceLogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "component_id" | "action" | "previous_status" | "new_status" | "notes" | "performed_by" | "created_at", ExtArgs["result"]["componentMaintenanceLog"]>
 export type ComponentMaintenanceLogInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   component?: boolean | Prisma.HallComponentDefaultArgs<ExtArgs>
   performer?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
@@ -729,13 +729,13 @@ export type $ComponentMaintenanceLogPayload<ExtArgs extends runtime.Types.Extens
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    component_id: string
     action: string
     previous_status: $Enums.ComponentStatus
     new_status: $Enums.ComponentStatus
     notes: string | null
-    created_at: Date
-    component_id: string
     performed_by: string
+    created_at: Date
   }, ExtArgs["result"]["componentMaintenanceLog"]>
   composites: {}
 }
@@ -1162,13 +1162,13 @@ export interface Prisma__ComponentMaintenanceLogClient<T, Null = never, ExtArgs 
  */
 export interface ComponentMaintenanceLogFieldRefs {
   readonly id: Prisma.FieldRef<"ComponentMaintenanceLog", 'String'>
+  readonly component_id: Prisma.FieldRef<"ComponentMaintenanceLog", 'String'>
   readonly action: Prisma.FieldRef<"ComponentMaintenanceLog", 'String'>
   readonly previous_status: Prisma.FieldRef<"ComponentMaintenanceLog", 'ComponentStatus'>
   readonly new_status: Prisma.FieldRef<"ComponentMaintenanceLog", 'ComponentStatus'>
   readonly notes: Prisma.FieldRef<"ComponentMaintenanceLog", 'String'>
-  readonly created_at: Prisma.FieldRef<"ComponentMaintenanceLog", 'DateTime'>
-  readonly component_id: Prisma.FieldRef<"ComponentMaintenanceLog", 'String'>
   readonly performed_by: Prisma.FieldRef<"ComponentMaintenanceLog", 'String'>
+  readonly created_at: Prisma.FieldRef<"ComponentMaintenanceLog", 'DateTime'>
 }
     
 

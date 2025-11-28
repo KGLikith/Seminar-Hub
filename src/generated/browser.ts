@@ -43,6 +43,11 @@ export type UserRoleAssignment = Prisma.UserRoleAssignmentModel
  */
 export type SeminarHall = Prisma.SeminarHallModel
 /**
+ * Model FavoriteHall
+ * 
+ */
+export type FavoriteHall = Prisma.FavoriteHallModel
+/**
  * Model HallTechStaff
  * 
  */
@@ -82,6 +87,11 @@ export type HallComponent = Prisma.HallComponentModel
  * 
  */
 export type ComponentMaintenanceLog = Prisma.ComponentMaintenanceLogModel
+/**
+ * Model MaintenanceRequest
+ * 
+ */
+export type MaintenanceRequest = Prisma.MaintenanceRequestModel
 /**
  * Model EmailLog
  * 

@@ -395,6 +395,7 @@ export const ModelName = {
   Profile: 'Profile',
   UserRoleAssignment: 'UserRoleAssignment',
   SeminarHall: 'SeminarHall',
+  FavoriteHall: 'FavoriteHall',
   HallTechStaff: 'HallTechStaff',
   Equipment: 'Equipment',
   EquipmentLog: 'EquipmentLog',
@@ -403,6 +404,7 @@ export const ModelName = {
   Notification: 'Notification',
   HallComponent: 'HallComponent',
   ComponentMaintenanceLog: 'ComponentMaintenanceLog',
+  MaintenanceRequest: 'MaintenanceRequest',
   EmailLog: 'EmailLog'
 } as const
 
@@ -419,7 +421,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "department" | "user" | "profile" | "userRoleAssignment" | "seminarHall" | "hallTechStaff" | "equipment" | "equipmentLog" | "booking" | "bookingLog" | "notification" | "hallComponent" | "componentMaintenanceLog" | "emailLog"
+    modelProps: "department" | "user" | "profile" | "userRoleAssignment" | "seminarHall" | "favoriteHall" | "hallTechStaff" | "equipment" | "equipmentLog" | "booking" | "bookingLog" | "notification" | "hallComponent" | "componentMaintenanceLog" | "maintenanceRequest" | "emailLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -790,6 +792,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.SeminarHallCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.SeminarHallCountAggregateOutputType> | number
+        }
+      }
+    }
+    FavoriteHall: {
+      payload: Prisma.$FavoriteHallPayload<ExtArgs>
+      fields: Prisma.FavoriteHallFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FavoriteHallFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FavoriteHallPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FavoriteHallFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FavoriteHallPayload>
+        }
+        findFirst: {
+          args: Prisma.FavoriteHallFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FavoriteHallPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FavoriteHallFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FavoriteHallPayload>
+        }
+        findMany: {
+          args: Prisma.FavoriteHallFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FavoriteHallPayload>[]
+        }
+        create: {
+          args: Prisma.FavoriteHallCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FavoriteHallPayload>
+        }
+        createMany: {
+          args: Prisma.FavoriteHallCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.FavoriteHallCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FavoriteHallPayload>[]
+        }
+        delete: {
+          args: Prisma.FavoriteHallDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FavoriteHallPayload>
+        }
+        update: {
+          args: Prisma.FavoriteHallUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FavoriteHallPayload>
+        }
+        deleteMany: {
+          args: Prisma.FavoriteHallDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FavoriteHallUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.FavoriteHallUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FavoriteHallPayload>[]
+        }
+        upsert: {
+          args: Prisma.FavoriteHallUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FavoriteHallPayload>
+        }
+        aggregate: {
+          args: Prisma.FavoriteHallAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFavoriteHall>
+        }
+        groupBy: {
+          args: Prisma.FavoriteHallGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FavoriteHallGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FavoriteHallCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FavoriteHallCountAggregateOutputType> | number
         }
       }
     }
@@ -1385,6 +1461,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    MaintenanceRequest: {
+      payload: Prisma.$MaintenanceRequestPayload<ExtArgs>
+      fields: Prisma.MaintenanceRequestFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MaintenanceRequestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaintenanceRequestPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MaintenanceRequestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaintenanceRequestPayload>
+        }
+        findFirst: {
+          args: Prisma.MaintenanceRequestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaintenanceRequestPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MaintenanceRequestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaintenanceRequestPayload>
+        }
+        findMany: {
+          args: Prisma.MaintenanceRequestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaintenanceRequestPayload>[]
+        }
+        create: {
+          args: Prisma.MaintenanceRequestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaintenanceRequestPayload>
+        }
+        createMany: {
+          args: Prisma.MaintenanceRequestCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MaintenanceRequestCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaintenanceRequestPayload>[]
+        }
+        delete: {
+          args: Prisma.MaintenanceRequestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaintenanceRequestPayload>
+        }
+        update: {
+          args: Prisma.MaintenanceRequestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaintenanceRequestPayload>
+        }
+        deleteMany: {
+          args: Prisma.MaintenanceRequestDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MaintenanceRequestUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MaintenanceRequestUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaintenanceRequestPayload>[]
+        }
+        upsert: {
+          args: Prisma.MaintenanceRequestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaintenanceRequestPayload>
+        }
+        aggregate: {
+          args: Prisma.MaintenanceRequestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMaintenanceRequest>
+        }
+        groupBy: {
+          args: Prisma.MaintenanceRequestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MaintenanceRequestGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MaintenanceRequestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MaintenanceRequestCountAggregateOutputType> | number
+        }
+      }
+    }
     EmailLog: {
       payload: Prisma.$EmailLogPayload<ExtArgs>
       fields: Prisma.EmailLogFieldRefs
@@ -1503,7 +1653,8 @@ export const DepartmentScalarFieldEnum = {
   name: 'name',
   description: 'description',
   created_at: 'created_at',
-  updated_at: 'updated_at'
+  updated_at: 'updated_at',
+  hod_id: 'hod_id'
 } as const
 
 export type DepartmentScalarFieldEnum = (typeof DepartmentScalarFieldEnum)[keyof typeof DepartmentScalarFieldEnum]
@@ -1561,6 +1712,16 @@ export const SeminarHallScalarFieldEnum = {
 } as const
 
 export type SeminarHallScalarFieldEnum = (typeof SeminarHallScalarFieldEnum)[keyof typeof SeminarHallScalarFieldEnum]
+
+
+export const FavoriteHallScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  hall_id: 'hall_id',
+  created_at: 'created_at'
+} as const
+
+export type FavoriteHallScalarFieldEnum = (typeof FavoriteHallScalarFieldEnum)[keyof typeof FavoriteHallScalarFieldEnum]
 
 
 export const HallTechStaffScalarFieldEnum = {
@@ -1656,6 +1817,7 @@ export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[k
 
 export const HallComponentScalarFieldEnum = {
   id: 'id',
+  hall_id: 'hall_id',
   name: 'name',
   type: 'type',
   status: 'status',
@@ -1664,8 +1826,7 @@ export const HallComponentScalarFieldEnum = {
   last_maintenance: 'last_maintenance',
   notes: 'notes',
   created_at: 'created_at',
-  updated_at: 'updated_at',
-  hall_id: 'hall_id'
+  updated_at: 'updated_at'
 } as const
 
 export type HallComponentScalarFieldEnum = (typeof HallComponentScalarFieldEnum)[keyof typeof HallComponentScalarFieldEnum]
@@ -1673,16 +1834,37 @@ export type HallComponentScalarFieldEnum = (typeof HallComponentScalarFieldEnum)
 
 export const ComponentMaintenanceLogScalarFieldEnum = {
   id: 'id',
+  component_id: 'component_id',
   action: 'action',
   previous_status: 'previous_status',
   new_status: 'new_status',
   notes: 'notes',
-  created_at: 'created_at',
-  component_id: 'component_id',
-  performed_by: 'performed_by'
+  performed_by: 'performed_by',
+  created_at: 'created_at'
 } as const
 
 export type ComponentMaintenanceLogScalarFieldEnum = (typeof ComponentMaintenanceLogScalarFieldEnum)[keyof typeof ComponentMaintenanceLogScalarFieldEnum]
+
+
+export const MaintenanceRequestScalarFieldEnum = {
+  id: 'id',
+  hall_id: 'hall_id',
+  tech_staff_id: 'tech_staff_id',
+  component_id: 'component_id',
+  equipment_id: 'equipment_id',
+  request_type: 'request_type',
+  title: 'title',
+  description: 'description',
+  priority: 'priority',
+  status: 'status',
+  hod_id: 'hod_id',
+  approved_at: 'approved_at',
+  rejection_reason: 'rejection_reason',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type MaintenanceRequestScalarFieldEnum = (typeof MaintenanceRequestScalarFieldEnum)[keyof typeof MaintenanceRequestScalarFieldEnum]
 
 
 export const EmailLogScalarFieldEnum = {
@@ -1816,16 +1998,16 @@ export type ListEnumHallStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$P
 
 
 /**
- * Reference to a field of type 'ComponentType'
+ * Reference to a field of type 'EquipmentType'
  */
-export type EnumComponentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ComponentType'>
+export type EnumEquipmentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EquipmentType'>
     
 
 
 /**
- * Reference to a field of type 'ComponentType[]'
+ * Reference to a field of type 'EquipmentType[]'
  */
-export type ListEnumComponentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ComponentType[]'>
+export type ListEnumEquipmentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EquipmentType[]'>
     
 
 
@@ -1879,6 +2061,20 @@ export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
+ * Reference to a field of type 'ComponentType'
+ */
+export type EnumComponentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ComponentType'>
+    
+
+
+/**
+ * Reference to a field of type 'ComponentType[]'
+ */
+export type ListEnumComponentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ComponentType[]'>
+    
+
+
+/**
  * Reference to a field of type 'ComponentStatus'
  */
 export type EnumComponentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ComponentStatus'>
@@ -1889,6 +2085,20 @@ export type EnumComponentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$
  * Reference to a field of type 'ComponentStatus[]'
  */
 export type ListEnumComponentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ComponentStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'MaintenanceRequestStatus'
+ */
+export type EnumMaintenanceRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MaintenanceRequestStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'MaintenanceRequestStatus[]'
+ */
+export type ListEnumMaintenanceRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MaintenanceRequestStatus[]'>
     
 
 
@@ -1997,6 +2207,7 @@ export type GlobalOmitConfig = {
   profile?: Prisma.ProfileOmit
   userRoleAssignment?: Prisma.UserRoleAssignmentOmit
   seminarHall?: Prisma.SeminarHallOmit
+  favoriteHall?: Prisma.FavoriteHallOmit
   hallTechStaff?: Prisma.HallTechStaffOmit
   equipment?: Prisma.EquipmentOmit
   equipmentLog?: Prisma.EquipmentLogOmit
@@ -2005,6 +2216,7 @@ export type GlobalOmitConfig = {
   notification?: Prisma.NotificationOmit
   hallComponent?: Prisma.HallComponentOmit
   componentMaintenanceLog?: Prisma.ComponentMaintenanceLogOmit
+  maintenanceRequest?: Prisma.MaintenanceRequestOmit
   emailLog?: Prisma.EmailLogOmit
 }
 

@@ -20,9 +20,9 @@ import { useRouter } from "next/navigation"
 
 const HODApproval = () => {
   const navigate = useRouter()
-  const userId = "user-id-from-auth" // Get from your auth context
+  const userId = "user-id-from-auth"
 
-  const { data: bookings = [], isLoading } = useBookings({ status: "pending" })
+  const { data: bookings = [], isLoading } = useBookings({ status: ["pending"] })
   const { mutate: approveBooking, isPending: approving } = useApproveBooking()
   const { mutate: rejectBooking, isPending: rejecting } = useRejectBooking()
 
@@ -85,14 +85,14 @@ const HODApproval = () => {
 
   return (
     <div className="min-h-screen bg-linear-to-br from-background to-muted/30">
-      <header className="border-b bg-card/95 backdrop-blur">
+      {/* <header className="border-b bg-card/95 backdrop-blur">
         <div className="container mx-auto px-4 py-4">
           <Button variant="ghost" onClick={() => navigate.push("/dashboard")}>
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Dashboard
           </Button>
         </div>
-      </header>
+      </header> */}
 
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8 fade-in">
