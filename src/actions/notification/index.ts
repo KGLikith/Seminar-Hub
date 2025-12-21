@@ -2,7 +2,7 @@
 import prisma from "@/lib/db";
 
 export async function getNotifications(userId: string, unreadOnly = false) {
-  return await prisma.notification.findMany({
+  const notication =  await prisma.notification.findMany({
     where: {
       user_id: userId,
       ...(unreadOnly && { read: false }),
@@ -10,6 +10,10 @@ export async function getNotifications(userId: string, unreadOnly = false) {
     include: { relatedBooking: true },
     orderBy: { created_at: "desc" },
   });
+
+  console.log(notication);
+
+  return notication
 }
 
 export async function markNotificationAsRead(notificationId: string) {

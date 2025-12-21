@@ -3,12 +3,12 @@ import React, { useState } from "react";
 import { useAuth, useSignIn } from "@clerk/nextjs";
 import type { NextPage } from "next";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
 import { Loader } from "@/components/_components/loader";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { toast } from "sonner";
 
 // const formschema = z.object({
 //   email: z
@@ -32,7 +32,6 @@ const ForgotPasswordPage: NextPage = () => {
 
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
-  const { toast } = useToast();
   const { isSignedIn } = useAuth();
   const { isLoaded, signIn, setActive } = useSignIn();
 
@@ -69,10 +68,8 @@ const ForgotPasswordPage: NextPage = () => {
       })
       .catch((err) => {
         console.log("error", err.errors[0].longMessage);
-        toast({
-          variant: "destructive",
-          duration: 2000,
-          description: err.errors[0].longMessage,
+        toast.error(err.errors[0].longMessage,{
+          duration: 3000
         });
         // setError(err.errors[0].longMessage);
       });
@@ -113,9 +110,7 @@ const ForgotPasswordPage: NextPage = () => {
       console.log("error", err.errors[0].longMessage);
       setPassword("");
       setCode("");
-      toast({
-        description: err.errors[0].longMessage,
-      });
+      toast.error(err.errors[0].longMessage);
       // setError(err.errors[0].longMessage);
     } finally {
       setLoading(false);

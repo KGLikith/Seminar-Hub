@@ -395,6 +395,7 @@ export const ModelName = {
   Profile: 'Profile',
   UserRoleAssignment: 'UserRoleAssignment',
   SeminarHall: 'SeminarHall',
+  HallImage: 'HallImage',
   FavoriteHall: 'FavoriteHall',
   HallTechStaff: 'HallTechStaff',
   Equipment: 'Equipment',
@@ -421,7 +422,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "department" | "user" | "profile" | "userRoleAssignment" | "seminarHall" | "favoriteHall" | "hallTechStaff" | "equipment" | "equipmentLog" | "booking" | "bookingLog" | "notification" | "hallComponent" | "componentMaintenanceLog" | "maintenanceRequest" | "emailLog"
+    modelProps: "department" | "user" | "profile" | "userRoleAssignment" | "seminarHall" | "hallImage" | "favoriteHall" | "hallTechStaff" | "equipment" | "equipmentLog" | "booking" | "bookingLog" | "notification" | "hallComponent" | "componentMaintenanceLog" | "maintenanceRequest" | "emailLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -792,6 +793,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.SeminarHallCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.SeminarHallCountAggregateOutputType> | number
+        }
+      }
+    }
+    HallImage: {
+      payload: Prisma.$HallImagePayload<ExtArgs>
+      fields: Prisma.HallImageFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.HallImageFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HallImagePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.HallImageFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HallImagePayload>
+        }
+        findFirst: {
+          args: Prisma.HallImageFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HallImagePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.HallImageFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HallImagePayload>
+        }
+        findMany: {
+          args: Prisma.HallImageFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HallImagePayload>[]
+        }
+        create: {
+          args: Prisma.HallImageCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HallImagePayload>
+        }
+        createMany: {
+          args: Prisma.HallImageCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.HallImageCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HallImagePayload>[]
+        }
+        delete: {
+          args: Prisma.HallImageDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HallImagePayload>
+        }
+        update: {
+          args: Prisma.HallImageUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HallImagePayload>
+        }
+        deleteMany: {
+          args: Prisma.HallImageDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.HallImageUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.HallImageUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HallImagePayload>[]
+        }
+        upsert: {
+          args: Prisma.HallImageUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$HallImagePayload>
+        }
+        aggregate: {
+          args: Prisma.HallImageAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateHallImage>
+        }
+        groupBy: {
+          args: Prisma.HallImageGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.HallImageGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.HallImageCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.HallImageCountAggregateOutputType> | number
         }
       }
     }
@@ -1714,6 +1789,16 @@ export const SeminarHallScalarFieldEnum = {
 export type SeminarHallScalarFieldEnum = (typeof SeminarHallScalarFieldEnum)[keyof typeof SeminarHallScalarFieldEnum]
 
 
+export const HallImageScalarFieldEnum = {
+  id: 'id',
+  hall_id: 'hall_id',
+  image_url: 'image_url',
+  created_at: 'created_at'
+} as const
+
+export type HallImageScalarFieldEnum = (typeof HallImageScalarFieldEnum)[keyof typeof HallImageScalarFieldEnum]
+
+
 export const FavoriteHallScalarFieldEnum = {
   id: 'id',
   user_id: 'user_id',
@@ -2207,6 +2292,7 @@ export type GlobalOmitConfig = {
   profile?: Prisma.ProfileOmit
   userRoleAssignment?: Prisma.UserRoleAssignmentOmit
   seminarHall?: Prisma.SeminarHallOmit
+  hallImage?: Prisma.HallImageOmit
   favoriteHall?: Prisma.FavoriteHallOmit
   hallTechStaff?: Prisma.HallTechStaffOmit
   equipment?: Prisma.EquipmentOmit

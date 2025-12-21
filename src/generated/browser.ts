@@ -43,6 +43,11 @@ export type UserRoleAssignment = Prisma.UserRoleAssignmentModel
  */
 export type SeminarHall = Prisma.SeminarHallModel
 /**
+ * Model HallImage
+ * 
+ */
+export type HallImage = Prisma.HallImageModel
+/**
  * Model FavoriteHall
  * 
  */

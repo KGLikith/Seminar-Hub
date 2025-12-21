@@ -23,6 +23,7 @@ const LoginForm = () => {
           errors={errors}
           register={register}
           name={field.name}
+          isSubmitted={false}
         />
       ))}
     </>

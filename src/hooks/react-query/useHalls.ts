@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { getHalls, getHallById, getHallsByProfileId, getAnalytics, getHallsForDepartment } from "@/actions/halls"
 import { DepartmentName } from "@/generated/enums"
+import { getHallImages } from "@/actions/halls/image"
 
 export const useHalls = () => {
   return useQuery({
@@ -39,3 +40,10 @@ export const useDepartmentHalls = (departmentId: string | undefined) => {
     enabled: !!departmentId,
   })
 }
+
+export const useHallImages = (hallId: string) =>
+  useQuery({
+    queryKey: ["hall-images", hallId],
+    queryFn: () => getHallImages(hallId),
+    enabled: !!hallId,
+  });

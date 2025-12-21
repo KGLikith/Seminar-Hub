@@ -1,11 +1,19 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { useQuery, useMutation, useQueryClient, notifyManager } from "@tanstack/react-query"
 import { getNotifications, markNotificationAsRead } from "@/actions/notification"
 
 export const useNotifications = (userId: string | undefined, unreadOnly = false) => {
+  console.log("hello what s up", userId, unreadOnly)
   return useQuery({
     queryKey: ["notifications", userId, unreadOnly],
-    queryFn: () => (userId ? getNotifications(userId, unreadOnly) : null),
+    queryFn: () => {
+      if(!userId) return [];
+
+      const notication : any = useNotifications(userId, unreadOnly);
+
+      return notication;
+    },
     enabled: !!userId,
+    refetchInterval: 30_000
   })
 }
 

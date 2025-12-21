@@ -1,3 +1,4 @@
+'use server'
 import { MaintenanceRequestStatus } from "@/generated/enums";
 import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";

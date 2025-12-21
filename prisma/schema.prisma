@@ -8,6 +8,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// generator erd {
+//   provider = "prisma-erd-generator"
+//   output   = "./erd.png"
+// }
+
+
 enum UserRole {
   teacher
   hod
@@ -185,6 +191,7 @@ model SeminarHall {
   department_id String
   department    Department @relation(fields: [department_id], references: [id])
 
+  images              HallImage[]
   components          HallComponent[]
   maintenanceRequests MaintenanceRequest[]
   favoriteUsers       FavoriteHall[]
@@ -194,6 +201,18 @@ model SeminarHall {
 
   @@map("seminar_halls")
 }
+
+model HallImage {
+  id        String   @id @default(uuid())
+  hall_id   String
+  image_url String
+  created_at DateTime @default(now())
+
+  hall SeminarHall @relation(fields: [hall_id], references: [id], onDelete: Cascade)
+
+  @@index([hall_id])
+}
+
 
 model FavoriteHall {
   id         String   @id @default(uuid())
@@ -276,7 +295,6 @@ model Booking {
   created_at            DateTime      @default(now())
   updated_at            DateTime      @updatedAt
 
-  // NEW FIELDS
   expected_participants Int?
   special_requirements  String?
 

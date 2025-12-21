@@ -1,6 +1,7 @@
 "use server";
 import { BookingStatus } from "@/generated/enums";
 import prisma from "@/lib/db";
+import { connect } from "http2";
 
 export type BookingFilters = {
   hallId?: string;
@@ -64,9 +65,14 @@ export async function createBooking(data: {
   expectedParticipants?: number;
   specialRequirements?: string;
 }) {
+
+  console.log("Creating booking with data:", data);
   try {
     await prisma.booking.create({
       data: {
+        // hall: {
+        //   connect : { id: data.hallId },
+        // },
         hall_id: data.hallId,
         teacher_id: data.teacherId,
         booking_date: data.bookingDate,
@@ -122,7 +128,6 @@ export async function approveBooking(bookingId: string, hodId: string) {
     },
   });
 
-  // Create notification
   await prisma.notification.create({
     data: {
       user_id: booking.teacher_id,
@@ -162,7 +167,6 @@ export async function rejectBooking(
     },
   });
 
-  // Create notification
   await prisma.notification.create({
     data: {
       user_id: booking.teacher_id,

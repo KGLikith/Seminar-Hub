@@ -54,6 +54,7 @@ export const ModelName = {
   Profile: 'Profile',
   UserRoleAssignment: 'UserRoleAssignment',
   SeminarHall: 'SeminarHall',
+  HallImage: 'HallImage',
   FavoriteHall: 'FavoriteHall',
   HallTechStaff: 'HallTechStaff',
   Equipment: 'Equipment',
@@ -147,6 +148,16 @@ export const SeminarHallScalarFieldEnum = {
 } as const
 
 export type SeminarHallScalarFieldEnum = (typeof SeminarHallScalarFieldEnum)[keyof typeof SeminarHallScalarFieldEnum]
+
+
+export const HallImageScalarFieldEnum = {
+  id: 'id',
+  hall_id: 'hall_id',
+  image_url: 'image_url',
+  created_at: 'created_at'
+} as const
+
+export type HallImageScalarFieldEnum = (typeof HallImageScalarFieldEnum)[keyof typeof HallImageScalarFieldEnum]
 
 
 export const FavoriteHallScalarFieldEnum = {

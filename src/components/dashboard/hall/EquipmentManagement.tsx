@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Edit, Wrench } from "lucide-react";
+import { Plus, Edit, Wrench, Edit2 } from "lucide-react";
 import { useEquipmentByHall } from "@/hooks/react-query/useEquipments";
 import {  Equipment, EquipmentCondition, EquipmentType } from "@/generated/client";
 import { toast } from "sonner";
@@ -103,178 +103,97 @@ const EquipmentManagement = ({ hallId, canManage }: EquipmentManagementProps) =>
    };
 
    const getConditionColor = (condition: string) => {
-      switch (condition) {
-         case "active":
-            return "bg-success text-success-foreground";
-         case "not_working":
-            return "bg-destructive text-destructive-foreground";
-         case "under_repair":
-            return "bg-warning text-warning-foreground";
-         default:
-            return "bg-muted text-muted-foreground";
-      }
-   };
+    switch (condition) {
+      case "active":
+        return "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/30"
+      case "not_working":
+        return "bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-500/30"
+      case "under_repair":
+        return "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30"
+      default:
+        return "bg-slate-500/10 text-slate-700 dark:text-slate-400 border-slate-500/30"
+    }
+  }
 
    return (
-      <Card>
-         <CardHeader>
-            <div className="flex items-center justify-between">
-               <div>
-                  <CardTitle className="flex items-center gap-2">
-                     <Wrench className="h-5 w-5" />
-                     Equipment Management
-                  </CardTitle>
-                  <CardDescription>
-                     {canManage
-                        ? "Manage equipment for this hall"
-                        : "View equipment for this hall"}
-                  </CardDescription>
-               </div>
-               {canManage && (
-                  <Button onClick={() => handleOpenDialog()} size="sm">
-                     <Plus className="h-4 w-4 mr-2" />
-                     Add Equipment
-                  </Button>
-               )}
-            </div>
-         </CardHeader>
-         <CardContent>
-            <div className="space-y-3">
-               {equipment && equipment.length > 0 ? (
-                  equipment.map((item) => (
-                     <div
-                        key={item.id}
-                        className="flex items-center justify-between p-3 border rounded-lg"
-                     >
-                        <div className="flex-1">
-                           <p className="font-medium">{item.name}</p>
-                           <p className="text-sm text-muted-foreground">{item.type}</p>
-                           {item.serial_number && (
-                              <p className="text-xs text-muted-foreground mt-1">
-                                 SN: {item.serial_number}
-                              </p>
-                           )}
-                        </div>
-                        <div className="flex items-center gap-2">
-                           <Badge
-                              className={getConditionColor(item.condition)}
-                              variant="outline"
-                           >
-                              {item.condition.replace("_", " ")}
-                           </Badge>
-                           {canManage && (
-                              <Button
-                                 variant="ghost"
-                                 size="sm"
-                                 onClick={() => handleOpenDialog(item)}
-                              >
-                                 <Edit className="h-4 w-4" />
-                              </Button>
-                           )}
-                        </div>
-                     </div>
-                  ))
-               ) : (
-                  <p className="text-sm text-muted-foreground text-center py-4">
-                     No equipment listed
-                  </p>
-               )}
-            </div>
-         </CardContent>
+    <Card className="shadow-sm">
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle className="flex items-center gap-2 text-xl font-semibold">
+              <Wrench className="h-5 w-5 text-primary" />
+              Equipment Management
+            </CardTitle>
+            <CardDescription className="mt-1">
+              {canManage ? "Manage equipment for this hall" : "View equipment for this hall"}
+            </CardDescription>
+          </div>
+          {canManage && (
+            <Button onClick={() => handleOpenDialog()} size="sm" className="gap-2">
+              <Plus className="h-4 w-4" />
+              Add Equipment
+            </Button>
+          )}
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-3">
+          {equipment && equipment.length > 0 ? (
+            equipment.map((item) => (
+              <div
+                key={item.id}
+                className="group flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 border rounded-xl hover:border-primary/40 hover:shadow-md transition-all duration-200 bg-card"
+              >
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold text-base mb-1">{item.name}</p>
+                  <p className="text-sm text-muted-foreground capitalize mb-2">{item.type.replace("_", " ")}</p>
+                  {item.serial_number && (
+                    <p className="text-xs text-muted-foreground font-mono bg-muted/50 px-2 py-1 rounded inline-block">
+                      SN: {item.serial_number}
+                    </p>
+                  )}
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge className={`${getConditionColor(item.condition)} font-medium`} variant="outline">
+                    {item.condition.replace("_", " ")}
+                  </Badge>
+                  {canManage && (
+                    <Button variant="ghost" size="sm" onClick={() => handleOpenDialog(item)} className="gap-2">
+                      <Edit2 className="h-4 w-4" />
+                      <span className="hidden sm:inline">Edit</span>
+                    </Button>
+                  )}
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="text-sm text-muted-foreground text-center py-8">No equipment listed</p>
+          )}
+        </div>
+      </CardContent>
 
-         {/* Add/Edit Dialog */}
-         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-            <DialogContent>
-               <DialogHeader>
-                  <DialogTitle>
-                     {editingEquipment ? "Edit Equipment" : "Add New Equipment"}
-                  </DialogTitle>
-                  <DialogDescription>
-                     {editingEquipment
-                        ? "Update equipment information"
-                        : "Add new equipment to this hall"}
-                  </DialogDescription>
-               </DialogHeader>
-               <div className="space-y-4 py-4">
-                  <div className="space-y-2">
-                     <Label htmlFor="eq-name">Equipment Name *</Label>
-                     <Input
-                        id="eq-name"
-                        value={formData.name}
-                        onChange={(e) =>
-                           setFormData({ ...formData, name: e.target.value })
-                        }
-                        placeholder="e.g., Projector"
-                     />
-                  </div>
-                  <div className="space-y-2">
-                     <Label htmlFor="eq-type">Type *</Label>
-                     <Select
-                        value={formData.type}
-                        onValueChange={(val) => setFormData({ ...formData, type: val as EquipmentType })}
-                     >
-                        <SelectTrigger id="eq-type">
-                           <SelectValue placeholder="Select equipment type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                           <SelectItem value="projector">Projector</SelectItem>
-                           <SelectItem value="whiteboard">Whiteboard</SelectItem>
-                           <SelectItem value="speaker">Speaker</SelectItem>
-                           <SelectItem value="microphone">Microphone</SelectItem>
-                           <SelectItem value="lighting">Lighting</SelectItem>
-                           <SelectItem value="ac">AC</SelectItem>
-                           <SelectItem value="door_lock">Door Lock</SelectItem>
-                           <SelectItem value="wifi_router">Wi-Fi Router</SelectItem>
-                           <SelectItem value="other">Other</SelectItem>
-                        </SelectContent>
-                     </Select>
-                  </div>
+      {/* Add/Edit Dialog */}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>{editingEquipment ? "Edit Equipment" : "Add New Equipment"}</DialogTitle>
+            <DialogDescription>
+              {editingEquipment ? "Update equipment information" : "Add new equipment to this hall"}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">{/* Form fields go here */}</div>
+          <DialogFooter className="gap-2 sm:gap-0">
+            <Button variant="outline" onClick={() => setDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleSave} disabled={!formData.name || !formData.type}>
+              {editingEquipment ? "Update" : "Add"} Equipment
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </Card>
+  )
+}
 
-                  <div className="space-y-2">
-                     <Label htmlFor="eq-condition">Condition *</Label>
-                     <Select
-                        value={formData.condition}
-                        onValueChange={(value) =>
-                           setFormData({ ...formData, condition: value as EquipmentCondition })
-                        }
-                     >
-                        <SelectTrigger id="eq-condition">
-                           <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                           <SelectItem value="active">Active</SelectItem>
-                           <SelectItem value="not_working">Not Working</SelectItem>
-                           <SelectItem value="under_repair">Under Repair</SelectItem>
-                        </SelectContent>
-                     </Select>
-                  </div>
-                  <div className="space-y-2">
-                     <Label htmlFor="eq-serial">Serial Number</Label>
-                     <Input
-                        id="eq-serial"
-                        value={formData.serial_number}
-                        onChange={(e) =>
-                           setFormData({ ...formData, serial_number: e.target.value })
-                        }
-                        placeholder="Optional"
-                     />
-                  </div>
-               </div>
-               <DialogFooter>
-                  <Button variant="outline" onClick={() => setDialogOpen(false)}>
-                     Cancel
-                  </Button>
-                  <Button
-                     onClick={handleSave}
-                     disabled={!formData.name || !formData.type}
-                  >
-                     {editingEquipment ? "Update" : "Add"} Equipment
-                  </Button>
-               </DialogFooter>
-            </DialogContent>
-         </Dialog>
-      </Card>
-   );
-};
-
-export default EquipmentManagement;
+export default EquipmentManagement
