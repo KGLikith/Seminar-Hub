@@ -56,6 +56,13 @@ export async function updateHallStatus(hallId: string, status: HallStatus) {
   });
 }
 
+const combineDateAndTime = (d: string, t: string) => {
+    const date = new Date(d)
+    const [h, m] = t.split(":").map(Number)
+    date.setHours(h, m, 0, 0)
+    return date
+  }
+
 export const getBookingDetailsForHall = async (
   hallId: string,
   date: Date,
@@ -63,16 +70,17 @@ export const getBookingDetailsForHall = async (
   endTime: string
 ) => {
   try {
-    const start = new Date(`${date.toISOString().split("T")[0]}T11:00:00.000Z`);
-    const end = new Date(`${date.toISOString().split("T")[0]}T09:00:00.000Z`);
+    const start = combineDateAndTime(date.toISOString().split("T")[0], startTime)
+    const end = combineDateAndTime(date.toISOString().split("T")[0], endTime)
 
+    console.log(start, end, new Date(date));
     const bookings = await prisma.booking.findMany({
       where: {
         hall_id: hallId,
-        booking_date: date,
+        booking_date: new Date(date),
         status: { in: ["approved", "pending"] },
 
-        AND: [{ start_time: { lt: end } }, { end_time: { gt: start } }],
+        AND: [{ start_time: { lte: start } }, { end_time: { gte: end } }],
       },
       include: {
         teacher: {

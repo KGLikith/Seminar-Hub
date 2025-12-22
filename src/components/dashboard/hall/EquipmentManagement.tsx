@@ -1,193 +1,279 @@
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
-import { Plus, Edit, Wrench, Edit2 } from "lucide-react";
-import { useEquipmentByHall } from "@/hooks/react-query/useEquipments";
-import {  Equipment, EquipmentCondition, EquipmentType } from "@/generated/client";
-import { toast } from "sonner";
-import { addEquipmentToHall, updateEquipmentCondition } from "@/actions/equipments";
-import { useAuth } from "@clerk/nextjs";
-import { useProfile } from "@/hooks/react-query/useUser";
+"use client"
 
-interface EquipmentManagementProps {
-   hallId: string;
-   canManage: boolean;
+import { useState } from "react"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Badge } from "@/components/ui/badge"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Plus, Edit2, Wrench } from "lucide-react"
+import { toast } from "sonner"
+import { useAuth } from "@clerk/nextjs"
+import { useProfile } from "@/hooks/react-query/useUser"
+import { useEquipmentByHall } from "@/hooks/react-query/useEquipments"
+
+import {
+  addEquipmentToHall,
+  updateEquipmentCondition,
+} from "@/actions/equipments"
+import { EquipmentCondition, EquipmentType } from "@/generated/enums"
+import { Equipment } from "@/generated/client"
+
+interface Props {
+  hallId: string
+  canManage: boolean
 }
 
-const EquipmentManagement = ({ hallId, canManage }: EquipmentManagementProps) => {
-   const { data: equipment, refetch } = useEquipmentByHall(hallId);
-   const { userId } = useAuth();
-   const { data: profile, isLoading } = useProfile(userId ?? undefined);
-   const [dialogOpen, setDialogOpen] = useState(false);
-   const [editingEquipment, setEditingEquipment] = useState<Equipment | null>(null);
-   const [formData, setFormData] = useState<{
-      name: string;
-      type: EquipmentType;
-      condition: EquipmentCondition;
-      serial_number: string;
-   }>({
-      name: "",
-      type: "projector",
-      condition: "active",
-      serial_number: "",
-   });
+export default function EquipmentManagement({ hallId, canManage }: Props) {
+  const { userId } = useAuth()
+  const { data: profile } = useProfile(userId ?? undefined)
+  const { data: equipment = [], refetch } = useEquipmentByHall(hallId)
 
-   const handleOpenDialog = (equip?: Equipment) => {
-      if (equip) {
-         setEditingEquipment(equip);
-         setFormData({
-            name: equip.name,
-            type: equip.type,
-            condition: equip.condition,
-            serial_number: equip.serial_number || "",
-         });
+  const [open, setOpen] = useState(false)
+  const [editing, setEditing] = useState<Equipment | null>(null)
+
+  const [form, setForm] = useState<{
+    name: string,
+    type: EquipmentType,
+    condition: EquipmentCondition,
+    serial_number: string
+  }>({
+    name: "",
+    type: EquipmentType.projector,
+    condition: EquipmentCondition.active,
+    serial_number: "",
+  })
+
+  const openDialog = (item?: Equipment) => {
+    if (item) {
+      setEditing(item)
+      setForm({
+        name: item.name,
+        type: item.type,
+        condition: item.condition,
+        serial_number: item.serial_number || "",
+      })
+    } else {
+      setEditing(null)
+      setForm({
+        name: "",
+        type: EquipmentType.projector,
+        condition: EquipmentCondition.active,
+        serial_number: "",
+      })
+    }
+    setOpen(true)
+  }
+
+  const save = async () => {
+    if (!profile?.id) return toast.error("User not authenticated")
+
+    try {
+      if (editing) {
+        await updateEquipmentCondition({
+          equipmentId: editing.id,
+          techStaffId: profile.id,
+          newCondition: form.condition,
+          name: form.name,
+          type: form.type,
+          serialNumber: form.serial_number || undefined,
+          notes: "Equipment updated",
+        })
+        toast.success("Equipment updated")
       } else {
-         setEditingEquipment(null);
-         setFormData({
-            name: "",
-            type: "projector",
-            condition: "active",
-            serial_number: "",
-         });
+        await addEquipmentToHall({
+          hallId,
+          techStaffId: profile.id,
+          name: form.name,
+          type: form.type,
+          condition: form.condition,
+          serialNumber: form.serial_number || undefined,
+        })
+        toast.success("Equipment added")
       }
-      setDialogOpen(true);
-   };
 
-   const handleSave = async () => {
-      try {
-         if (!userId || !profile?.id) {
-            toast.error("User not authenticated");
-            return;
-         }
-
-         if (editingEquipment) {
-            // Log the change
-            const { error } = await updateEquipmentCondition({
-               equipmentId: editingEquipment.id,
-               newCondition: formData.condition as any,
-               techStaffId: profile.id,
-               name: formData.name,
-               type: formData.type,
-               serialNumber: formData.serial_number || undefined,
-               notes: `Updated equipment: ${formData.name}`,
-            })
-
-            if (error) throw error;
-            toast.success("Equipment updated successfully");
-         } else {
-            // Add new equipment
-            const { error } = await addEquipmentToHall({
-               hallId,
-               name: formData.name,
-               type: formData.type,
-               serialNumber: formData.serial_number || undefined,
-               condition: formData.condition,
-               techStaffId: profile.id,
-            })
-
-            if (error) throw error;
-            toast.success("Equipment added successfully");
-         }
-
-         setDialogOpen(false);
-         refetch();
-      } catch (error: any) {
-         console.error("Error saving equipment:", error);
-         toast.error("Failed to save equipment: " + error.message);
-      }
-   };
-
-   const getConditionColor = (condition: string) => {
-    switch (condition) {
-      case "active":
-        return "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/30"
-      case "not_working":
-        return "bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-500/30"
-      case "under_repair":
-        return "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30"
-      default:
-        return "bg-slate-500/10 text-slate-700 dark:text-slate-400 border-slate-500/30"
+      setOpen(false)
+      refetch()
+    } catch (e: any) {
+      console.error(e)
+      toast.error("Failed to save equipment")
     }
   }
 
-   return (
-    <Card className="shadow-sm">
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <div>
-            <CardTitle className="flex items-center gap-2 text-xl font-semibold">
-              <Wrench className="h-5 w-5 text-primary" />
-              Equipment Management
-            </CardTitle>
-            <CardDescription className="mt-1">
-              {canManage ? "Manage equipment for this hall" : "View equipment for this hall"}
-            </CardDescription>
-          </div>
-          {canManage && (
-            <Button onClick={() => handleOpenDialog()} size="sm" className="gap-2">
-              <Plus className="h-4 w-4" />
-              Add Equipment
-            </Button>
-          )}
+  const badgeColor = (c: EquipmentCondition) =>
+    c === "active"
+      ? "bg-emerald-500/10 text-emerald-700"
+      : c === "under_repair"
+        ? "bg-amber-500/10 text-amber-700"
+        : "bg-rose-500/10 text-rose-700"
+
+  return (
+    <Card>
+      <CardHeader className="flex flex-row justify-between">
+        <div>
+          <CardTitle className="flex items-center gap-2">
+            <Wrench className="h-5 w-5" />
+            Equipment
+          </CardTitle>
+          <CardDescription>
+            {canManage ? "Manage hall equipment" : "View equipment"}
+          </CardDescription>
         </div>
+        {canManage && (
+          <Button size="sm" onClick={() => openDialog()}>
+            <Plus className="h-4 w-4 mr-1" /> Add
+          </Button>
+        )}
       </CardHeader>
-      <CardContent>
-        <div className="space-y-3">
-          {equipment && equipment.length > 0 ? (
-            equipment.map((item) => (
-              <div
-                key={item.id}
-                className="group flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 border rounded-xl hover:border-primary/40 hover:shadow-md transition-all duration-200 bg-card"
-              >
-                <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-base mb-1">{item.name}</p>
-                  <p className="text-sm text-muted-foreground capitalize mb-2">{item.type.replace("_", " ")}</p>
-                  {item.serial_number && (
-                    <p className="text-xs text-muted-foreground font-mono bg-muted/50 px-2 py-1 rounded inline-block">
-                      SN: {item.serial_number}
-                    </p>
-                  )}
-                </div>
-                <div className="flex items-center gap-2">
-                  <Badge className={`${getConditionColor(item.condition)} font-medium`} variant="outline">
-                    {item.condition.replace("_", " ")}
-                  </Badge>
-                  {canManage && (
-                    <Button variant="ghost" size="sm" onClick={() => handleOpenDialog(item)} className="gap-2">
-                      <Edit2 className="h-4 w-4" />
-                      <span className="hidden sm:inline">Edit</span>
-                    </Button>
-                  )}
-                </div>
+
+      <CardContent className="space-y-3">
+        {equipment?.length === 0 ? (
+          <p className="text-muted-foreground text-center py-6">
+            No equipment added
+          </p>
+        ) : (
+          equipment?.map((e) => (
+            <div
+              key={e.id}
+              className="flex justify-between items-center border rounded-xl p-4"
+            >
+              <div>
+                <p className="font-medium">{e.name}</p>
+                <p className="text-xs text-muted-foreground capitalize">
+                  {e.type.replace("_", " ")}
+                </p>
+                {e.serial_number && (
+                  <p className="text-xs mt-1">SN: {e.serial_number}</p>
+                )}
               </div>
-            ))
-          ) : (
-            <p className="text-sm text-muted-foreground text-center py-8">No equipment listed</p>
-          )}
-        </div>
+              <div className="flex items-center gap-2">
+                <Badge className={badgeColor(e.condition)}>
+                  {e.condition.replace("_", " ")}
+                </Badge>
+                {canManage && (
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => openDialog(e)}
+                  >
+                    <Edit2 className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+            </div>
+          ))
+        )}
       </CardContent>
 
-      {/* Add/Edit Dialog */}
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-md">
+      {/* Dialog */}
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent>
           <DialogHeader>
-            <DialogTitle>{editingEquipment ? "Edit Equipment" : "Add New Equipment"}</DialogTitle>
+            <DialogTitle>
+              {editing ? "Edit Equipment" : "Add Equipment"}
+            </DialogTitle>
             <DialogDescription>
-              {editingEquipment ? "Update equipment information" : "Add new equipment to this hall"}
+              Provide equipment details
             </DialogDescription>
           </DialogHeader>
-          <div className="space-y-4 py-4">{/* Form fields go here */}</div>
-          <DialogFooter className="gap-2 sm:gap-0">
-            <Button variant="outline" onClick={() => setDialogOpen(false)}>
+
+          <div className="space-y-4 py-2">
+            <div>
+              <Label>Name</Label>
+              <Input
+                value={form.name}
+                onChange={(e) =>
+                  setForm({ ...form, name: e.target.value })
+                }
+              />
+            </div>
+
+            <div>
+              <Label>Type</Label>
+              <Select
+                value={form.type}
+                onValueChange={(v) =>
+                  setForm({ ...form, type: v as EquipmentType })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {Object.values(EquipmentType).map((t) => (
+                    <SelectItem key={t} value={t}>
+                      {t.replace("_", " ")}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Label>Condition</Label>
+              <Select
+                value={form.condition}
+                onValueChange={(v) =>
+                  setForm({
+                    ...form,
+                    condition: v as EquipmentCondition,
+                  })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {Object.values(EquipmentCondition).map((c) => (
+                    <SelectItem key={c} value={c}>
+                      {c.replace("_", " ")}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Label>Serial Number</Label>
+              <Input
+                value={form.serial_number}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    serial_number: e.target.value,
+                  })
+                }
+              />
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={handleSave} disabled={!formData.name || !formData.type}>
-              {editingEquipment ? "Update" : "Add"} Equipment
+            <Button onClick={save}>
+              {editing ? "Update" : "Add"}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -195,5 +281,3 @@ const EquipmentManagement = ({ hallId, canManage }: EquipmentManagementProps) =>
     </Card>
   )
 }
-
-export default EquipmentManagement

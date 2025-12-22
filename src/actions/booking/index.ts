@@ -66,13 +66,9 @@ export async function createBooking(data: {
   specialRequirements?: string;
 }) {
 
-  console.log("Creating booking with data:", data);
   try {
     await prisma.booking.create({
       data: {
-        // hall: {
-        //   connect : { id: data.hallId },
-        // },
         hall_id: data.hallId,
         teacher_id: data.teacherId,
         booking_date: data.bookingDate,

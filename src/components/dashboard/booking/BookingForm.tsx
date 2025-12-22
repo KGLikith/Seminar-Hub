@@ -19,14 +19,20 @@ import { UserRole } from "@/generated/enums"
 import { getSignedURL } from "@/actions/aws/s3"
 import TimeSlotSelector from "./TimeSlotSelector"
 
-const BookingForm = () => {
+interface BookingFormProps {
+  hallId?: string
+  hallName?: string
+  onSuccess?: () => void
+}
+
+const BookingForm = ({ hallId, hallName, onSuccess }: BookingFormProps) => {
   const router = useRouter()
   const { userId: clerkId, isLoaded } = useAuth()
   const { data: profile, isLoading: profileLoading } = useProfile(clerkId ?? undefined)
   const { data: halls = [], isLoading: hallsLoading } = useHalls()
 
   /* ---------- STATE ---------- */
-  const [selectedHall, setSelectedHall] = useState("")
+  const [selectedHall, setSelectedHall] = useState(hallId ?? "")
   const [bookingDate, setBookingDate] = useState("")
   const [timeSlot, setTimeSlot] = useState("")
   const [startTime, setStartTime] = useState("")
@@ -45,7 +51,6 @@ const BookingForm = () => {
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
 
-  /* ---------- AUTH GUARDS ---------- */
   useEffect(() => {
     if (isLoaded && !profile?.id) router.push("/auth/sign-in")
     if (profileLoading) return
@@ -55,7 +60,6 @@ const BookingForm = () => {
     }
   }, [profile, profileLoading, isLoaded])
 
-  /* ---------- AVAILABILITY CHECK ---------- */
   useEffect(() => {
     if (selectedHall && bookingDate && startTime && endTime) {
       checkAvailability()
@@ -72,10 +76,11 @@ const BookingForm = () => {
       startTime,
       endTime
     )
+
+    console.log("Booking details:", data)
     setAvailabilityStatus(data?.length ? "unavailable" : "available")
   }
 
-  /* ---------- S3 UPLOAD ---------- */
   async function uploadToS3(file: File, signedUrl: string) {
     const res = await fetch(signedUrl, {
       method: "PUT",
@@ -106,9 +111,9 @@ const BookingForm = () => {
     return date
   }
 
-  /* ---------- SUBMIT ---------- */
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
 
     if (
       !profile ||
@@ -118,9 +123,15 @@ const BookingForm = () => {
       !startTime ||
       !endTime ||
       !purpose ||
-      expectedParticipants <= 0
+      expectedParticipants <= 0 
+      
     ) {
       toast.error("Please fill all required fields")
+      return
+    }
+
+    if(availabilityStatus !== "available"){
+      toast.error("Selected time slot is not available")
       return
     }
 
@@ -148,6 +159,7 @@ const BookingForm = () => {
     if (error) {
       toast.error("Booking failed")
     } else {
+      onSuccess?.()
       toast.success("Booking request submitted")
       router.push("/dashboard")
     }
@@ -184,7 +196,6 @@ const BookingForm = () => {
                 </Select>
               </div>
 
-              {/* Date */}
               <div className="space-y-2">
                 <Label>Date *</Label>
                 <Input

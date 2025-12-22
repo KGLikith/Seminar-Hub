@@ -14,7 +14,7 @@ import {
   Users,
 } from "lucide-react"
 import { useAuth } from "@clerk/nextjs"
-import { useProfile, useUserRole } from "@/hooks/react-query/useUser"
+import { useProfile } from "@/hooks/react-query/useUser"
 import { UserRole } from "@/generated/enums"
 import { toast } from "sonner"
 
@@ -47,8 +47,9 @@ export default function Sidebar() {
   const { userId, signOut } = useAuth()
   const router = useRouter()
   const { data: profile, isLoading } = useProfile(userId ? userId : "")
-  const { data: userRole } = useUserRole(profile?.id ? profile.id : "")
   const pathname = usePathname()
+  const userRole = profile?.roles[0].role
+
   const items = userRole ? menuItems[userRole as keyof typeof menuItems] || [] : []
 
   const handleLogout = () => {
@@ -74,6 +75,7 @@ export default function Sidebar() {
       </aside>
     )
   }
+
 
   return (
     <aside className="w-64 bg-card border-r border-border/50 h-full overflow-y-auto flex flex-col shadow-sm">

@@ -1,4 +1,4 @@
-import { getTechStaffAssignments, getTechStaffForHall } from "@/actions/user/tech_staff";
+import { getAssignedHall, getTechStaffAssignments, getTechStaffForHall } from "@/actions/user/tech_staff";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetTechStaffForHall = (
@@ -19,5 +19,14 @@ export const useGetTechStaffAssignments = (departmentId: string | undefined) => 
     queryKey: ["techStaffAssignments", departmentId],
     queryFn: () => departmentId ? getTechStaffAssignments(departmentId) : [],
     enabled: !!departmentId,
+  });
+}
+
+export const useGetHallForTechStaff = (userId: string | undefined, enabled: boolean) => {
+  return useQuery({
+    queryKey: ["hallForTechStaff", userId],
+    queryFn: () =>
+      userId ? getAssignedHall(userId) : null,
+    enabled: enabled && !!userId,
   });
 }

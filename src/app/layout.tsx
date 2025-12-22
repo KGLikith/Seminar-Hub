@@ -26,6 +26,12 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  if (process.env.NODE_ENV === "development") {
+    console.log("Starting Auto Reject Cron Job (Development Mode)")
+    import("@/actions/cronjob").then((mod) => {
+      mod.startAutoRejectCron()
+    })
+  }
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${poppins.variable} font-sans`}>

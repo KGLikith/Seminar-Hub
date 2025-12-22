@@ -97,3 +97,22 @@ export async function createMaintanaceRequest(data: createMaintanaceRequestInput
     return { error: "Failed to create maintenance request" };
   }
 }
+
+export async function getAssignedHall(userId: string) {
+  try {
+    const data = await prisma.hallTechStaff.findMany({
+      where: {
+        tech_staff_id: userId,
+      },
+      select: {
+        hall_id: true,
+      },
+    });
+
+    console.log("Assigned hall data:", data);
+    return data;
+  } catch (error) {
+    console.error("Error fetching assigned hall:", error);
+    return null;
+  }
+}

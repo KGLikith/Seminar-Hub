@@ -1,7 +1,14 @@
 "use client"
-import { useState } from "react"
+
+import { useMemo, useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Textarea } from "@/components/ui/textarea"
 import {
@@ -12,7 +19,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { Calendar, MapPin, FileText, Sparkles, XCircle, Loader2 } from "lucide-react"
+import {
+  Calendar,
+  MapPin,
+  FileText,
+  Sparkles,
+  XCircle,
+  Loader2,
+} from "lucide-react"
 import { toast } from "sonner"
 import {
   AlertDialog,
@@ -25,155 +39,217 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { useRouter } from "next/navigation"
-import { useProfile, useUserRole } from "@/hooks/react-query/useUser"
+import { useProfile } from "@/hooks/react-query/useUser"
 import type { Booking } from "@/generated/client"
 import { useAuth } from "@clerk/nextjs"
 import { useMyBookings } from "@/hooks/react-query/useBookings"
-import { cancelBooking } from "@/actions/booking"
+import { addBookingSummary, cancelBooking } from "@/actions/booking"
+import { useQueryClient } from "@tanstack/react-query"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
+const STATUS_ORDER = [
+  "approved",
+  "pending",
+  "completed",
+  "rejected",
+  "cancelled",
+] as const
+
+type StatusFilter = "all" | (typeof STATUS_ORDER)[number]
 
 const MyBookings = () => {
-  const router = useRouter()
   const { userId } = useAuth()
   const { data: profile } = useProfile(userId ?? undefined)
-  const { data: roleUserId } = useUserRole(profile?.id ?? undefined)
   const { data: bookings, isLoading } = useMyBookings(profile?.id ?? undefined)
+
+  const queryClient = useQueryClient()
+
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null)
   const [summaryText, setSummaryText] = useState("")
   const [submitting, setSubmitting] = useState(false)
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all")
+  const [dateSort, setDateSort] = useState<"newest" | "oldest">("newest")
 
-  const handleAddSummary = (booking: Booking) => {
-    setSelectedBooking(booking)
-    setSummaryText(booking.session_summary || "")
+  const now = new Date()
+
+  /* ---------- helpers ---------- */
+
+  const isSessionOver = (b: Booking) => now >= new Date(b.end_time)
+  const isUpcoming = (b: Booking) => now < new Date(b.start_time)
+
+  const canCancel = (b: Booking) =>
+    (b.status === "pending" || b.status === "approved") && isUpcoming(b)
+
+  const canAddSummary = (b: Booking) =>
+    (b.status === "approved" || b.status === "completed") && isSessionOver(b)
+
+  /* ---------- sorting + filtering ---------- */
+
+  const sortedBookings = useMemo(() => {
+    if (!bookings) return []
+
+    let list = [...bookings]
+
+    if (statusFilter !== "all") {
+      list = list.filter((b) => b.status === statusFilter)
+    }
+
+    list.sort((a, b) => {
+      const statusDiff =
+        STATUS_ORDER.indexOf(a.status) -
+        STATUS_ORDER.indexOf(b.status)
+
+      if (statusDiff !== 0) return statusDiff
+
+      const dateA = new Date(a.start_time).getTime()
+      const dateB = new Date(b.start_time).getTime()
+
+      return dateSort === "newest" ? dateB - dateA : dateA - dateB
+    })
+
+    return list
+  }, [bookings, statusFilter, dateSort])
+
+  /* ---------- actions ---------- */
+
+  const handleCancelBooking = async (booking: Booking) => {
+    if (!profile || !canCancel(booking)) return
+
+    try {
+      await cancelBooking(booking.id, profile.id)
+      queryClient.invalidateQueries({ queryKey: ["myBookings", profile.id] })
+      toast.success("Booking cancelled")
+    } catch {
+      toast.error("Failed to cancel booking")
+    }
   }
 
   const submitSummary = async () => {
-    if (!selectedBooking || !summaryText.trim()) {
-      toast.error("Please enter a summary")
-      return
-    }
+    if (!selectedBooking || !summaryText.trim()) return
 
     setSubmitting(true)
-
     try {
-      //   const { data, error } = await supabase.functions.invoke("generate-summary", {
-      //     body: {
-      //       rawSummary: summaryText,
-      //       bookingId: selectedBooking.id,
-      //     },
-      //   });
-
-      //   if (error) throw error;
-
-      toast.success("Session summary saved and AI analysis generated!")
+      await addBookingSummary(selectedBooking.id, summaryText.trim(), null)
+      queryClient.invalidateQueries({ queryKey: ["myBookings", profile?.id] })
+      toast.success("Summary saved")
       setSelectedBooking(null)
       setSummaryText("")
-      //   fetchMyBookings();
-    } catch (error: any) {
-      console.error("Error submitting summary:", error)
-      toast.error(error.message || "Failed to submit summary")
+    } catch {
+      toast.error("Failed to save summary")
     } finally {
       setSubmitting(false)
     }
   }
 
-  const handleCancelBooking = async (bookingId: string) => {
-    try {
-      const { error } = await cancelBooking(bookingId, roleUserId || "")
-
-      if (error) throw error
-
-      toast.success("Booking cancelled successfully")
-    } catch (error: any) {
-      console.error("Error cancelling booking:", error)
-      toast.error("Failed to cancel booking")
-    }
-  }
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "approved":
-        return "bg-accent text-accent-foreground"
-      case "pending":
-        return "bg-warning text-warning-foreground"
-      case "rejected":
-        return "bg-destructive text-destructive-foreground"
-      case "completed":
-        return "bg-success text-success-foreground"
-      case "cancelled":
-        return "bg-muted text-muted-foreground"
-      default:
-        return "bg-muted text-muted-foreground"
-    }
-  }
+  /* ---------- UI ---------- */
 
   if (isLoading) {
     return (
-      <div className="flex w-full h-full justify-between items-center">
-        <Loader2 className="animate-spin" />
+      <div className="flex justify-center items-center min-h-[300px]">
+        <Loader2 className="h-6 w-6 animate-spin" />
       </div>
     )
   }
 
   return (
     <>
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">My Bookings</h1>
-          <p className="text-muted-foreground">View your booking history and add session summaries</p>
+      <div className="container mx-auto px-4 py-6 max-w-5xl">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-6">
+          <div>
+            <h1 className="text-3xl font-semibold">My Bookings</h1>
+            <p className="text-sm text-muted-foreground">
+              Track bookings and add session summaries
+            </p>
+          </div>
+
+          <div className="flex gap-3">
+            <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as StatusFilter)}>
+              <SelectTrigger className="w-[150px] h-9 text-sm">
+                <SelectValue placeholder="Filter status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All</SelectItem>
+                {STATUS_ORDER.map((s) => (
+                  <SelectItem key={s} value={s}>
+                    {s}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select value={dateSort} onValueChange={(v) => setDateSort(v as any)}>
+              <SelectTrigger className="w-[140px] h-9 text-sm">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="newest">Newest first</SelectItem>
+                <SelectItem value="oldest">Oldest first</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         <div className="space-y-4">
-          {bookings && bookings.length > 0 ? (
-            bookings.map((booking) => (
-              <Card key={booking.id}>
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <CardTitle className="mb-2">{booking.purpose}</CardTitle>
-                      <CardDescription className="space-y-1">
-                        <div className="flex items-center gap-2">
+          {sortedBookings.length === 0 ? (
+            <Card className="border-dashed">
+              <CardContent className="py-10 text-center text-sm text-muted-foreground">
+                No bookings found
+              </CardContent>
+            </Card>
+          ) : (
+            sortedBookings.map((booking) => (
+              <Card key={booking.id} className="rounded-lg">
+                <CardHeader className="pb-3">
+                  <div className="flex justify-between gap-4">
+                    <div className="space-y-1">
+                      <CardTitle className="text-lg">
+                        {booking.purpose}
+                      </CardTitle>
+                      <CardDescription className="text-sm space-y-1">
+                        <div className="flex gap-2">
                           <MapPin className="h-4 w-4" />
-                          <span>
-                            {booking.hall.name} - {booking.hall.location}
-                          </span>
+                          {booking.hall.name} – {booking.hall.location}
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex gap-2">
                           <Calendar className="h-4 w-4" />
-                          <p className="text-sm text-muted-foreground mt-1">
-                            {new Date(booking.booking_date).toLocaleDateString()} •{" "}
-                            {new Date(booking.start_time).toLocaleTimeString([], {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}{" "}
-                            -{" "}
-                            {new Date(booking.end_time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                          </p>
+                          {new Date(booking.start_time).toLocaleString()}
                         </div>
                       </CardDescription>
                     </div>
+
                     <div className="flex items-center gap-2">
-                      <Badge className={getStatusColor(booking.status)} variant="outline">
+                      <Badge variant="outline" className="text-xs capitalize">
                         {booking.status}
                       </Badge>
-                      {(booking.status === "pending" || booking.status === "approved") && (
+
+                      {canCancel(booking) && (
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
-                            <Button variant="ghost" size="sm">
+                            <Button variant="ghost" size="icon">
                               <XCircle className="h-4 w-4" />
                             </Button>
                           </AlertDialogTrigger>
                           <AlertDialogContent>
                             <AlertDialogHeader>
-                              <AlertDialogTitle>Cancel Booking</AlertDialogTitle>
+                              <AlertDialogTitle>
+                                Cancel booking?
+                              </AlertDialogTitle>
                               <AlertDialogDescription>
-                                Are you sure you want to cancel this booking? This action cannot be undone.
+                                This action cannot be undone.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                              <AlertDialogCancel>No, keep it</AlertDialogCancel>
-                              <AlertDialogAction onClick={() => handleCancelBooking(booking.id)}>
-                                Yes, cancel booking
+                              <AlertDialogCancel>Keep</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => handleCancelBooking(booking)}
+                              >
+                                Cancel booking
                               </AlertDialogAction>
                             </AlertDialogFooter>
                           </AlertDialogContent>
@@ -182,96 +258,64 @@ const MyBookings = () => {
                     </div>
                   </div>
                 </CardHeader>
+
                 <CardContent>
                   {booking.session_summary ? (
-                    <div className="space-y-3">
-                      <div className="p-4 bg-muted rounded-lg">
-                        <p className="text-sm font-medium mb-2">Session Summary</p>
-                        <p className="text-sm text-muted-foreground">{booking.session_summary}</p>
-                      </div>
-                      {/* {booking.ai_summary && (
-                                 <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
-                                    <div className="flex items-center gap-2 mb-2">
-                                       <Sparkles className="h-4 w-4 text-primary" />
-                                       <p className="text-sm font-medium text-primary">AI Analysis</p>
-                                    </div>
-                                    <div className="space-y-2 text-sm">
-                                       <div>
-                                          <span className="font-medium">Title:</span> {booking.ai_summary.title}
-                                       </div>
-                                       <div>
-                                          <span className="font-medium">Summary:</span> {booking.ai_summary.summary}
-                                       </div>
-                                       {booking.ai_summary?.highlights && (
-                                          <div>
-                                             <span className="font-medium">Key Highlights:</span>
-                                             <ul className="list-disc list-inside mt-1">
-                                                {booking.ai_summary.highlights.map((h: string, i: number) => (
-                                                   <li key={i}>{h}</li>
-                                                ))}
-                                             </ul>
-                                          </div>
-                                       )}
-                                       {booking.ai_summary.keywords && (
-                                          <div>
-                                             <span className="font-medium">Keywords:</span>{" "}
-                                             {booking.ai_summary.keywords.join(", ")}
-                                          </div>
-                                       )}
-                                    </div>
-                                 </div>
-                              )} */}
+                    <div className="text-sm text-muted-foreground">
+                      {booking.session_summary}
                     </div>
-                  ) : booking.status === "approved" || booking.status === "completed" ? (
-                    <Button onClick={() => handleAddSummary(booking)}>
-                      <FileText className="h-4 w-4 mr-2" />
-                      Add Session Summary
+                  ) : canAddSummary(booking) ? (
+                    <Button
+                      size="sm"
+                      onClick={() => {
+                        setSelectedBooking(booking)
+                        setSummaryText("")
+                      }}
+                      className="gap-2"
+                    >
+                      <FileText className="h-4 w-4" />
+                      Add Summary
                     </Button>
                   ) : null}
                 </CardContent>
               </Card>
             ))
-          ) : (
-            <Card>
-              <CardContent className="py-12 text-center">
-                <p className="text-muted-foreground">No bookings found</p>
-              </CardContent>
-            </Card>
           )}
         </div>
       </div>
 
-      {/* Summary Dialog */}
+      {/* Summary dialog */}
       <Dialog open={!!selectedBooking} onOpenChange={() => setSelectedBooking(null)}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-xl">
           <DialogHeader>
             <DialogTitle>Add Session Summary</DialogTitle>
-            <DialogDescription>
-              Describe what happened during the session. Our AI will generate a structured summary.
+            <DialogDescription className="text-sm">
+              Describe what happened during the session
             </DialogDescription>
           </DialogHeader>
-          <div className="py-4">
-            <Textarea
-              placeholder="Enter your session summary... Include key topics discussed, outcomes, attendance, and any notable events."
-              value={summaryText}
-              onChange={(e) => setSummaryText(e.target.value)}
-              rows={10}
-              className="resize-none"
-            />
-          </div>
+
+          <Textarea
+            rows={8}
+            value={summaryText}
+            onChange={(e) => setSummaryText(e.target.value)}
+            className="text-sm"
+          />
+
           <DialogFooter>
             <Button variant="outline" onClick={() => setSelectedBooking(null)}>
               Cancel
             </Button>
-            <Button onClick={submitSummary} disabled={submitting || !summaryText.trim()}>
+            <Button
+              onClick={submitSummary}
+              disabled={submitting || !summaryText.trim()}
+              size="sm"
+            >
               {submitting ? (
-                "Generating AI Summary..."
+                <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
-                <>
-                  <Sparkles className="h-4 w-4 mr-2" />
-                  Submit & Generate AI Summary
-                </>
+                <Sparkles className="h-4 w-4" />
               )}
+              Submit
             </Button>
           </DialogFooter>
         </DialogContent>

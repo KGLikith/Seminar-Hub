@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useHalls } from "@/hooks/react-query/useHalls";
 import type { HallWithDepartment } from "@/schemas/hall.schema";
 import { useAuth } from "@clerk/nextjs";
-import { useProfile, useUserRole } from "@/hooks/react-query/useUser";
+import { useProfile } from "@/hooks/react-query/useUser";
 import { UserRole } from "@/generated/enums";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -19,12 +19,13 @@ const HallComponent = () => {
   const router = useRouter();
   const { userId } = useAuth();
   const { data: profile } = useProfile(userId ?? undefined);
-  const { data: role } = useUserRole(profile?.id ?? undefined);
   const { data: halls = [], isLoading: loading, refetch } = useHalls();
   const [filteredHalls, setFilteredHalls] = useState<HallWithDepartment[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedHall, setSelectedHall] = useState<{ id: string; name: string } | null>(null);
   const [bookingDialogOpen, setBookingDialogOpen] = useState(false);
+
+  const role = profile?.roles[0].role;
 
   const canBook = role === UserRole.teacher || role === UserRole.hod;
 

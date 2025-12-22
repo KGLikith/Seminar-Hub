@@ -13,7 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { Calendar, MapPin, User, FileText, Check, X } from "lucide-react"
+import { Calendar, MapPin, User, FileText, Check, X, Loader2 } from "lucide-react"
 import { toast } from "sonner"
 import { useAuth } from "@clerk/nextjs"
 import { useProfile } from "@/hooks/react-query/useUser"
@@ -102,40 +102,48 @@ const HODApproval = () => {
   if (profileLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-muted-foreground">Loading pending bookings...</p>
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <p className="text-muted-foreground text-lg">Loading pending bookings...</p>
+        </div>
       </div>
     )
   }
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Pending Approvals</h1>
+      <main className="container mx-auto px-4 py-8 max-w-6xl">
+        <div className="mb-10">
+          <h1 className="text-4xl font-bold mb-3 text-balance">Pending Approvals</h1>
           <p className="text-lg text-muted-foreground">Review and approve booking requests for your department</p>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-6">
           {bookings && bookings.length > 0 ? (
             bookings.map((booking) => (
-              <Card key={booking.id}>
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <CardTitle className="mb-2">{booking.purpose}</CardTitle>
-                      <CardDescription className="space-y-1">
-                        <div className="flex items-center gap-2">
-                          <MapPin className="h-4 w-4" />
-                          <span>
+              <Card
+                key={booking.id}
+                className="rounded-xl border-border/60 hover:border-border transition-all duration-200 hover:shadow-lg"
+              >
+                <CardHeader className="pb-4">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1 space-y-3">
+                      <CardTitle className="text-2xl text-balance leading-tight">{booking.purpose}</CardTitle>
+                      <CardDescription className="space-y-2 text-base">
+                        <div className="flex items-center gap-2.5">
+                          <MapPin className="h-4 w-4 shrink-0 text-muted-foreground" />
+                          <span className="text-pretty">
                             {booking.hall.name} – {booking.hall.location}
                           </span>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <User className="h-4 w-4" />
-                          <span>Requested by {booking.teacher.name}</span>
+                        <div className="flex items-center gap-2.5">
+                          <User className="h-4 w-4 shrink-0 text-muted-foreground" />
+                          <span>
+                            Requested by <span className="font-medium">{booking.teacher.name}</span>
+                          </span>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <Calendar className="h-4 w-4" />
+                        <div className="flex items-center gap-2.5">
+                          <Calendar className="h-4 w-4 shrink-0 text-muted-foreground" />
                           <span>
                             {new Date(booking.booking_date).toLocaleDateString()} •{" "}
                             {new Date(booking.start_time).toLocaleTimeString([], {
@@ -151,29 +159,38 @@ const HODApproval = () => {
                         </div>
                       </CardDescription>
                     </div>
-                    <Badge variant="secondary">{booking.status}</Badge>
+                    <Badge className="bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20 hover:bg-amber-500/20 capitalize font-medium px-3 py-1 shrink-0">
+                      {booking.status}
+                    </Badge>
                   </div>
                 </CardHeader>
 
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 pt-0">
                   {/* Permission Letter */}
                   <Button
                     variant="outline"
-                    size="sm"
-                    className="flex items-center gap-2 bg-transparent"
+                    size="default"
+                    className="rounded-lg border-border/60 hover:bg-accent/50 h-11 gap-2 bg-transparent"
                     onClick={() => setPreviewUrl(booking.permission_letter_url)}
                   >
                     <FileText className="h-4 w-4" />
                     View Permission Letter
                   </Button>
 
-                  <div className="flex gap-2">
-                    <Button className="flex-1" onClick={() => handleAction(booking, "approve")}>
-                      <Check className="h-4 w-4 mr-2" />
+                  <div className="flex gap-3">
+                    <Button
+                      className="flex-1 rounded-lg h-11 gap-2 bg-emerald-600 hover:bg-emerald-700 hover:scale-[1.02] transition-transform"
+                      onClick={() => handleAction(booking, "approve")}
+                    >
+                      <Check className="h-4 w-4" />
                       Approve
                     </Button>
-                    <Button variant="destructive" className="flex-1" onClick={() => handleAction(booking, "reject")}>
-                      <X className="h-4 w-4 mr-2" />
+                    <Button
+                      variant="destructive"
+                      className="flex-1 rounded-lg h-11 gap-2 bg-rose-600 hover:bg-rose-700 hover:scale-[1.02] transition-transform"
+                      onClick={() => handleAction(booking, "reject")}
+                    >
+                      <X className="h-4 w-4" />
                       Reject
                     </Button>
                   </div>
@@ -181,16 +198,15 @@ const HODApproval = () => {
               </Card>
             ))
           ) : (
-            <Card>
-              <CardContent className="py-12 text-center">
-                <p className="text-muted-foreground">No pending bookings to review</p>
+            <Card className="rounded-xl border-dashed">
+              <CardContent className="py-16 text-center">
+                <p className="text-muted-foreground text-lg">No pending bookings to review</p>
               </CardContent>
             </Card>
           )}
         </div>
       </main>
 
-      {/* Approve / Reject Dialog */}
       <Dialog
         open={!!selectedBooking && !!actionType}
         onOpenChange={() => {
@@ -198,10 +214,12 @@ const HODApproval = () => {
           setActionType(null)
         }}
       >
-        <DialogContent>
+        <DialogContent className="rounded-xl">
           <DialogHeader>
-            <DialogTitle>{actionType === "approve" ? "Approve Booking" : "Reject Booking"}</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-2xl">
+              {actionType === "approve" ? "Approve Booking" : "Reject Booking"}
+            </DialogTitle>
+            <DialogDescription className="text-base">
               {actionType === "approve"
                 ? "Are you sure you want to approve this booking request?"
                 : "Please provide a reason for rejecting this booking request."}
@@ -214,20 +232,26 @@ const HODApproval = () => {
               onChange={(e) => setRejectionReason(e.target.value)}
               rows={4}
               placeholder="Enter rejection reason..."
+              className="resize-none rounded-lg text-base leading-relaxed"
             />
           )}
 
-          <DialogFooter>
+          <DialogFooter className="gap-2">
             <Button
               variant="outline"
               onClick={() => {
                 setSelectedBooking(null)
                 setActionType(null)
               }}
+              className="rounded-lg"
             >
               Cancel
             </Button>
-            <Button variant={actionType === "approve" ? "default" : "destructive"} onClick={confirmAction}>
+            <Button
+              variant={actionType === "approve" ? "default" : "destructive"}
+              onClick={confirmAction}
+              className={`rounded-lg ${actionType === "approve" ? "bg-emerald-600 hover:bg-emerald-700" : "bg-rose-600 hover:bg-rose-700"}`}
+            >
               {actionType === "approve" ? "Approve" : "Reject"}
             </Button>
           </DialogFooter>
@@ -235,13 +259,13 @@ const HODApproval = () => {
       </Dialog>
 
       <Dialog open={!!previewUrl} onOpenChange={() => setPreviewUrl(null)}>
-        <DialogContent className="max-w-4xl h-[85vh]">
+        <DialogContent className="max-w-5xl h-[85vh] rounded-xl">
           <DialogHeader>
-            <DialogTitle>Permission Letter</DialogTitle>
-            <DialogDescription>Uploaded document for booking approval</DialogDescription>
+            <DialogTitle className="text-2xl">Permission Letter</DialogTitle>
+            <DialogDescription className="text-base">Uploaded document for booking approval</DialogDescription>
           </DialogHeader>
 
-          <div className="flex-1 w-full h-full border rounded-md overflow-hidden">
+          <div className="flex-1 w-full h-full border border-border/60 rounded-xl overflow-hidden bg-muted/30">
             {previewUrl?.endsWith(".pdf") ? (
               <iframe src={previewUrl} className="w-full h-full" title="Permission Letter" />
             ) : (
