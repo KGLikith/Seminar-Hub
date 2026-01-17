@@ -8,7 +8,7 @@ export default function NotificationBell() {
   const { userId: clerkId } = useAuth();
   const { data: profile, isLoading, refetch } = useProfile(clerkId ?? undefined);
 
-  const { data: notifications = [], isLoading: notificationLoading } = useNotifications(profile?.user_id as string, true);
+  const { data: notifications = [], isLoading: notificationLoading } = useNotifications(profile?.user_id as string);
 
   const unreadCount = notifications.length;
 

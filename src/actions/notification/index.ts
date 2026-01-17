@@ -1,8 +1,8 @@
 'use server'
 import prisma from "@/lib/db";
 
-export async function getNotifications(userId: string, unreadOnly = false) {
-  const notication =  await prisma.notification.findMany({
+export async function getNotifications(userId: string, unreadOnly = true) {
+  const notication = await prisma.notification.findMany({
     where: {
       user_id: userId,
       ...(unreadOnly && { read: false }),
@@ -10,8 +10,6 @@ export async function getNotifications(userId: string, unreadOnly = false) {
     include: { relatedBooking: true },
     orderBy: { created_at: "desc" },
   });
-
-  console.log(notication);
 
   return notication
 }
@@ -21,4 +19,15 @@ export async function markNotificationAsRead(notificationId: string) {
     where: { id: notificationId },
     data: { read: true },
   });
+}
+
+export async function markAllNotificationsAsRead(userId: string) {
+  return await prisma.notification.updateMany({
+    where: {
+      user_id: userId
+    },
+    data: {
+      read: true
+    }
+  })
 }

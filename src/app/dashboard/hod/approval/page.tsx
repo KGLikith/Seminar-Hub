@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Textarea } from "@/components/ui/textarea"
 import {
@@ -13,11 +13,25 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { Calendar, MapPin, User, FileText, Check, X, Loader2 } from "lucide-react"
+import {
+  Calendar,
+  MapPin,
+  User,
+  FileText,
+  Download,
+  Users,
+  Check,
+  X,
+  Loader2,
+} from "lucide-react"
 import { toast } from "sonner"
 import { useAuth } from "@clerk/nextjs"
 import { useProfile } from "@/hooks/react-query/useUser"
-import { useApproveBooking, usePendingBookingsForHOD, useRejectBooking } from "@/hooks/react-query/useBookings"
+import {
+  useApproveBooking,
+  usePendingBookingsForHOD,
+  useRejectBooking,
+} from "@/hooks/react-query/useBookings"
 import type { Booking } from "@/generated/client"
 import { useRouter } from "next/navigation"
 
@@ -26,7 +40,6 @@ const HODApproval = () => {
   const router = useRouter()
 
   const { data: profile, isLoading: profileLoading } = useProfile(clerkId ?? "")
-
   const { data: bookings } = usePendingBookingsForHOD(profile?.department?.id)
 
   const { mutate: approveBooking } = useApproveBooking()
@@ -35,9 +48,9 @@ const HODApproval = () => {
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null)
   const [actionType, setActionType] = useState<"approve" | "reject" | null>(null)
   const [rejectionReason, setRejectionReason] = useState("")
-
-  // 🔹 Permission letter preview
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+
+  const [isProcessing, setIsProcessing] = useState(false)
 
   useEffect(() => {
     if (profileLoading) return
@@ -55,29 +68,33 @@ const HODApproval = () => {
   }, [profile, profileLoading, clerkId, router])
 
   const handleAction = (booking: Booking, type: "approve" | "reject") => {
+    if (isProcessing) return
     setSelectedBooking(booking)
     setActionType(type)
     setRejectionReason("")
   }
 
-  const confirmAction = async () => {
-    if (!selectedBooking || !actionType || !profile?.id) return
+  const confirmAction = () => {
+    if (!selectedBooking || !actionType || !profile?.id || isProcessing) return
 
     if (actionType === "reject" && !rejectionReason.trim()) {
-      toast.error("Please provide a reason for rejection")
+      toast.error("Please provide a rejection reason")
       return
     }
+
+    setIsProcessing(true)
 
     if (actionType === "approve") {
       approveBooking(
         { bookingId: selectedBooking.id, hodId: profile.id },
         {
           onSuccess: () => {
-            toast.success("Booking approved successfully")
+            toast.success("Booking approved")
             setSelectedBooking(null)
             setActionType(null)
           },
           onError: () => toast.error("Failed to approve booking"),
+          onSettled: () => setIsProcessing(false),
         },
       )
     } else {
@@ -89,11 +106,12 @@ const HODApproval = () => {
         },
         {
           onSuccess: () => {
-            toast.success("Booking rejected successfully")
+            toast.success("Booking rejected")
             setSelectedBooking(null)
             setActionType(null)
           },
           onError: () => toast.error("Failed to reject booking"),
+          onSettled: () => setIsProcessing(false),
         },
       )
     }
@@ -102,127 +120,149 @@ const HODApproval = () => {
   if (profileLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="flex flex-col items-center gap-3">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          <p className="text-muted-foreground text-lg">Loading pending bookings...</p>
-        </div>
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     )
   }
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="container mx-auto px-4 py-8 max-w-6xl">
-        <div className="mb-10">
-          <h1 className="text-4xl font-bold mb-3 text-balance">Pending Approvals</h1>
-          <p className="text-lg text-muted-foreground">Review and approve booking requests for your department</p>
+      <main className="container mx-auto px-4 py-8 max-w-5xl space-y-6">
+        <div>
+          <h1 className="text-3xl font-bold">Pending Booking Approvals</h1>
+          <p className="text-muted-foreground">Review and approve booking requests</p>
         </div>
 
-        <div className="space-y-6">
-          {bookings && bookings.length > 0 ? (
-            bookings.map((booking) => (
-              <Card
-                key={booking.id}
-                className="rounded-xl border-border/60 hover:border-border transition-all duration-200 hover:shadow-lg"
-              >
-                <CardHeader className="pb-4">
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1 space-y-3">
-                      <CardTitle className="text-2xl text-balance leading-tight">{booking.purpose}</CardTitle>
-                      <CardDescription className="space-y-2 text-base">
-                        <div className="flex items-center gap-2.5">
-                          <MapPin className="h-4 w-4 shrink-0 text-muted-foreground" />
-                          <span className="text-pretty">
-                            {booking.hall.name} – {booking.hall.location}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2.5">
-                          <User className="h-4 w-4 shrink-0 text-muted-foreground" />
-                          <span>
-                            Requested by <span className="font-medium">{booking.teacher.name}</span>
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2.5">
-                          <Calendar className="h-4 w-4 shrink-0 text-muted-foreground" />
-                          <span>
-                            {new Date(booking.booking_date).toLocaleDateString()} •{" "}
-                            {new Date(booking.start_time).toLocaleTimeString([], {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}{" "}
-                            –{" "}
-                            {new Date(booking.end_time).toLocaleTimeString([], {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}
-                          </span>
-                        </div>
-                      </CardDescription>
-                    </div>
-                    <Badge className="bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20 hover:bg-amber-500/20 capitalize font-medium px-3 py-1 shrink-0">
-                      {booking.status}
-                    </Badge>
-                  </div>
-                </CardHeader>
+        {bookings?.length ? (
+          bookings.map((booking) => (
+            <Card key={booking.id} className="border-border/60 hover:shadow-md transition">
+              <CardContent className="p-4 space-y-3">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="space-y-1">
+                    <p className="font-semibold text-lg">{booking.purpose}</p>
 
-                <CardContent className="space-y-4 pt-0">
-                  {/* Permission Letter */}
+                    <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+                      <span className="flex items-center gap-1">
+                        <MapPin className="h-4 w-4" />
+                        {booking.hall.name}
+                      </span>
+
+                      <span className="flex items-center gap-1">
+                        <User className="h-4 w-4" />
+                        {booking.teacher.name}
+                      </span>
+
+                      <span className="flex items-center gap-1">
+                        <Calendar className="h-4 w-4" />
+                        {new Date(booking.booking_date).toLocaleDateString()} •{" "}
+                        {new Date(booking.start_time).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}{" "}
+                        –{" "}
+                        {new Date(booking.end_time).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </span>
+                    </div>
+                  </div>
+
+                  <Badge className="capitalize bg-amber-500/10 text-amber-700">
+                    {booking.status}
+                  </Badge>
+                </div>
+
+                <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+                  {booking.expected_participants && (
+                    <span className="flex items-center gap-1">
+                      <Users className="h-4 w-4" />
+                      {booking.expected_participants} participants
+                    </span>
+                  )}
+
+                  {booking.special_requirements && (
+                    <span className="italic">{booking.special_requirements}</span>
+                  )}
+                </div>
+
+                <div className="flex flex-wrap gap-2 pt-2">
                   <Button
                     variant="outline"
-                    size="default"
-                    className="rounded-lg border-border/60 hover:bg-accent/50 h-11 gap-2 bg-transparent"
+                    size="sm"
+                    className="gap-2"
                     onClick={() => setPreviewUrl(booking.permission_letter_url)}
+                    disabled={isProcessing}
                   >
                     <FileText className="h-4 w-4" />
-                    View Permission Letter
+                    View Letter
                   </Button>
 
-                  <div className="flex gap-3">
-                    <Button
-                      className="flex-1 rounded-lg h-11 gap-2 bg-emerald-600 hover:bg-emerald-700 hover:scale-[1.02] transition-transform"
-                      onClick={() => handleAction(booking, "approve")}
-                    >
-                      <Check className="h-4 w-4" />
-                      Approve
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      className="flex-1 rounded-lg h-11 gap-2 bg-rose-600 hover:bg-rose-700 hover:scale-[1.02] transition-transform"
-                      onClick={() => handleAction(booking, "reject")}
-                    >
-                      <X className="h-4 w-4" />
-                      Reject
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))
-          ) : (
-            <Card className="rounded-xl border-dashed">
-              <CardContent className="py-16 text-center">
-                <p className="text-muted-foreground text-lg">No pending bookings to review</p>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="gap-2"
+                    disabled={isProcessing}
+                    onClick={() => window.open(booking.permission_letter_url, "_blank")}
+                  >
+                    <Download className="h-4 w-4" />
+                    Download
+                  </Button>
+
+                  <div className="flex-1" />
+
+                  <Button
+                    size="sm"
+                    disabled={isProcessing}
+                    className="gap-1 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60"
+                    onClick={() => handleAction(booking, "approve")}
+                  >
+                    <Check className="h-4 w-4" />
+                    Approve
+                  </Button>
+
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    disabled={isProcessing}
+                    className="gap-1 disabled:opacity-60"
+                    onClick={() => handleAction(booking, "reject")}
+                  >
+                    <X className="h-4 w-4" />
+                    Reject
+                  </Button>
+                </div>
               </CardContent>
             </Card>
-          )}
-        </div>
+          ))
+        ) : (
+          <Card>
+            <CardContent className="py-12 text-center text-muted-foreground">
+              No pending booking requests
+            </CardContent>
+          </Card>
+        )}
       </main>
 
       <Dialog
         open={!!selectedBooking && !!actionType}
-        onOpenChange={() => {
-          setSelectedBooking(null)
-          setActionType(null)
+        onOpenChange={(open) => {
+          if (isProcessing) return
+          if (!open) {
+            setSelectedBooking(null)
+            setActionType(null)
+          }
         }}
       >
-        <DialogContent className="rounded-xl">
+        <DialogContent>
           <DialogHeader>
-            <DialogTitle className="text-2xl">
+            <DialogTitle>
               {actionType === "approve" ? "Approve Booking" : "Reject Booking"}
             </DialogTitle>
-            <DialogDescription className="text-base">
+            <DialogDescription>
               {actionType === "approve"
-                ? "Are you sure you want to approve this booking request?"
-                : "Please provide a reason for rejecting this booking request."}
+                ? "Confirm booking approval."
+                : "Provide a reason for rejection."}
             </DialogDescription>
           </DialogHeader>
 
@@ -230,47 +270,55 @@ const HODApproval = () => {
             <Textarea
               value={rejectionReason}
               onChange={(e) => setRejectionReason(e.target.value)}
-              rows={4}
-              placeholder="Enter rejection reason..."
-              className="resize-none rounded-lg text-base leading-relaxed"
+              placeholder="Rejection reason"
+              disabled={isProcessing}
             />
           )}
 
-          <DialogFooter className="gap-2">
+          <DialogFooter>
             <Button
               variant="outline"
+              disabled={isProcessing}
               onClick={() => {
+                if (isProcessing) return
                 setSelectedBooking(null)
                 setActionType(null)
               }}
-              className="rounded-lg"
             >
               Cancel
             </Button>
+
             <Button
+              disabled={isProcessing}
               variant={actionType === "approve" ? "default" : "destructive"}
               onClick={confirmAction}
-              className={`rounded-lg ${actionType === "approve" ? "bg-emerald-600 hover:bg-emerald-700" : "bg-rose-600 hover:bg-rose-700"}`}
+              className="min-w-[120px]"
             >
-              {actionType === "approve" ? "Approve" : "Reject"}
+              {isProcessing ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Processing
+                </>
+              ) : (
+                "Confirm"
+              )}
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      <Dialog open={!!previewUrl} onOpenChange={() => setPreviewUrl(null)}>
-        <DialogContent className="max-w-5xl h-[85vh] rounded-xl">
+      <Dialog open={!!previewUrl} onOpenChange={() => !isProcessing && setPreviewUrl(null)}>
+        <DialogContent className="max-w-5xl h-[85vh]">
           <DialogHeader>
-            <DialogTitle className="text-2xl">Permission Letter</DialogTitle>
-            <DialogDescription className="text-base">Uploaded document for booking approval</DialogDescription>
+            <DialogTitle>Permission Letter</DialogTitle>
           </DialogHeader>
 
-          <div className="flex-1 w-full h-full border border-border/60 rounded-xl overflow-hidden bg-muted/30">
+          <div className="w-full h-full border rounded-md overflow-hidden">
             {previewUrl?.endsWith(".pdf") ? (
-              <iframe src={previewUrl} className="w-full h-full" title="Permission Letter" />
+              <iframe src={previewUrl} className="w-full h-full" />
             ) : (
               <img
-                src={previewUrl ? previewUrl : ""}
+                src={previewUrl ?? ""}
                 alt="Permission Letter"
                 className="w-full h-full object-contain"
               />

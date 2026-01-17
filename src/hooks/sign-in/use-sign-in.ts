@@ -1,5 +1,4 @@
 "use client";
-// import { useToast } from '@/components/ui/use-toast'
 import { UserLoginProps, UserLoginSchema } from "@/schemas/auth.schema";
 import { useSignIn } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -35,7 +34,6 @@ export const useSignInForm = () => {
           toast.success("Welcome back!");
           router.push("/dashboard");
         }else{
-          // console.log("helo what s up")
         }
         
       } catch (error: any) {

@@ -105,6 +105,11 @@ export type Booking = Prisma.BookingModel
  */
 export type BookingLog = Prisma.BookingLogModel
 /**
+ * Model BookingMedia
+ * 
+ */
+export type BookingMedia = Prisma.BookingMediaModel
+/**
  * Model Notification
  * 
  */

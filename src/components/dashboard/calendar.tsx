@@ -40,11 +40,7 @@ import {
   subMonths,
 } from "date-fns"
 
-/* ---------------- CONFIG ---------------- */
-
 const ALLOWED_STATUSES = ["approved", "completed"] as const
-
-/* ---------------- HELPERS ---------------- */
 
 const isOngoingNow = (start: Date, end: Date) => {
   const now = new Date()
@@ -68,8 +64,6 @@ const statusBadge = (status: string) =>
     </Badge>
   )
 
-/* ---------------- COMPONENT ---------------- */
-
 export default function Calendar() {
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [selectedHall, setSelectedHall] = useState("all")
@@ -83,8 +77,6 @@ export default function Calendar() {
       dateFrom: startOfMonth(currentMonth),
       dateTo: endOfMonth(currentMonth),
     })
-
-  /* ---------- FILTER + SORT ---------- */
 
   const bookings = useMemo(() => {
     return rawBookings
@@ -119,7 +111,6 @@ export default function Calendar() {
   return (
     <>
       <div className="container mx-auto px-4 py-6 max-w-7xl">
-        {/* HEADER */}
         <div className="flex flex-col md:flex-row justify-between gap-4 mb-6">
           <div>
             <h1 className="text-2xl font-semibold">Booking Calendar</h1>
@@ -143,7 +134,6 @@ export default function Calendar() {
           </Select>
         </div>
 
-        {/* MONTH NAV */}
         <div className="flex items-center justify-between mb-4">
           <Button variant="outline" size="icon" onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}>
             <ChevronLeft />
@@ -159,7 +149,6 @@ export default function Calendar() {
           </Button>
         </div>
 
-        {/* BIG CALENDAR */}
         <Card className="mb-10 shadow-lg">
           <CardContent className="p-6">
             <div className="grid grid-cols-7 gap-4">
@@ -211,7 +200,6 @@ export default function Calendar() {
           </CardContent>
         </Card>
 
-        {/* BIG SCHEDULE LIST */}
         <Card className="shadow-lg">
           <CardHeader>
             <CardTitle className="text-xl flex items-center gap-2">
@@ -263,7 +251,6 @@ export default function Calendar() {
         </Card>
       </div>
 
-      {/* DAY MODAL */}
       <Dialog open={!!selectedDate} onOpenChange={() => setSelectedDate(null)}>
         <DialogContent className="max-w-xl">
           <DialogHeader>

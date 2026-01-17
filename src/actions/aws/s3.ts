@@ -8,28 +8,19 @@ import {
 
 const s3Client = new S3Client({ region: process.env.AWS_DEFAULT_REGION });
 
+const IMAGE_TYPES = ["image/png", "image/jpg", "image/jpeg", "image/webp"]
+const PDF_TYPES = ["application/pdf"]
+
 export const getSignedURL = async (
   mediaType: string,
   mediaName: string,
   id: string,
-  type: "booking" | "hall_image"
+  type: "booking" | "hall_image" | "booking_image"
 ) => {
-  const allowedImageTypes = [
-    "image/png",
-    "image/jpg",
-    "image/jpeg",
-    "image/webp",
-    "image/gif",
-  ];
+  const allowed =
+    type === "hall_image" ? IMAGE_TYPES: [...IMAGE_TYPES, ...PDF_TYPES]
 
-  const allowedPdfTypes = ["application/pdf"];
-
-  const allowedTypes =
-    type === "booking"
-      ? [...allowedImageTypes, ...allowedPdfTypes]
-      : allowedImageTypes;
-
-  if (!allowedTypes.includes(mediaType)) {
+  if (!allowed.includes(mediaType)) {
     console.error("Invalid media type:", mediaType, "for type:", type);
     throw new Error("Invalid media type");
   }

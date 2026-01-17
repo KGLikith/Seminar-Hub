@@ -140,7 +140,6 @@ export default function ComponentsManagementPage() {
         )}
       </div>
 
-      {/* Modal */}
       {showModal && selectedComponent && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 scale-in">
           <div className="bg-white rounded-lg max-w-md w-full p-6 shadow-lg slide-up">

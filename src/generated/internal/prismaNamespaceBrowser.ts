@@ -61,6 +61,7 @@ export const ModelName = {
   EquipmentLog: 'EquipmentLog',
   Booking: 'Booking',
   BookingLog: 'BookingLog',
+  BookingMedia: 'BookingMedia',
   Notification: 'Notification',
   HallComponent: 'HallComponent',
   ComponentMaintenanceLog: 'ComponentMaintenanceLog',
@@ -245,6 +246,17 @@ export const BookingLogScalarFieldEnum = {
 } as const
 
 export type BookingLogScalarFieldEnum = (typeof BookingLogScalarFieldEnum)[keyof typeof BookingLogScalarFieldEnum]
+
+
+export const BookingMediaScalarFieldEnum = {
+  id: 'id',
+  booking_id: 'booking_id',
+  url: 'url',
+  uploaded_by: 'uploaded_by',
+  created_at: 'created_at'
+} as const
+
+export type BookingMediaScalarFieldEnum = (typeof BookingMediaScalarFieldEnum)[keyof typeof BookingMediaScalarFieldEnum]
 
 
 export const NotificationScalarFieldEnum = {

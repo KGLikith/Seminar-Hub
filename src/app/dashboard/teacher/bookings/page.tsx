@@ -10,23 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Textarea } from "@/components/ui/textarea"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
-import {
-  Calendar,
-  MapPin,
-  FileText,
-  Sparkles,
-  XCircle,
-  Loader2,
-} from "lucide-react"
+import { Calendar, MapPin, XCircle, Loader2, Search } from "lucide-react"
 import { toast } from "sonner"
 import {
   AlertDialog,
@@ -39,288 +23,224 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { useProfile } from "@/hooks/react-query/useUser"
-import type { Booking } from "@/generated/client"
+import { useRouter } from "next/navigation"
+import { useProfile, useUserRole } from "@/hooks/react-query/useUser"
 import { useAuth } from "@clerk/nextjs"
 import { useMyBookings } from "@/hooks/react-query/useBookings"
-import { addBookingSummary, cancelBooking } from "@/actions/booking"
-import { useQueryClient } from "@tanstack/react-query"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+import { cancelBooking } from "@/actions/booking"
+import { Input } from "@/components/ui/input"
 
-const STATUS_ORDER = [
-  "approved",
-  "pending",
-  "completed",
-  "rejected",
-  "cancelled",
-] as const
-
-type StatusFilter = "all" | (typeof STATUS_ORDER)[number]
+const STATUS_CHIPS = ["all", "pending", "approved", "completed", "cancelled", "rejected"] as const
+type StatusFilter = (typeof STATUS_CHIPS)[number]
 
 const MyBookings = () => {
+  const router = useRouter()
   const { userId } = useAuth()
   const { data: profile } = useProfile(userId ?? undefined)
+  const { data: roleUserId } = useUserRole(profile?.id ?? undefined)
   const { data: bookings, isLoading } = useMyBookings(profile?.id ?? undefined)
 
-  const queryClient = useQueryClient()
-
-  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null)
-  const [summaryText, setSummaryText] = useState("")
-  const [submitting, setSubmitting] = useState(false)
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all")
-  const [dateSort, setDateSort] = useState<"newest" | "oldest">("newest")
+  const [search, setSearch] = useState("")
 
-  const now = new Date()
-
-  /* ---------- helpers ---------- */
-
-  const isSessionOver = (b: Booking) => now >= new Date(b.end_time)
-  const isUpcoming = (b: Booking) => now < new Date(b.start_time)
-
-  const canCancel = (b: Booking) =>
-    (b.status === "pending" || b.status === "approved") && isUpcoming(b)
-
-  const canAddSummary = (b: Booking) =>
-    (b.status === "approved" || b.status === "completed") && isSessionOver(b)
-
-  /* ---------- sorting + filtering ---------- */
-
-  const sortedBookings = useMemo(() => {
-    if (!bookings) return []
-
-    let list = [...bookings]
-
-    if (statusFilter !== "all") {
-      list = list.filter((b) => b.status === statusFilter)
-    }
-
-    list.sort((a, b) => {
-      const statusDiff =
-        STATUS_ORDER.indexOf(a.status) -
-        STATUS_ORDER.indexOf(b.status)
-
-      if (statusDiff !== 0) return statusDiff
-
-      const dateA = new Date(a.start_time).getTime()
-      const dateB = new Date(b.start_time).getTime()
-
-      return dateSort === "newest" ? dateB - dateA : dateA - dateB
-    })
-
-    return list
-  }, [bookings, statusFilter, dateSort])
-
-  /* ---------- actions ---------- */
-
-  const handleCancelBooking = async (booking: Booking) => {
-    if (!profile || !canCancel(booking)) return
-
+  const handleCancelBooking = async (bookingId: string) => {
     try {
-      await cancelBooking(booking.id, profile.id)
-      queryClient.invalidateQueries({ queryKey: ["myBookings", profile.id] })
-      toast.success("Booking cancelled")
+      const { error } = await cancelBooking(bookingId, roleUserId || "")
+      if (error) throw error
+      toast.success("Booking cancelled successfully")
     } catch {
       toast.error("Failed to cancel booking")
     }
   }
 
-  const submitSummary = async () => {
-    if (!selectedBooking || !summaryText.trim()) return
-
-    setSubmitting(true)
-    try {
-      await addBookingSummary(selectedBooking.id, summaryText.trim(), null)
-      queryClient.invalidateQueries({ queryKey: ["myBookings", profile?.id] })
-      toast.success("Summary saved")
-      setSelectedBooking(null)
-      setSummaryText("")
-    } catch {
-      toast.error("Failed to save summary")
-    } finally {
-      setSubmitting(false)
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "approved":
+        return "bg-emerald-500/10 text-emerald-700 border-emerald-500/20"
+      case "pending":
+        return "bg-amber-500/10 text-amber-700 border-amber-500/20"
+      case "rejected":
+        return "bg-rose-500/10 text-rose-700 border-rose-500/20"
+      case "completed":
+        return "bg-blue-500/10 text-blue-700 border-blue-500/20"
+      case "cancelled":
+        return "bg-muted text-muted-foreground border-border"
+      default:
+        return "bg-muted text-muted-foreground border-border"
     }
   }
 
-  /* ---------- UI ---------- */
+
+  const groupedBookings = useMemo(() => {
+    if (!bookings) return {}
+
+    return bookings
+      .filter((b) => statusFilter === "all" || b.status === statusFilter)
+      .filter((b) =>
+        b.hall.name.toLowerCase().includes(search.toLowerCase()),
+      )
+      .reduce((acc: Record<string, typeof bookings>, booking) => {
+        const monthKey = new Date(booking.booking_date).toLocaleString("default", {
+          month: "long",
+          year: "numeric",
+        })
+        acc[monthKey] = acc[monthKey] || []
+        acc[monthKey].push(booking)
+        return acc
+      }, {})
+  }, [bookings, statusFilter, search])
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-[300px]">
-        <Loader2 className="h-6 w-6 animate-spin" />
+      <div className="flex min-h-80 items-center justify-center">
+        <Loader2 className="h-7 w-7 animate-spin text-muted-foreground" />
       </div>
     )
   }
 
   return (
-    <>
-      <div className="container mx-auto px-4 py-6 max-w-5xl">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-6">
-          <div>
-            <h1 className="text-3xl font-semibold">My Bookings</h1>
-            <p className="text-sm text-muted-foreground">
-              Track bookings and add session summaries
-            </p>
-          </div>
+    <div className="container mx-auto max-w-5xl px-4 py-6 space-y-6">
+      <div>
+        <h1 className="text-3xl font-semibold">My Bookings</h1>
+        <p className="text-sm text-muted-foreground">
+          View and manage your booking history
+        </p>
+      </div>
 
-          <div className="flex gap-3">
-            <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as StatusFilter)}>
-              <SelectTrigger className="w-[150px] h-9 text-sm">
-                <SelectValue placeholder="Filter status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All</SelectItem>
-                {STATUS_ORDER.map((s) => (
-                  <SelectItem key={s} value={s}>
-                    {s}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select value={dateSort} onValueChange={(v) => setDateSort(v as any)}>
-              <SelectTrigger className="w-[140px] h-9 text-sm">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="newest">Newest first</SelectItem>
-                <SelectItem value="oldest">Oldest first</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-wrap gap-2">
+          {STATUS_CHIPS.map((s) => (
+            <Button
+              key={s}
+              size="sm"
+              variant={statusFilter === s ? "default" : "outline"}
+              className="h-8 capitalize"
+              onClick={() => setStatusFilter(s)}
+            >
+              {s}
+            </Button>
+          ))}
         </div>
 
-        <div className="space-y-4">
-          {sortedBookings.length === 0 ? (
-            <Card className="border-dashed">
-              <CardContent className="py-10 text-center text-sm text-muted-foreground">
-                No bookings found
-              </CardContent>
-            </Card>
-          ) : (
-            sortedBookings.map((booking) => (
-              <Card key={booking.id} className="rounded-lg">
-                <CardHeader className="pb-3">
+        <div className="relative w-full sm:w-64">
+          <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search by hall..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="pl-8 h-9"
+          />
+        </div>
+      </div>
+
+      {Object.keys(groupedBookings).length === 0 ? (
+        <Card className="border-dashed">
+          <CardContent className="py-12 text-center text-sm text-muted-foreground">
+            No bookings found
+          </CardContent>
+        </Card>
+      ) : (
+        Object.entries(groupedBookings).map(([month, list]) => (
+          <div key={month} className="space-y-3">
+            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+              {month}
+            </h2>
+
+            {list.map((booking) => (
+              <Card
+                key={booking.id}
+                className="rounded-lg border-border/60 bg-muted/30 hover:bg-muted/50 transition"
+              >
+                <CardHeader className="pb-2">
                   <div className="flex justify-between gap-4">
                     <div className="space-y-1">
                       <CardTitle className="text-lg">
                         {booking.purpose}
                       </CardTitle>
-                      <CardDescription className="text-sm space-y-1">
-                        <div className="flex gap-2">
-                          <MapPin className="h-4 w-4" />
-                          {booking.hall.name} – {booking.hall.location}
+                      <CardDescription className="space-y-1 text-sm">
+                        <div className="flex items-center gap-2">
+                          <MapPin className="h-3.5 w-3.5" />
+                          {booking.hall.name} • {booking.hall.location}
                         </div>
-                        <div className="flex gap-2">
-                          <Calendar className="h-4 w-4" />
-                          {new Date(booking.start_time).toLocaleString()}
+                        <div className="flex items-center gap-2">
+                          <Calendar className="h-3.5 w-3.5" />
+                          {new Date(booking.booking_date).toLocaleDateString()} •{" "}
+                          {new Date(booking.start_time).toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
                         </div>
                       </CardDescription>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                      <Badge variant="outline" className="text-xs capitalize">
-                        {booking.status}
-                      </Badge>
-
-                      {canCancel(booking) && (
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                            <Button variant="ghost" size="icon">
-                              <XCircle className="h-4 w-4" />
-                            </Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>
-                                Cancel booking?
-                              </AlertDialogTitle>
-                              <AlertDialogDescription>
-                                This action cannot be undone.
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Keep</AlertDialogCancel>
-                              <AlertDialogAction
-                                onClick={() => handleCancelBooking(booking)}
-                              >
-                                Cancel booking
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
-                      )}
-                    </div>
+                    <Badge
+                      className={`${getStatusColor(
+                        booking.status,
+                      )} h-fit px-2.5 py-0.5 text-xs capitalize`}
+                    >
+                      {booking.status}
+                    </Badge>
                   </div>
                 </CardHeader>
 
-                <CardContent>
-                  {booking.session_summary ? (
-                    <div className="text-sm text-muted-foreground">
-                      {booking.session_summary}
-                    </div>
-                  ) : canAddSummary(booking) ? (
+                <CardContent className="pt-2">
+                  <div className="flex flex-wrap gap-2">
                     <Button
+                      variant="outline"
                       size="sm"
-                      onClick={() => {
-                        setSelectedBooking(booking)
-                        setSummaryText("")
-                      }}
-                      className="gap-2"
+                      onClick={() =>
+                        router.push(
+                          `/dashboard/teacher/bookings/${booking.id}`,
+                        )
+                      }
                     >
-                      <FileText className="h-4 w-4" />
-                      Add Summary
+                      View details
                     </Button>
-                  ) : null}
+
+                    {(booking.status === "pending" ||
+                      booking.status === "approved") && (
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="text-rose-600 border-rose-200 hover:bg-rose-50"
+                          >
+                            <XCircle className="h-4 w-4 mr-1.5" />
+                            Cancel
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>
+                              Cancel booking?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This action cannot be undone.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Keep</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() =>
+                                handleCancelBooking(booking.id)
+                              }
+                              className="bg-rose-600 hover:bg-rose-700"
+                            >
+                              Cancel booking
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    )}
+                  </div>
                 </CardContent>
               </Card>
-            ))
-          )}
-        </div>
-      </div>
-
-      {/* Summary dialog */}
-      <Dialog open={!!selectedBooking} onOpenChange={() => setSelectedBooking(null)}>
-        <DialogContent className="max-w-xl">
-          <DialogHeader>
-            <DialogTitle>Add Session Summary</DialogTitle>
-            <DialogDescription className="text-sm">
-              Describe what happened during the session
-            </DialogDescription>
-          </DialogHeader>
-
-          <Textarea
-            rows={8}
-            value={summaryText}
-            onChange={(e) => setSummaryText(e.target.value)}
-            className="text-sm"
-          />
-
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setSelectedBooking(null)}>
-              Cancel
-            </Button>
-            <Button
-              onClick={submitSummary}
-              disabled={submitting || !summaryText.trim()}
-              size="sm"
-            >
-              {submitting ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <Sparkles className="h-4 w-4" />
-              )}
-              Submit
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </>
+            ))}
+          </div>
+        ))
+      )}
+    </div>
   )
 }
 

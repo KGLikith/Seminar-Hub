@@ -186,6 +186,214 @@ export async function getAnalytics() {
   }
 }
 
+export async function getAnalyticsForHOD(departmentId: string) {
+  if (!departmentId) throw new Error("Department ID required")
+
+  const [totalHalls, totalTeachers, totalTechStaff] = await Promise.all([
+    prisma.seminarHall.count({ where: { department_id: departmentId } }),
+    prisma.profile.count({
+      where: {
+        department_id: departmentId,
+        roles: { some: { role: "teacher" } },
+      },
+    }),
+    prisma.profile.count({
+      where: {
+        department_id: departmentId,
+        roles: { some: { role: "tech_staff" } },
+      },
+    }),
+  ])
+
+  const bookings = await prisma.booking.findMany({
+    where: { hall: { department_id: departmentId } },
+    select: {
+      status: true,
+      booking_date: true,
+      start_time: true,
+      end_time: true,
+      hall_id: true,
+      teacher: { select: { name: true } },
+    },
+  })
+
+  const totalBookings = bookings.length
+
+  const statusDistribution: Record<string, number> = {}
+  bookings.forEach(b => {
+    statusDistribution[b.status] = (statusDistribution[b.status] || 0) + 1
+  })
+
+  const hallMap = new Map<string, string>()
+  const halls = await prisma.seminarHall.findMany({
+    where: { department_id: departmentId },
+    select: { id: true, name: true },
+  })
+  halls.forEach(h => hallMap.set(h.id, h.name))
+
+  const hallUsageMap: Record<string, number> = {}
+  bookings.forEach(b => {
+    hallUsageMap[b.hall_id] = (hallUsageMap[b.hall_id] || 0) + 1
+  })
+
+  const hallUsage = Object.entries(hallUsageMap).map(([hallId, count]) => ({
+    hall_id: hallId,
+    hall_name: hallMap.get(hallId) ?? "Unknown",
+    total_bookings: count,
+  }))
+
+  const hourMap: Record<number, number> = {}
+  bookings.forEach(b => {
+    const hour = new Date(b.start_time).getHours()
+    hourMap[hour] = (hourMap[hour] || 0) + 1
+  })
+
+  const peakHours = Object.entries(hourMap).map(([hour, count]) => ({
+    hour: Number(hour),
+    booking_count: count,
+  }))
+
+  const monthMap: Record<string, number> = {}
+  bookings.forEach(b => {
+    const month = b.booking_date.toLocaleString("default", {
+      month: "short",
+      year: "numeric",
+    })
+    monthMap[month] = (monthMap[month] || 0) + 1
+  })
+
+  const monthlyStats = Object.entries(monthMap).map(([month, count]) => ({
+    month,
+    booking_count: count,
+  }))
+
+  const teacherMap: Record<string, number> = {}
+  bookings.forEach(b => {
+    teacherMap[b.teacher.name] = (teacherMap[b.teacher.name] || 0) + 1
+  })
+
+  const activeTeachers = Object.entries(teacherMap)
+    .map(([teacher_name, booking_count]) => ({
+      teacher_name,
+      booking_count,
+    }))
+    .sort((a, b) => b.booking_count - a.booking_count)
+    .slice(0, 5)
+
+  return {
+    totalHalls,
+    totalTeachers,
+    totalTechStaff,
+    totalBookings,
+    hallUsage,
+    peakHours,
+    monthlyStats,
+    statusDistribution,
+    activeTeachers,
+  }
+}
+
+export async function getHallAnalyticsForHOD(
+  hallId: string,
+  departmentId: string
+) {
+  if (!hallId || !departmentId) throw new Error("Invalid request")
+
+  const hall = await prisma.seminarHall.findFirst({
+    where: { id: hallId, department_id: departmentId },
+    include: {
+      department: {
+        include: {
+          hod_profile: { select: { name: true } },
+        },
+      },
+      hallTechStaffs: {
+        include: {
+          tech_staff: { select: { name: true } },
+        },
+      },
+    },
+  })
+
+  if (!hall) throw new Error("Unauthorized")
+
+  const bookings = await prisma.booking.findMany({
+    where: { hall_id: hallId },
+    orderBy: { booking_date: "desc" },
+    include: {
+      teacher: { select: { name: true } },
+    },
+  })
+
+  const byStatus: Record<string, number> = {}
+  bookings.forEach(b => {
+    byStatus[b.status] = (byStatus[b.status] || 0) + 1
+  })
+
+  const monthMap: Record<string, number> = {}
+  bookings.forEach(b => {
+    const month = b.booking_date.toLocaleString("default", {
+      month: "short",
+      year: "numeric",
+    })
+    monthMap[month] = (monthMap[month] || 0) + 1
+  })
+
+  const monthlyTrend = Object.entries(monthMap).map(([month, count]) => ({
+    month,
+    count,
+  }))
+
+  const peakHourMap: Record<number, number> = {}
+  bookings.forEach(b => {
+    const hour = new Date(b.start_time).getHours()
+    peakHourMap[hour] = (peakHourMap[hour] || 0) + 1
+  })
+
+  const peakHours = Object.entries(peakHourMap).map(([hour, usage]) => ({
+    hour: `${hour}:00`,
+    usage,
+  }))
+
+  const durations = bookings.map(
+    b => (b.end_time.getTime() - b.start_time.getTime()) / 60000
+  )
+
+  const avgSessionDuration =
+    durations.reduce((a, b) => a + b, 0) / (durations.length || 1)
+
+  const equipmentUsage: Record<string, number> = {}
+  bookings.forEach(b => {
+    if (b.special_requirements) {
+      equipmentUsage[b.special_requirements] =
+        (equipmentUsage[b.special_requirements] || 0) + 1
+    }
+  })
+
+  return {
+    hall: {
+      id: hall.id,
+      name: hall.name,
+      location: hall.location,
+      seating_capacity: hall.seating_capacity,
+      status: hall.status,
+    },
+    hod: hall.department.hod_profile,
+    techStaff: hall.hallTechStaffs.map(h => h.tech_staff),
+    stats: {
+      byStatus,
+      monthlyTrend,
+      peakHours,
+      equipmentUsage,
+      avgSessionDuration: Math.round(avgSessionDuration),
+      longestSession: Math.max(...durations, 0),
+      shortestSession: Math.min(...durations, 0),
+    },
+    bookings,
+  }
+}
+
+
 export async function updateHall(
   hallId: string,
   data: {

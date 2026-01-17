@@ -186,7 +186,6 @@ export default function EquipmentManagement({ hallId, canManage }: Props) {
         )}
       </CardContent>
 
-      {/* Dialog */}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader>

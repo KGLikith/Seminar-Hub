@@ -164,6 +164,8 @@ model Profile {
   favoriteHalls              FavoriteHall[]
   componentMaintenanceLogs   ComponentMaintenanceLog[] @relation("PerformedByProfile")
   maintenanceRequests        MaintenanceRequest[]
+
+  media BookingMedia[]
 }
 
 model UserRoleAssignment {
@@ -313,6 +315,7 @@ model Booking {
 
   @@index([status])
   @@index([hod_id])
+  media BookingMedia[]
 }
 
 model BookingLog {
@@ -332,6 +335,20 @@ model BookingLog {
 
   @@index([booking_id])
 }
+
+model BookingMedia {
+  id          String   @id @default(uuid())
+  booking_id String
+  url         String
+  uploaded_by String
+  created_at DateTime @default(now())
+
+  booking Booking @relation(fields: [booking_id], references: [id], onDelete: Cascade)
+  uploader Profile @relation(fields: [uploaded_by], references: [id], onDelete: Cascade)
+
+  @@index([booking_id])
+}
+
 
 model Notification {
   id         String   @id @default(uuid())

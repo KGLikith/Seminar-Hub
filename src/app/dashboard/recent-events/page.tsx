@@ -45,14 +45,6 @@ const RecentEvents = () => {
 
     return (
         <div className="min-h-screen bg-background">
-            {/* <header className="border-b bg-card">
-                <div className="container mx-auto px-4 py-4">
-                    <Button variant="ghost" onClick={() => router.push("/dashboard")}>
-                        <ArrowLeft className="h-4 w-4 mr-2" />
-                        Back to Dashboard
-                    </Button>
-                </div>
-            </header> */}
 
             <main className="container mx-auto px-4 py-8">
                 <div className="mb-8">

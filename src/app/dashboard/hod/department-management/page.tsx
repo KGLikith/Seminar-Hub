@@ -39,7 +39,6 @@ const DepartmentManagement = () => {
 
   const handleAssignHall = async (techStaffId: string, hallId: string) => {
     try {
-      // Remove existing assignment for this tech staff
       const res = await assignHallToStaff(techStaffId, hallId)
 
       if (!res.success) throw new Error(res.message)
@@ -102,7 +101,6 @@ const DepartmentManagement = () => {
             </CardContent>
           </Card>
 
-          {/* Tech Staff Section */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">

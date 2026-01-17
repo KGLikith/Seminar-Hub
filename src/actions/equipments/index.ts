@@ -138,7 +138,6 @@ export async function updateComponentStatus(
 
   if (!component) throw new Error("Component not found");
 
-  // Log the change
   await prisma.componentMaintenanceLog.create({
     data: {
       component_id: componentId,
@@ -188,7 +187,6 @@ export async function updateHallComponent(input: UpdateComponentInput) {
   const { componentId, userId, formData } = input;
 
   try {
-    // Fetch current component for previous status
     const existing = await prisma.hallComponent.findUnique({
       where: { id: componentId },
       select: { status: true },

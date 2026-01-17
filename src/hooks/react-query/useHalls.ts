@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { getHalls, getHallById, getHallsByProfileId, getAnalytics, getHallsForDepartment } from "@/actions/halls"
+import { getHalls, getHallById, getHallsByProfileId, getAnalytics, getHallsForDepartment, getAnalyticsForHOD, getHallAnalyticsForHOD } from "@/actions/halls"
 import { DepartmentName } from "@/generated/enums"
 import { getHallImages } from "@/actions/halls/image"
 
@@ -32,6 +32,25 @@ export const useAnalytics = () => {
     queryFn: () => getAnalytics(),
   });
 };
+
+export const useAnalyticsForHOD = (department_id?: string) => {
+  return useQuery({
+    queryKey: ["analytics", department_id],
+    queryFn: () => getAnalyticsForHOD(department_id!),
+    enabled: !!department_id,
+  })
+}
+
+export const useHallAnalytics = (
+  hallId?: string,
+  departmentId?: string
+) => {
+  return useQuery({
+    queryKey: ["hall-analytics", hallId],
+    queryFn: () => getHallAnalyticsForHOD(hallId!, departmentId!),
+    enabled: !!hallId && !!departmentId,
+  })
+}
 
 export const useDepartmentHalls = (departmentId: string | undefined) => {
   return useQuery({

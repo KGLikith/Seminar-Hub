@@ -38,7 +38,6 @@ export default function TechStaffDashboard() {
 
   if (loading) return <div className="p-8">Loading schedule...</div>;
 
-  // Sort events by date
   const sortedEvents = events.sort(
     (a, b) =>
       new Date(a.booking_date).getTime() - new Date(b.booking_date).getTime()

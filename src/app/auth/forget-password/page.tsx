@@ -71,7 +71,6 @@ const ForgotPasswordPage: NextPage = () => {
         toast.error(err.errors[0].longMessage,{
           duration: 3000
         });
-        // setError(err.errors[0].longMessage);
       });
     setLoading(false);
   }
@@ -95,9 +94,7 @@ const ForgotPasswordPage: NextPage = () => {
         password,
       });
       if (!result?.createdSessionId || !result) return;
-      // Check if 2FA is required
       if (result.status === "needs_second_factor") {
-        // setSecondFactor(true);
         setError("");
       } else if (result.status === "complete") {
         setActive?.({ session: result.createdSessionId });
@@ -111,7 +108,6 @@ const ForgotPasswordPage: NextPage = () => {
       setPassword("");
       setCode("");
       toast.error(err.errors[0].longMessage);
-      // setError(err.errors[0].longMessage);
     } finally {
       setLoading(false);
     }

@@ -25,7 +25,6 @@ const Layout = async ({ children }: Props) => {
         {children}
       </div>
 
-      {/* RIGHT SIDE PANEL — only text & image updated, structure unchanged */}
       <div className="hidden lg:flex flex-1 w-full max-h-full bg-teal-50 max-w-4000px overflow-hidden relative flex-col pt-10 pl-24 gap-3">
 
         <h2 className="text-teal-800 md:text-4xl font-bold">

@@ -1,17 +1,17 @@
 import { useQuery, useMutation, useQueryClient, notifyManager } from "@tanstack/react-query"
-import { getNotifications, markNotificationAsRead } from "@/actions/notification"
+import { getNotifications, markAllNotificationsAsRead, markNotificationAsRead } from "@/actions/notification"
 
-export const useNotifications = (userId: string | undefined, unreadOnly = false) => {
+export const useNotifications = (profileId: string | undefined) => {
   return useQuery({
-    queryKey: ["notifications", userId, unreadOnly],
+    queryKey: ["notifications"],
     queryFn: () => {
-      if(!userId) return [];
+      if(!profileId) return [];
 
-      const notication : any = useNotifications(userId, unreadOnly);
+      const notication : any = getNotifications(profileId);
 
       return notication;
     },
-    enabled: !!userId,
+    enabled: !!profileId,
     refetchInterval: 30_000
   })
 }
@@ -20,6 +20,18 @@ export const useMarkNotificationAsRead = () => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (notificationId: string) => markNotificationAsRead(notificationId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notifications"] })
+    },
+  })
+}
+
+
+export const useMarkAllNotificationsAsRead = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (userId: string) => markAllNotificationsAsRead(userId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notifications"] })
     },

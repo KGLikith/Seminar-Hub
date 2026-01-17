@@ -5,9 +5,6 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("🌱 Seeding database...");
 
-  // -------------------------------
-  // 1. Departments
-  // -------------------------------
   const departmentNames = [
     { name: "Computer Science", description: "CSE department" },
     { name: "Electronics", description: "ECE department" },
@@ -30,9 +27,6 @@ async function main() {
 
   console.log("✔ Departments created:", departments.length);
 
-  // -------------------------------
-  // 2. Seminar Halls
-  // -------------------------------
   const halls = await Promise.all([
     prisma.seminarHall.create({
       data: {
@@ -78,9 +72,6 @@ async function main() {
 
   console.log("✔ Seminar halls created:", halls.length);
 
-  // -------------------------------
-  // 3. Equipment  (Uses EquipmentType)
-  // -------------------------------
   const equipment = await Promise.all([
     prisma.equipment.create({
       data: {
@@ -131,9 +122,6 @@ async function main() {
 
   console.log("✔ Equipment created:", equipment.length);
 
-  // -------------------------------
-  // 4. Components (Uses ComponentType)
-  // -------------------------------
   const components = await Promise.all([
     prisma.hallComponent.create({
       data: {

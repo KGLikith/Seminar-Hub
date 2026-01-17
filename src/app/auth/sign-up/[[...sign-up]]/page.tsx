@@ -16,7 +16,6 @@ const SignUp = () => {
             <ButtonHandler />
           </div>
 
-          {/* Highlight bar sits at bottom, no overflow */}
           <HighLightBar />
         </SignUpFormProvider>
 

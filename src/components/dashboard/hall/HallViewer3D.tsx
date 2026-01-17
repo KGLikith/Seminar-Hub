@@ -22,14 +22,12 @@ function Room({ capacity }: { capacity: number }) {
     }
   });
 
-  // Calculate dimensions based on capacity
   const width = Math.min(10, 4 + capacity / 50);
   const height = 4;
   const depth = Math.min(10, 4 + capacity / 50);
 
   return (
     <group ref={roomRef}>
-      {/* Floor */}
       <Box
         args={[width, 0.2, depth]}
         position={[0, -height / 2, 0]}
@@ -39,7 +37,6 @@ function Room({ capacity }: { capacity: number }) {
         <meshStandardMaterial color="#8B7355" />
       </Box>
 
-      {/* Walls */}
       <Box args={[width, height, 0.2]} position={[0, 0, -depth / 2]}>
         <meshStandardMaterial color="#A0826D" />
       </Box>
@@ -53,17 +50,14 @@ function Room({ capacity }: { capacity: number }) {
         <meshStandardMaterial color="#8B7355" />
       </Box>
 
-      {/* Ceiling */}
       <Box args={[width, 0.2, depth]} position={[0, height / 2, 0]}>
         <meshStandardMaterial color="#6B5744" />
       </Box>
 
-      {/* Stage/Podium */}
       <Box args={[width * 0.8, 0.5, 2]} position={[0, -height / 2 + 0.5, -depth / 2 + 1.5]}>
         <meshStandardMaterial color="#5B4A3A" />
       </Box>
 
-      {/* Seating representation */}
       {Array.from({ length: Math.min(20, Math.floor(capacity / 5)) }).map((_, i) => {
         const row = Math.floor(i / 5);
         const col = i % 5;
@@ -83,7 +77,6 @@ function Room({ capacity }: { capacity: number }) {
         );
       })}
 
-      {/* Floating orbs for ambiance */}
       <Sphere args={[0.3]} position={[-width / 4, height / 3, 0]}>
         <meshStandardMaterial color="#4A7C9C" emissive="#4A7C9C" emissiveIntensity={0.5} />
       </Sphere>

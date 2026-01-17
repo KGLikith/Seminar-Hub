@@ -9,6 +9,7 @@ import {
   getPendingBookingsForHOD,
   BookingFilters,
   getBookingLogs,
+  getBookingById,
 } from "@/actions/booking"
 
 export const useBookings = (filters?: BookingFilters) => {
@@ -23,6 +24,17 @@ export const useMyBookings = (userId: string | undefined) => {
     queryKey: ["myBookings", userId],
     queryFn: () => (userId ? getMyBookings(userId) : null),
     enabled: !!userId,
+  })
+}
+
+export const useGetBookingById = (bookingId: string | undefined) => {
+  return useQuery({
+    queryKey: ["booking", bookingId],
+    queryFn: async () => {
+      if (!bookingId) return null
+      return await getBookingById(bookingId)
+    },
+    enabled: !!bookingId,
   })
 }
 

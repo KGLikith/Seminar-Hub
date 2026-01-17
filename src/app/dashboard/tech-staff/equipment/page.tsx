@@ -74,13 +74,11 @@ export default function EquipmentManagement() {
 
   return (
     <div className="p-4 md:p-8 max-w-7xl mx-auto">
-      {/* Header */}
       <div className="mb-8 animate-fade-in">
         <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">Equipment Management</h1>
         <p className="text-slate-600">Monitor and update equipment status across all halls</p>
       </div>
 
-      {/* Equipment Grid */}
       <div className="overflow-x-auto">
         <div className="min-w-full">
           {equipment.length > 0 ? (

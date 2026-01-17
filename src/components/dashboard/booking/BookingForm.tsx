@@ -31,7 +31,6 @@ const BookingForm = ({ hallId, hallName, onSuccess }: BookingFormProps) => {
   const { data: profile, isLoading: profileLoading } = useProfile(clerkId ?? undefined)
   const { data: halls = [], isLoading: hallsLoading } = useHalls()
 
-  /* ---------- STATE ---------- */
   const [selectedHall, setSelectedHall] = useState(hallId ?? "")
   const [bookingDate, setBookingDate] = useState("")
   const [timeSlot, setTimeSlot] = useState("")
@@ -169,7 +168,6 @@ const BookingForm = ({ hallId, hallName, onSuccess }: BookingFormProps) => {
     return <Loader2 className="mx-auto mt-20 animate-spin" />
   }
 
-  /* ---------- UI ---------- */
   return (
     <div className="min-h-screen bg-linear-to-br from-background via-background to-muted/20">
       <main className="container mx-auto px-4 py-8 max-w-3xl">
@@ -181,7 +179,6 @@ const BookingForm = ({ hallId, hallName, onSuccess }: BookingFormProps) => {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
 
-              {/* Hall */}
               <div className="space-y-2">
                 <Label>Seminar Hall *</Label>
                 <Select value={selectedHall} onValueChange={setSelectedHall}>
@@ -206,7 +203,6 @@ const BookingForm = ({ hallId, hallName, onSuccess }: BookingFormProps) => {
                 />
               </div>
 
-              {/* Time Slot */}
               <TimeSlotSelector
                 value={timeSlot}
                 onChange={setTimeSlot}

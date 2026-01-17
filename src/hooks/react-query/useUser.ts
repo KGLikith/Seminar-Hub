@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query"
 import { fetchProfilesByDepartment, getProfile, getUserRole } from "@/actions/user"
 
-export const useProfile = (userId: string | undefined) => {
+export const useProfile = (clerkId: string | undefined) => {
   return useQuery({
-    queryKey: ["profile", userId],
-    queryFn: () => (userId ? getProfile(userId) : null),
-    enabled: !!userId,
+    queryKey: ["profile", clerkId],
+    queryFn: () => (clerkId ? getProfile(clerkId) : null),
+    enabled: !!clerkId,
   })
 }
 

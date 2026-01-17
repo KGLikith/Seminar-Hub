@@ -402,6 +402,7 @@ export const ModelName = {
   EquipmentLog: 'EquipmentLog',
   Booking: 'Booking',
   BookingLog: 'BookingLog',
+  BookingMedia: 'BookingMedia',
   Notification: 'Notification',
   HallComponent: 'HallComponent',
   ComponentMaintenanceLog: 'ComponentMaintenanceLog',
@@ -422,7 +423,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "department" | "user" | "profile" | "userRoleAssignment" | "seminarHall" | "hallImage" | "favoriteHall" | "hallTechStaff" | "equipment" | "equipmentLog" | "booking" | "bookingLog" | "notification" | "hallComponent" | "componentMaintenanceLog" | "maintenanceRequest" | "emailLog"
+    modelProps: "department" | "user" | "profile" | "userRoleAssignment" | "seminarHall" | "hallImage" | "favoriteHall" | "hallTechStaff" | "equipment" | "equipmentLog" | "booking" | "bookingLog" | "bookingMedia" | "notification" | "hallComponent" | "componentMaintenanceLog" | "maintenanceRequest" | "emailLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1314,6 +1315,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    BookingMedia: {
+      payload: Prisma.$BookingMediaPayload<ExtArgs>
+      fields: Prisma.BookingMediaFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BookingMediaFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingMediaPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BookingMediaFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingMediaPayload>
+        }
+        findFirst: {
+          args: Prisma.BookingMediaFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingMediaPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BookingMediaFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingMediaPayload>
+        }
+        findMany: {
+          args: Prisma.BookingMediaFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingMediaPayload>[]
+        }
+        create: {
+          args: Prisma.BookingMediaCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingMediaPayload>
+        }
+        createMany: {
+          args: Prisma.BookingMediaCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BookingMediaCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingMediaPayload>[]
+        }
+        delete: {
+          args: Prisma.BookingMediaDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingMediaPayload>
+        }
+        update: {
+          args: Prisma.BookingMediaUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingMediaPayload>
+        }
+        deleteMany: {
+          args: Prisma.BookingMediaDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BookingMediaUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BookingMediaUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingMediaPayload>[]
+        }
+        upsert: {
+          args: Prisma.BookingMediaUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BookingMediaPayload>
+        }
+        aggregate: {
+          args: Prisma.BookingMediaAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBookingMedia>
+        }
+        groupBy: {
+          args: Prisma.BookingMediaGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BookingMediaGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BookingMediaCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BookingMediaCountAggregateOutputType> | number
+        }
+      }
+    }
     Notification: {
       payload: Prisma.$NotificationPayload<ExtArgs>
       fields: Prisma.NotificationFieldRefs
@@ -1886,6 +1961,17 @@ export const BookingLogScalarFieldEnum = {
 export type BookingLogScalarFieldEnum = (typeof BookingLogScalarFieldEnum)[keyof typeof BookingLogScalarFieldEnum]
 
 
+export const BookingMediaScalarFieldEnum = {
+  id: 'id',
+  booking_id: 'booking_id',
+  url: 'url',
+  uploaded_by: 'uploaded_by',
+  created_at: 'created_at'
+} as const
+
+export type BookingMediaScalarFieldEnum = (typeof BookingMediaScalarFieldEnum)[keyof typeof BookingMediaScalarFieldEnum]
+
+
 export const NotificationScalarFieldEnum = {
   id: 'id',
   title: 'title',
@@ -2299,6 +2385,7 @@ export type GlobalOmitConfig = {
   equipmentLog?: Prisma.EquipmentLogOmit
   booking?: Prisma.BookingOmit
   bookingLog?: Prisma.BookingLogOmit
+  bookingMedia?: Prisma.BookingMediaOmit
   notification?: Prisma.NotificationOmit
   hallComponent?: Prisma.HallComponentOmit
   componentMaintenanceLog?: Prisma.ComponentMaintenanceLogOmit

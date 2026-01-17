@@ -20,6 +20,26 @@ export async function updateMaintenanceRequestStatus(
           status === MaintenanceRequestStatus.approved ? new Date() : null,
       },
     });
+
+    await prisma.notification.create({
+      data: {
+        user_id: data.tech_staff_id,
+        title:
+          status === MaintenanceRequestStatus.approved
+            ? "Maintenance Request Approved"
+            : status === MaintenanceRequestStatus.rejected
+            ? "Maintenance Request Rejected"
+            : "Maintenance Request Updated",
+        message:
+          status === MaintenanceRequestStatus.approved
+            ? "Your maintenance request has been approved by the HOD."
+            : status === MaintenanceRequestStatus.rejected
+            ? `Your maintenance request was rejected. Reason: ${rejectionReason ?? "Not specified"}`
+            : "Your maintenance request status has been updated.",
+        type: "maintenance_update",
+      },
+    })
+    
     revalidatePath("/dashboard/hod/maintanance-approval");
     return { data, error: null };
   } catch (error) {

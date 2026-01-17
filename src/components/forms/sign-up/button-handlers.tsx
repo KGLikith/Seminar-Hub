@@ -7,8 +7,6 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
 
-// type Props = {};
-
 const ButtonHandler = () => {
   const { setCurrentStep, currentStep } = useAuthContextHook();
   const { getValues, trigger } = useFormContext();
@@ -72,17 +70,6 @@ const ButtonHandler = () => {
             Sign In
           </Link>
         </p>
-        {/* <p className="flex justify-between items-center gap-2">
-          Go boack to the previous step
-          <Button
-            type="button"
-            variant={"ghost"}
-            className=" text-gray-400 w-fit p-0 text-start font-bold  hover:bg-transparent hover:text-white"
-            onClick={() => setCurrentStep((prev: number) => prev - 1)}
-          >
-            Back
-          </Button>
-        </p> */}
       </div>
     );
   }

@@ -2,7 +2,7 @@
 
 import { Bell, CheckCircle2, AlertCircle, Clock } from "lucide-react"
 import { useAuth } from "@clerk/nextjs"
-import { useNotifications, useMarkNotificationAsRead } from "@/hooks/react-query/useNotifications"
+import { useNotifications, useMarkNotificationAsRead, useMarkAllNotificationsAsRead } from "@/hooks/react-query/useNotifications"
 import { useProfile } from "@/hooks/react-query/useUser"
 
 interface Notification {
@@ -19,9 +19,12 @@ export default function NotificationsPage() {
   const { userId: clerkId } = useAuth()
   const { data: profile, isLoading: profileLoading, refetch } = useProfile(clerkId ?? undefined)
 
-  const { data: notifications = [], isLoading } = useNotifications(profile?.user_id as string, false)
+  const { data: notifications = [], isLoading } = useNotifications(profile?.id as string)
 
   const markAsReadMutation = useMarkNotificationAsRead()
+
+  const markAllMutation = useMarkAllNotificationsAsRead()
+
 
   const unreadCount = notifications.filter((n: any) => !n.read).length
 
@@ -55,6 +58,11 @@ export default function NotificationsPage() {
     }
   }
 
+  const handleMarkAllAsRead = () => {
+    if (!profile?.id) return
+    markAllMutation.mutate(profile.id)
+  }
+
   if (isLoading || profileLoading) {
     return (
       <div className="p-8 max-w-2xl mx-auto">
@@ -69,12 +77,24 @@ export default function NotificationsPage() {
 
   return (
     <div className="p-8 max-w-3xl mx-auto">
-      <div className="mb-8">
-        <h1 className="heading-2 mb-3">Notifications</h1>
-        <p className="text-lg text-slate-600">
-          You have <span className="font-bold text-blue-600">{unreadCount}</span> unread notification
-          {unreadCount !== 1 ? "s" : ""}
-        </p>
+      <div className="mb-8 flex items-center justify-between">
+        <div>
+
+          <h1 className="heading-2 mb-3">Notifications</h1>
+          <p className="text-lg text-slate-600">
+            You have <span className="font-bold text-blue-600">{unreadCount}</span> unread notification
+            {unreadCount !== 1 ? "s" : ""}
+          </p>
+        </div>
+        {unreadCount > 0 && (
+          <button
+            onClick={handleMarkAllAsRead}
+            disabled={markAllMutation.isPending}
+            className="text-sm font-semibold text-blue-600 hover:text-blue-800 transition"
+          >
+            Mark all as read
+          </button>
+        )}
       </div>
 
       <div className="space-y-4">
