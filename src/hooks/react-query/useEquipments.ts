@@ -59,7 +59,7 @@ export const useUpdateComponentStatus = () => {
   })
 }
 
-export const useGetEquipmentLogs = (hallId: string | undefined) => {
+export const useGetEquipmentLogs = (hallId: string) => {
   return useQuery({
     queryKey: ["equipmentLogs", hallId],
     queryFn: () => (hallId ? getEquipmentLogsForHall(hallId) : null),

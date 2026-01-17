@@ -1,10 +1,11 @@
-import Calendar from '@/components/dashboard/calendar'
-import React from 'react'
+"use client"
 
-type Props = {}
+import { useSearchParams } from "next/navigation"
+import Calendar from "@/components/dashboard/calendar"
 
-export default function Page({}: Props) {
-  return (
-    <Calendar />
-  )
+export default function Page() {
+  const searchParams = useSearchParams()
+  const seminarHall = searchParams.get("seminar_hall")
+
+  return <Calendar defaultHallId={seminarHall ?? undefined} />
 }

@@ -19,9 +19,11 @@ export default function Dashboard() {
 
   const { data: profile, isLoading: profileLoading } = useProfile(userId ?? undefined)
   const { data: halls = [], isLoading: hallsLoading } = useHalls()
-  const { data: pendingBookings = [], isLoading: pendingBookingsLoading } = usePendingBookingsForHOD(
-    profile?.department_id ?? undefined,
-  )
+  const departmentId = profile?.department_id
+
+  const { data: pendingBookings = [], isLoading: pendingBookingsLoading } =
+    usePendingBookingsForHOD(departmentId as string)
+
 
   const { data: hallForTechStaff } = useGetHallForTechStaff(
     profile?.id ?? undefined,

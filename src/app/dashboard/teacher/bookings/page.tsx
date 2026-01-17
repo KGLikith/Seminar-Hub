@@ -190,7 +190,7 @@ const MyBookings = () => {
                       size="sm"
                       onClick={() =>
                         router.push(
-                          `/dashboard/teacher/bookings/${booking.id}`,
+                          `/dashboard/bookings/${booking.id}`,
                         )
                       }
                     >

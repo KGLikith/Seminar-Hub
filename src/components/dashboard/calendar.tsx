@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { useBookings } from "@/hooks/react-query/useBookings"
 import { useHalls } from "@/hooks/react-query/useHalls"
 import { Button } from "@/components/ui/button"
@@ -64,10 +64,16 @@ const statusBadge = (status: string) =>
     </Badge>
   )
 
-export default function Calendar() {
+export default function Calendar({ defaultHallId }: { defaultHallId?: string }) {
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [selectedHall, setSelectedHall] = useState("all")
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
+
+  useEffect(() => {
+    if (defaultHallId) {
+      setSelectedHall(defaultHallId)
+    }
+  }, [defaultHallId])
 
   const { data: halls = [], isLoading: hallsLoading } = useHalls()
 
@@ -243,6 +249,13 @@ export default function Calendar() {
                         LIVE
                       </Badge>
                     )}
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => window.location.href = `/dashboard/bookings/${b.id}`}
+                    >
+                      View
+                    </Button>
                   </div>
                 </div>
               )
@@ -289,6 +302,15 @@ export default function Calendar() {
                         </Badge>
                       )}
                     </div>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        window.location.href = `/dashboard/bookings/${b.id}`
+                      }}
+                    >
+                      View
+                    </Button>
                   </div>
                 )
               })}

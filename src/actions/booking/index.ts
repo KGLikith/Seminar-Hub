@@ -4,10 +4,6 @@ import { BookingStatus } from "@/generated/enums"
 import prisma from "@/lib/db"
 import { revalidatePath } from "next/cache"
 
-/* ------------------------------------------------------------------ */
-/* TYPES */
-/* ------------------------------------------------------------------ */
-
 export type BookingFilters = {
   hallId?: string
   status?: BookingStatus[]
@@ -18,9 +14,6 @@ export type BookingFilters = {
   limit?: number
 }
 
-/* ------------------------------------------------------------------ */
-/* READ */
-/* ------------------------------------------------------------------ */
 
 export async function getBookings(filters?: BookingFilters) {
   const where: any = {}
@@ -76,10 +69,6 @@ export async function getBookingById(id: string) {
     },
   })
 }
-
-/* ------------------------------------------------------------------ */
-/* CREATE */
-/* ------------------------------------------------------------------ */
 
 export async function createBooking(data: {
   hallId: string
@@ -306,3 +295,25 @@ export async function getBookingLogs(bookingId: string) {
     }
   })
 }
+
+export async function getBookingLogsByHall(hallId: string) {
+  return prisma.bookingLog.findMany({
+    where: {
+      booking: {
+        hall_id: hallId,
+      },
+    },
+    include: {
+      booking: {
+        include: {
+          teacher: true,
+        },
+      },
+    },
+    orderBy: {
+      created_at: "desc",
+    },
+  })
+}
+
+

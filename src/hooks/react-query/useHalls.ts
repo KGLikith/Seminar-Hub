@@ -10,7 +10,7 @@ export const useHalls = () => {
   })
 }
 
-export const useHall = (id: string | undefined) => {
+export const useHall = (id: string) => {
   return useQuery({
     queryKey: ["hall", id],
     queryFn: () => (id ? getHallById(id) : null),

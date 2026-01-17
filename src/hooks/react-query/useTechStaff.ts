@@ -2,8 +2,8 @@ import { getAssignedHall, getTechStaffAssignments, getTechStaffForHall } from "@
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetTechStaffForHall = (
-  userId: string | undefined,
-  hallId: string | undefined
+  userId: string,
+  hallId: string
 ) => {
   return useQuery({
     queryKey: ["techStaffForHall", userId, hallId],

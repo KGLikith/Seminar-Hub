@@ -1,3 +1,4 @@
+'use client'
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import {
   getBookings,
@@ -10,12 +11,14 @@ import {
   BookingFilters,
   getBookingLogs,
   getBookingById,
+  getBookingLogsByHall,
 } from "@/actions/booking"
 
 export const useBookings = (filters?: BookingFilters) => {
   return useQuery({
     queryKey: ["bookings", filters],
     queryFn: () => getBookings(filters),
+    enabled: !!filters?.hallId
   })
 }
 
@@ -107,10 +110,18 @@ export const usePendingBookingsForHOD = (departmentId: string | undefined) => {
   })
 }
 
-export const useBookingLogs = (bookingId: string | undefined) => {
+export const useBookingLogs = (bookingId: string) => {
   return useQuery({
     queryKey: ["bookingLogs", bookingId],
     queryFn: () => (bookingId ? getBookingLogs(bookingId) : null),
     enabled: !!bookingId,
+  })
+}
+
+export const useBookingLogsForHall = (hallId: string) => {
+  return useQuery({
+    queryKey: ["bookingLogsForHall", hallId],
+    queryFn: () => (hallId ? getBookingLogsByHall(hallId) : null),
+    enabled: !!hallId,
   })
 }
