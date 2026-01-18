@@ -7,13 +7,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Upload, Building2, UserIcon, Loader2, AlertCircle, CheckCircle, Wrench } from "lucide-react"
+import { Upload, Building2, UserIcon, Loader2, AlertCircle, CheckCircle, Wrench, Trash2 } from "lucide-react"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@clerk/nextjs"
 import { useProfile } from "@/hooks/react-query/useUser"
 import { useHallFromTechProfileId } from "@/hooks/react-query/useHalls"
-import { updateProfile } from "@/actions/user"
+import { deleteProfileImage, updateProfile, uploadProfileImage } from "@/actions/user"
+import { getHallImageUploadUrl } from "@/actions/halls/image"
+import { getSignedURL } from "@/actions/aws/s3"
+import queryclient from "@/client/queryClient"
 
 const Profile = () => {
   const router = useRouter()
@@ -24,43 +27,52 @@ const Profile = () => {
   )
   const [uploading, setUploading] = useState(false)
 
-  const handleAvatarUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files || event.target.files.length === 0 || !profile?.id) {
-      return
+  async function uploadToS3(file: File, signedUrl: string) {
+    const res = await fetch(signedUrl, {
+      method: "PUT",
+      headers: { "Content-Type": file.type },
+      body: file,
+    })
+    if (!res.ok) throw new Error("Upload failed")
+    return signedUrl.split("?")[0]
+  }
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!profile?.id) return;
+    try {
+      setUploading(true)
+      const files = Array.from(e.target.files ?? [])
+      if (!files.length) return
+
+      for (const file of files) {
+        const signedUrl = await getSignedURL(file.type, file.name, profile.id, "profile_image")
+        const publicUrl = await uploadToS3(file, signedUrl)
+        await uploadProfileImage(profile.id, publicUrl)
+      }
+
+      await queryclient.invalidateQueries({
+        queryKey: ["profile", clerkId],
+      })
+
+      toast.success("Profile updated")
+      refetch()
+    } catch (e: any) {
+      toast.error(e.message)
+    } finally {
+      setUploading(false)
+      e.target.value = ""
     }
+  }
 
-    const file = event.target.files[0]
-    setUploading(true)
+  const confirmDelete = async () => {
+    if (!profile?.id) return;
+    await deleteProfileImage(profile.id)
 
-    // try {
-    //    const fileExt = file.name.split(".").pop();
-    //    const fileName = `${profile.id}-${Math.random()}.${fileExt}`;
-    //    const filePath = `avatars/${fileName}`;
-
-    //    const { error: uploadError } = await supabase.storage
-    //       .from("bookings")
-    //       .upload(filePath, file, { upsert: true });
-
-    //    if (uploadError) throw uploadError;
-
-    //    const { data: { publicUrl } } = supabase.storage
-    //       .from("bookings")
-    //       .getPublicUrl(filePath);
-
-    //    const { error: updateError } = await supabase
-    //       .from("profiles")
-    //       .update({ avatar_url: publicUrl })
-    //       .eq("id", userId);
-
-    //    if (updateError) throw updateError;
-
-    //    toast.success("Avatar updated successfully");
-    // } catch (error) {
-    //    console.error("Error uploading avatar:", error);
-    //    toast.error("Failed to upload avatar");
-    // } finally {
-    //    setUploading(false);
-    // }
+    await queryclient.invalidateQueries({
+      queryKey: ["profile", clerkId],
+    })
+    toast.success("Image deleted")
+    refetch()
   }
 
   const handleUpdateProfile = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -104,27 +116,26 @@ const Profile = () => {
           <Card className="shadow-md border-border/50 overflow-hidden">
             <CardHeader className="border-b border-border/50 bg-linear-to-br from-primary/5 to-secondary/5">
               <CardTitle className="text-xl">Profile Picture</CardTitle>
-              <CardDescription>Update your profile picture</CardDescription>
+              <CardDescription>Update or remove your profile picture</CardDescription>
             </CardHeader>
+
             <CardContent className="p-6">
               <div className="flex flex-col sm:flex-row items-center gap-6">
-                <div className="relative group">
+                <div className="relative">
                   {profile?.avatar_url ? (
                     <img
-                      src={profile.avatar_url || "/placeholder.svg"}
+                      src={profile.avatar_url}
                       alt="Profile"
-                      className="w-28 h-28 rounded-2xl object-cover border-4 border-primary shadow-lg group-hover:shadow-xl transition-shadow"
+                      className="w-28 h-28 rounded-2xl object-cover border-4 border-primary shadow-lg"
                     />
                   ) : (
                     <div className="w-28 h-28 rounded-2xl bg-linear-to-br from-primary/20 to-secondary/20 flex items-center justify-center border-4 border-primary shadow-lg">
                       <UserIcon className="h-14 w-14 text-primary" />
                     </div>
                   )}
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl flex items-center justify-center">
-                    <Upload className="h-8 w-8 text-white" />
-                  </div>
                 </div>
-                <div className="flex-1 text-center sm:text-left">
+
+                <div className="flex-1 flex flex-col gap-3 text-center sm:text-left">
                   <Input
                     type="file"
                     accept="image/*"
@@ -133,33 +144,52 @@ const Profile = () => {
                     className="hidden"
                     id="avatar-upload"
                   />
-                  <label htmlFor="avatar-upload">
-                    <Button
-                      variant="outline"
-                      className="gap-2 cursor-pointer bg-transparent"
-                      disabled={uploading}
-                      asChild
-                    >
-                      <span>
-                        {uploading ? (
-                          <>
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                            Uploading...
-                          </>
-                        ) : (
-                          <>
-                            <Upload className="h-4 w-4" />
-                            Change Photo
-                          </>
-                        )}
-                      </span>
-                    </Button>
-                  </label>
-                  <p className="text-sm text-muted-foreground mt-3">JPG, PNG or GIF (max. 5MB)</p>
+
+                  <div className="flex flex-wrap gap-3">
+                    <label htmlFor="avatar-upload">
+                      <Button
+                        variant="outline"
+                        className="gap-2"
+                        disabled={uploading}
+                        asChild
+                      >
+                        <span>
+                          {uploading ? (
+                            <>
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                              Uploading...
+                            </>
+                          ) : (
+                            <>
+                              <Upload className="h-4 w-4" />
+                              Change Photo
+                            </>
+                          )}
+                        </span>
+                      </Button>
+                    </label>
+
+                    {profile?.avatar_url && (
+                      <Button
+                        variant="destructive"
+                        className="gap-2"
+                        disabled={uploading}
+                        onClick={confirmDelete}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                        Remove Photo
+                      </Button>
+                    )}
+                  </div>
+
+                  <p className="text-sm text-muted-foreground">
+                    JPG, PNG or GIF (max 5MB)
+                  </p>
                 </div>
               </div>
             </CardContent>
           </Card>
+
 
           <Card className="shadow-md border-border/50">
             <CardHeader className="border-b border-border/50 bg-linear-to-br from-primary/5 to-secondary/5">

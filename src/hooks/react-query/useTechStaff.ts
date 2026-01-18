@@ -1,4 +1,5 @@
-import { getAssignedHall, getTechStaffAssignments, getTechStaffForHall } from "@/actions/user/tech_staff";
+'use client'
+import { getApprovedRequestsByTechStaff, getAssignedHall, getMaintenanceRequestsByTechStaff, getTechStaffAssignments, getTechStaffForHall } from "@/actions/user/tech_staff";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetTechStaffForHall = (
@@ -28,5 +29,14 @@ export const useGetHallForTechStaff = (userId: string | undefined, enabled: bool
     queryFn: () =>
       userId ? getAssignedHall(userId) : null,
     enabled: enabled && !!userId,
+  });
+}
+
+export const useGetApprovedRequestsByTechStaff = (techStaffId: string | undefined) => {
+  return useQuery({
+    queryKey: ["approved-maintenance-requests", techStaffId],
+    queryFn: () =>
+      techStaffId ? getApprovedRequestsByTechStaff(techStaffId) : [],
+    enabled: !!techStaffId,
   });
 }

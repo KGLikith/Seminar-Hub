@@ -1911,11 +1911,11 @@ export type EquipmentScalarFieldEnum = (typeof EquipmentScalarFieldEnum)[keyof t
 
 export const EquipmentLogScalarFieldEnum = {
   id: 'id',
-  previous_condition: 'previous_condition',
-  new_condition: 'new_condition',
+  equipment_id: 'equipment_id',
+  action: 'action',
+  condition_after: 'condition_after',
   notes: 'notes',
   created_at: 'created_at',
-  equipment_id: 'equipment_id',
   updated_by: 'updated_by'
 } as const
 
@@ -2007,8 +2007,7 @@ export const ComponentMaintenanceLogScalarFieldEnum = {
   id: 'id',
   component_id: 'component_id',
   action: 'action',
-  previous_status: 'previous_status',
-  new_status: 'new_status',
+  status_after: 'status_after',
   notes: 'notes',
   performed_by: 'performed_by',
   created_at: 'created_at'
@@ -2024,10 +2023,10 @@ export const MaintenanceRequestScalarFieldEnum = {
   component_id: 'component_id',
   equipment_id: 'equipment_id',
   request_type: 'request_type',
-  title: 'title',
-  description: 'description',
   priority: 'priority',
   status: 'status',
+  title: 'title',
+  description: 'description',
   hod_id: 'hod_id',
   approved_at: 'approved_at',
   rejection_reason: 'rejection_reason',
@@ -2197,6 +2196,20 @@ export type ListEnumEquipmentConditionFieldRefInput<$PrismaModel> = FieldRefInpu
 
 
 /**
+ * Reference to a field of type 'MaintenanceAction'
+ */
+export type EnumMaintenanceActionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MaintenanceAction'>
+    
+
+
+/**
+ * Reference to a field of type 'MaintenanceAction[]'
+ */
+export type ListEnumMaintenanceActionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MaintenanceAction[]'>
+    
+
+
+/**
  * Reference to a field of type 'BookingStatus'
  */
 export type EnumBookingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BookingStatus'>
@@ -2256,6 +2269,34 @@ export type EnumComponentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$
  * Reference to a field of type 'ComponentStatus[]'
  */
 export type ListEnumComponentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ComponentStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'MaintenanceRequestType'
+ */
+export type EnumMaintenanceRequestTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MaintenanceRequestType'>
+    
+
+
+/**
+ * Reference to a field of type 'MaintenanceRequestType[]'
+ */
+export type ListEnumMaintenanceRequestTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MaintenanceRequestType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'MaintenancePriority'
+ */
+export type EnumMaintenancePriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MaintenancePriority'>
+    
+
+
+/**
+ * Reference to a field of type 'MaintenancePriority[]'
+ */
+export type ListEnumMaintenancePriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MaintenancePriority[]'>
     
 
 

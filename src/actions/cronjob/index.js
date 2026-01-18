@@ -38,7 +38,7 @@ export const startAutoRejectCron = () => {
               action: "Auto Rejected",
               previous_status: "pending",
               new_status: "rejected",
-              performed_by: booking.teacher_id, // system fallback
+              performed_by: booking.teacher_id, 
               notes: "Auto-rejected by system (local cron)",
             },
           }),

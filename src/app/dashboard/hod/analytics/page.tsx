@@ -138,7 +138,7 @@ const AnalyticsPage = () => {
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="hall_name" />
                   <YAxis />
-                  <Tooltip cursor={{ fill: "hsl(var(--muted))" }} />
+                  <Tooltip cursor={{ }} />
                   <Bar
                     dataKey="total_bookings"
                     fill="#10b981"

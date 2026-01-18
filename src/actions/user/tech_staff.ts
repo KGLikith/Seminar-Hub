@@ -1,17 +1,18 @@
 "use server";
-import { MaintenanceRequestStatus } from "@/generated/enums";
+import { MaintenancePriority, MaintenanceRequestStatus, MaintenanceRequestType } from "@/generated/enums";
 import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { sendNotification } from "../notification";
 
 export interface createMaintanaceRequestInput {
   hallId: string;
   techStaffId: string;
-  requestType: string;
+  requestType: MaintenanceRequestType;
   componentId?: string;
   equipmentId?: string;
   title: string;
   description: string;
-  priority: string;
+  priority: MaintenancePriority;
   status: MaintenanceRequestStatus;
 }
 
@@ -106,13 +107,107 @@ export async function getAssignedHall(userId: string) {
       },
       select: {
         hall_id: true,
+        hall: {
+          select: {
+            name: true
+          }
+        }
       },
     });
 
-    console.log("Assigned hall data:", data);
     return data;
   } catch (error) {
     console.error("Error fetching assigned hall:", error);
     return null;
   }
+}
+
+export async function createMaintenanceRequest(input: {
+  hallId: string
+  techStaffId: string
+  requestType: MaintenanceRequestType
+  priority: MaintenancePriority
+  title: string
+  description: string
+
+  equipmentId?: string | null
+  componentId?: string | null
+
+  newEquipmentType?: string | null
+  newComponentType?: string | null
+}) {
+  try {
+    if (input.requestType === "new_installation") {
+      if (input.equipmentId || input.componentId) {
+        return { error: "New installation cannot reference existing assets" }
+      }
+    } else {
+      if (!input.equipmentId && !input.componentId) {
+        return { error: "Select equipment or component" }
+      }
+    }
+
+    const request = await prisma.maintenanceRequest.create({
+      data: {
+        hall_id: input.hallId,
+        tech_staff_id: input.techStaffId,
+        request_type: input.requestType,
+        priority: input.priority,
+        title: input.title,
+        description: input.description,
+
+        equipment_id: input.equipmentId ?? null,
+        component_id: input.componentId ?? null,
+      },
+      include: {
+        hall: {
+          include: {
+            department: {
+              include: { hod_profile: true },
+            },
+          },
+        },
+        techStaff: true,
+      },
+    })
+
+    const hod = request.hall.department.hod_profile
+    if (hod) {
+      await sendNotification({
+        userId: hod.id,
+        title: "New Maintenance Request",
+        message: `Maintenance request raised for ${request.hall.name} by ${request.techStaff.name}`,
+        type: "maintenance_request_created",
+      })
+    }
+
+    return { success: true }
+  } catch (err) {
+    console.error("❌ createMaintenanceRequest:", err)
+    return { error: "Failed to create maintenance request" }
+  }
+}
+
+export async function getMaintenanceRequestsByTechStaff(techStaffId: string) {
+  return prisma.maintenanceRequest.findMany({
+    where: { tech_staff_id: techStaffId, status: "pending" },
+    include: {
+      hall: true,
+      equipment: true,
+      component: true,
+    },
+    orderBy: { created_at: "desc" },
+  })
+}
+
+export async function getApprovedRequestsByTechStaff(techStaffId: string) {
+  return prisma.maintenanceRequest.findMany({
+    where: { tech_staff_id: techStaffId, status: "approved" },
+    include: {
+      hall: true,
+      equipment: true,
+      component: true,
+    },
+    orderBy: { created_at: "desc" },
+  })
 }

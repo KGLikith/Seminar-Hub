@@ -9,7 +9,7 @@ export async function GET(
     const id = (await params).id
     const pdfBuffer = await generateBookingPDF(id)
 
-    return new NextResponse(pdfBuffer, {
+    return new NextResponse(new Uint8Array(pdfBuffer), {
       headers: {
         "Content-Type": "application/pdf",
         "Content-Disposition": `attachment; filename="booking-${id}.pdf"`,

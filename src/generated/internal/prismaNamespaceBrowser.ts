@@ -198,11 +198,11 @@ export type EquipmentScalarFieldEnum = (typeof EquipmentScalarFieldEnum)[keyof t
 
 export const EquipmentLogScalarFieldEnum = {
   id: 'id',
-  previous_condition: 'previous_condition',
-  new_condition: 'new_condition',
+  equipment_id: 'equipment_id',
+  action: 'action',
+  condition_after: 'condition_after',
   notes: 'notes',
   created_at: 'created_at',
-  equipment_id: 'equipment_id',
   updated_by: 'updated_by'
 } as const
 
@@ -294,8 +294,7 @@ export const ComponentMaintenanceLogScalarFieldEnum = {
   id: 'id',
   component_id: 'component_id',
   action: 'action',
-  previous_status: 'previous_status',
-  new_status: 'new_status',
+  status_after: 'status_after',
   notes: 'notes',
   performed_by: 'performed_by',
   created_at: 'created_at'
@@ -311,10 +310,10 @@ export const MaintenanceRequestScalarFieldEnum = {
   component_id: 'component_id',
   equipment_id: 'equipment_id',
   request_type: 'request_type',
-  title: 'title',
-  description: 'description',
   priority: 'priority',
   status: 'status',
+  title: 'title',
+  description: 'description',
   hod_id: 'hod_id',
   approved_at: 'approved_at',
   rejection_reason: 'rejection_reason',

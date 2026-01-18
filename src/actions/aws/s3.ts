@@ -15,10 +15,10 @@ export const getSignedURL = async (
   mediaType: string,
   mediaName: string,
   id: string,
-  type: "booking" | "hall_image" | "booking_image"
+  type: "booking" | "hall_image" | "booking_image" | "profile_image",
 ) => {
   const allowed =
-    type === "hall_image" ? IMAGE_TYPES: [...IMAGE_TYPES, ...PDF_TYPES]
+    type === "hall_image" || type === "profile_image" ? IMAGE_TYPES: [...IMAGE_TYPES, ...PDF_TYPES]
 
   if (!allowed.includes(mediaType)) {
     console.error("Invalid media type:", mediaType, "for type:", type);

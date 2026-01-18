@@ -36,7 +36,7 @@ import { useEquipmentByHall } from "@/hooks/react-query/useEquipments"
 import {
   addEquipmentToHall,
   updateEquipmentCondition,
-} from "@/actions/equipments"
+} from "@/actions/component_equipments"
 import { EquipmentCondition, EquipmentType } from "@/generated/enums"
 import { Equipment } from "@/generated/client"
 

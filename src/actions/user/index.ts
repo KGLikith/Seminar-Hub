@@ -47,6 +47,27 @@ export async function updateProfile(
   }
 }
 
+export async function uploadProfileImage(
+  profileId: string,
+  imageUrl: string
+) {
+  await prisma.profile.update({
+    where: { id: profileId },
+    data: { avatar_url: imageUrl },
+  });
+}
+
+export async function deleteProfileImage(
+  profileId: string,
+) {
+  await prisma.profile.update({
+    where: { id: profileId },
+    data: {
+      avatar_url: null,
+    },
+  });
+}
+
 export async function fetchProfilesByDepartment(departmentId: string) {
   const profiles = await prisma.profile.findMany({
     where: {

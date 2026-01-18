@@ -15,9 +15,14 @@ export async function getHallById(id: string) {
   return await prisma.seminarHall.findUnique({
     where: { id },
     include: {
-      department: true,
+      department: {
+        include: {
+          hod_profile: { select: { name: true } },
+        }
+      },
       equipment: true,
       components: true,
+      
       bookings: {
         where: { status: "approved" },
         orderBy: { booking_date: "asc" },
@@ -457,4 +462,17 @@ export async function deleteHall(hallId: string) {
     console.log("Error deleting hall:", err);
     return { error: "Failed to delete hall" };
   }
+}
+
+export async function getTechStaffHalls(techStaffId: string) {
+  return await prisma.seminarHall.findMany({
+    where: {
+      hallTechStaffs: {
+        some: {
+          tech_staff_id: techStaffId,
+        },
+      },
+    },
+    orderBy: { name: "asc" },
+  });
 }

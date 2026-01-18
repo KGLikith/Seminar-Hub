@@ -26,31 +26,31 @@ export type AggregateEquipmentLog = {
 
 export type EquipmentLogMinAggregateOutputType = {
   id: string | null
-  previous_condition: $Enums.EquipmentCondition | null
-  new_condition: $Enums.EquipmentCondition | null
+  equipment_id: string | null
+  action: $Enums.MaintenanceAction | null
+  condition_after: $Enums.EquipmentCondition | null
   notes: string | null
   created_at: Date | null
-  equipment_id: string | null
   updated_by: string | null
 }
 
 export type EquipmentLogMaxAggregateOutputType = {
   id: string | null
-  previous_condition: $Enums.EquipmentCondition | null
-  new_condition: $Enums.EquipmentCondition | null
+  equipment_id: string | null
+  action: $Enums.MaintenanceAction | null
+  condition_after: $Enums.EquipmentCondition | null
   notes: string | null
   created_at: Date | null
-  equipment_id: string | null
   updated_by: string | null
 }
 
 export type EquipmentLogCountAggregateOutputType = {
   id: number
-  previous_condition: number
-  new_condition: number
+  equipment_id: number
+  action: number
+  condition_after: number
   notes: number
   created_at: number
-  equipment_id: number
   updated_by: number
   _all: number
 }
@@ -58,31 +58,31 @@ export type EquipmentLogCountAggregateOutputType = {
 
 export type EquipmentLogMinAggregateInputType = {
   id?: true
-  previous_condition?: true
-  new_condition?: true
+  equipment_id?: true
+  action?: true
+  condition_after?: true
   notes?: true
   created_at?: true
-  equipment_id?: true
   updated_by?: true
 }
 
 export type EquipmentLogMaxAggregateInputType = {
   id?: true
-  previous_condition?: true
-  new_condition?: true
+  equipment_id?: true
+  action?: true
+  condition_after?: true
   notes?: true
   created_at?: true
-  equipment_id?: true
   updated_by?: true
 }
 
 export type EquipmentLogCountAggregateInputType = {
   id?: true
-  previous_condition?: true
-  new_condition?: true
+  equipment_id?: true
+  action?: true
+  condition_after?: true
   notes?: true
   created_at?: true
-  equipment_id?: true
   updated_by?: true
   _all?: true
 }
@@ -161,11 +161,11 @@ export type EquipmentLogGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
 
 export type EquipmentLogGroupByOutputType = {
   id: string
-  previous_condition: $Enums.EquipmentCondition
-  new_condition: $Enums.EquipmentCondition
+  equipment_id: string
+  action: $Enums.MaintenanceAction
+  condition_after: $Enums.EquipmentCondition | null
   notes: string | null
   created_at: Date
-  equipment_id: string
   updated_by: string
   _count: EquipmentLogCountAggregateOutputType | null
   _min: EquipmentLogMinAggregateOutputType | null
@@ -192,26 +192,26 @@ export type EquipmentLogWhereInput = {
   OR?: Prisma.EquipmentLogWhereInput[]
   NOT?: Prisma.EquipmentLogWhereInput | Prisma.EquipmentLogWhereInput[]
   id?: Prisma.StringFilter<"EquipmentLog"> | string
-  previous_condition?: Prisma.EnumEquipmentConditionFilter<"EquipmentLog"> | $Enums.EquipmentCondition
-  new_condition?: Prisma.EnumEquipmentConditionFilter<"EquipmentLog"> | $Enums.EquipmentCondition
+  equipment_id?: Prisma.StringFilter<"EquipmentLog"> | string
+  action?: Prisma.EnumMaintenanceActionFilter<"EquipmentLog"> | $Enums.MaintenanceAction
+  condition_after?: Prisma.EnumEquipmentConditionNullableFilter<"EquipmentLog"> | $Enums.EquipmentCondition | null
   notes?: Prisma.StringNullableFilter<"EquipmentLog"> | string | null
   created_at?: Prisma.DateTimeFilter<"EquipmentLog"> | Date | string
-  equipment_id?: Prisma.StringFilter<"EquipmentLog"> | string
   updated_by?: Prisma.StringFilter<"EquipmentLog"> | string
-  equipment?: Prisma.XOR<Prisma.EquipmentScalarRelationFilter, Prisma.EquipmentWhereInput>
   user?: Prisma.XOR<Prisma.ProfileScalarRelationFilter, Prisma.ProfileWhereInput>
+  equipment?: Prisma.XOR<Prisma.EquipmentScalarRelationFilter, Prisma.EquipmentWhereInput>
 }
 
 export type EquipmentLogOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  previous_condition?: Prisma.SortOrder
-  new_condition?: Prisma.SortOrder
+  equipment_id?: Prisma.SortOrder
+  action?: Prisma.SortOrder
+  condition_after?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
-  equipment_id?: Prisma.SortOrder
   updated_by?: Prisma.SortOrder
-  equipment?: Prisma.EquipmentOrderByWithRelationInput
   user?: Prisma.ProfileOrderByWithRelationInput
+  equipment?: Prisma.EquipmentOrderByWithRelationInput
 }
 
 export type EquipmentLogWhereUniqueInput = Prisma.AtLeast<{
@@ -219,23 +219,23 @@ export type EquipmentLogWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.EquipmentLogWhereInput | Prisma.EquipmentLogWhereInput[]
   OR?: Prisma.EquipmentLogWhereInput[]
   NOT?: Prisma.EquipmentLogWhereInput | Prisma.EquipmentLogWhereInput[]
-  previous_condition?: Prisma.EnumEquipmentConditionFilter<"EquipmentLog"> | $Enums.EquipmentCondition
-  new_condition?: Prisma.EnumEquipmentConditionFilter<"EquipmentLog"> | $Enums.EquipmentCondition
+  equipment_id?: Prisma.StringFilter<"EquipmentLog"> | string
+  action?: Prisma.EnumMaintenanceActionFilter<"EquipmentLog"> | $Enums.MaintenanceAction
+  condition_after?: Prisma.EnumEquipmentConditionNullableFilter<"EquipmentLog"> | $Enums.EquipmentCondition | null
   notes?: Prisma.StringNullableFilter<"EquipmentLog"> | string | null
   created_at?: Prisma.DateTimeFilter<"EquipmentLog"> | Date | string
-  equipment_id?: Prisma.StringFilter<"EquipmentLog"> | string
   updated_by?: Prisma.StringFilter<"EquipmentLog"> | string
-  equipment?: Prisma.XOR<Prisma.EquipmentScalarRelationFilter, Prisma.EquipmentWhereInput>
   user?: Prisma.XOR<Prisma.ProfileScalarRelationFilter, Prisma.ProfileWhereInput>
+  equipment?: Prisma.XOR<Prisma.EquipmentScalarRelationFilter, Prisma.EquipmentWhereInput>
 }, "id">
 
 export type EquipmentLogOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  previous_condition?: Prisma.SortOrder
-  new_condition?: Prisma.SortOrder
+  equipment_id?: Prisma.SortOrder
+  action?: Prisma.SortOrder
+  condition_after?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
-  equipment_id?: Prisma.SortOrder
   updated_by?: Prisma.SortOrder
   _count?: Prisma.EquipmentLogCountOrderByAggregateInput
   _max?: Prisma.EquipmentLogMaxOrderByAggregateInput
@@ -247,79 +247,79 @@ export type EquipmentLogScalarWhereWithAggregatesInput = {
   OR?: Prisma.EquipmentLogScalarWhereWithAggregatesInput[]
   NOT?: Prisma.EquipmentLogScalarWhereWithAggregatesInput | Prisma.EquipmentLogScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"EquipmentLog"> | string
-  previous_condition?: Prisma.EnumEquipmentConditionWithAggregatesFilter<"EquipmentLog"> | $Enums.EquipmentCondition
-  new_condition?: Prisma.EnumEquipmentConditionWithAggregatesFilter<"EquipmentLog"> | $Enums.EquipmentCondition
+  equipment_id?: Prisma.StringWithAggregatesFilter<"EquipmentLog"> | string
+  action?: Prisma.EnumMaintenanceActionWithAggregatesFilter<"EquipmentLog"> | $Enums.MaintenanceAction
+  condition_after?: Prisma.EnumEquipmentConditionNullableWithAggregatesFilter<"EquipmentLog"> | $Enums.EquipmentCondition | null
   notes?: Prisma.StringNullableWithAggregatesFilter<"EquipmentLog"> | string | null
   created_at?: Prisma.DateTimeWithAggregatesFilter<"EquipmentLog"> | Date | string
-  equipment_id?: Prisma.StringWithAggregatesFilter<"EquipmentLog"> | string
   updated_by?: Prisma.StringWithAggregatesFilter<"EquipmentLog"> | string
 }
 
 export type EquipmentLogCreateInput = {
   id?: string
-  previous_condition: $Enums.EquipmentCondition
-  new_condition: $Enums.EquipmentCondition
+  action: $Enums.MaintenanceAction
+  condition_after?: $Enums.EquipmentCondition | null
   notes?: string | null
   created_at?: Date | string
-  equipment: Prisma.EquipmentCreateNestedOneWithoutLogsInput
   user: Prisma.ProfileCreateNestedOneWithoutEquipmentLogsInput
+  equipment: Prisma.EquipmentCreateNestedOneWithoutLogsInput
 }
 
 export type EquipmentLogUncheckedCreateInput = {
   id?: string
-  previous_condition: $Enums.EquipmentCondition
-  new_condition: $Enums.EquipmentCondition
+  equipment_id: string
+  action: $Enums.MaintenanceAction
+  condition_after?: $Enums.EquipmentCondition | null
   notes?: string | null
   created_at?: Date | string
-  equipment_id: string
   updated_by: string
 }
 
 export type EquipmentLogUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  previous_condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
-  new_condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
+  action?: Prisma.EnumMaintenanceActionFieldUpdateOperationsInput | $Enums.MaintenanceAction
+  condition_after?: Prisma.NullableEnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  equipment?: Prisma.EquipmentUpdateOneRequiredWithoutLogsNestedInput
   user?: Prisma.ProfileUpdateOneRequiredWithoutEquipmentLogsNestedInput
+  equipment?: Prisma.EquipmentUpdateOneRequiredWithoutLogsNestedInput
 }
 
 export type EquipmentLogUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  previous_condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
-  new_condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
+  equipment_id?: Prisma.StringFieldUpdateOperationsInput | string
+  action?: Prisma.EnumMaintenanceActionFieldUpdateOperationsInput | $Enums.MaintenanceAction
+  condition_after?: Prisma.NullableEnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  equipment_id?: Prisma.StringFieldUpdateOperationsInput | string
   updated_by?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type EquipmentLogCreateManyInput = {
   id?: string
-  previous_condition: $Enums.EquipmentCondition
-  new_condition: $Enums.EquipmentCondition
+  equipment_id: string
+  action: $Enums.MaintenanceAction
+  condition_after?: $Enums.EquipmentCondition | null
   notes?: string | null
   created_at?: Date | string
-  equipment_id: string
   updated_by: string
 }
 
 export type EquipmentLogUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  previous_condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
-  new_condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
+  action?: Prisma.EnumMaintenanceActionFieldUpdateOperationsInput | $Enums.MaintenanceAction
+  condition_after?: Prisma.NullableEnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type EquipmentLogUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  previous_condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
-  new_condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
+  equipment_id?: Prisma.StringFieldUpdateOperationsInput | string
+  action?: Prisma.EnumMaintenanceActionFieldUpdateOperationsInput | $Enums.MaintenanceAction
+  condition_after?: Prisma.NullableEnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  equipment_id?: Prisma.StringFieldUpdateOperationsInput | string
   updated_by?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -335,31 +335,31 @@ export type EquipmentLogOrderByRelationAggregateInput = {
 
 export type EquipmentLogCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  previous_condition?: Prisma.SortOrder
-  new_condition?: Prisma.SortOrder
+  equipment_id?: Prisma.SortOrder
+  action?: Prisma.SortOrder
+  condition_after?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
-  equipment_id?: Prisma.SortOrder
   updated_by?: Prisma.SortOrder
 }
 
 export type EquipmentLogMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  previous_condition?: Prisma.SortOrder
-  new_condition?: Prisma.SortOrder
+  equipment_id?: Prisma.SortOrder
+  action?: Prisma.SortOrder
+  condition_after?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
-  equipment_id?: Prisma.SortOrder
   updated_by?: Prisma.SortOrder
 }
 
 export type EquipmentLogMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  previous_condition?: Prisma.SortOrder
-  new_condition?: Prisma.SortOrder
+  equipment_id?: Prisma.SortOrder
+  action?: Prisma.SortOrder
+  condition_after?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
-  equipment_id?: Prisma.SortOrder
   updated_by?: Prisma.SortOrder
 }
 
@@ -447,10 +447,18 @@ export type EquipmentLogUncheckedUpdateManyWithoutEquipmentNestedInput = {
   deleteMany?: Prisma.EquipmentLogScalarWhereInput | Prisma.EquipmentLogScalarWhereInput[]
 }
 
+export type EnumMaintenanceActionFieldUpdateOperationsInput = {
+  set?: $Enums.MaintenanceAction
+}
+
+export type NullableEnumEquipmentConditionFieldUpdateOperationsInput = {
+  set?: $Enums.EquipmentCondition | null
+}
+
 export type EquipmentLogCreateWithoutUserInput = {
   id?: string
-  previous_condition: $Enums.EquipmentCondition
-  new_condition: $Enums.EquipmentCondition
+  action: $Enums.MaintenanceAction
+  condition_after?: $Enums.EquipmentCondition | null
   notes?: string | null
   created_at?: Date | string
   equipment: Prisma.EquipmentCreateNestedOneWithoutLogsInput
@@ -458,11 +466,11 @@ export type EquipmentLogCreateWithoutUserInput = {
 
 export type EquipmentLogUncheckedCreateWithoutUserInput = {
   id?: string
-  previous_condition: $Enums.EquipmentCondition
-  new_condition: $Enums.EquipmentCondition
+  equipment_id: string
+  action: $Enums.MaintenanceAction
+  condition_after?: $Enums.EquipmentCondition | null
   notes?: string | null
   created_at?: Date | string
-  equipment_id: string
 }
 
 export type EquipmentLogCreateOrConnectWithoutUserInput = {
@@ -496,18 +504,18 @@ export type EquipmentLogScalarWhereInput = {
   OR?: Prisma.EquipmentLogScalarWhereInput[]
   NOT?: Prisma.EquipmentLogScalarWhereInput | Prisma.EquipmentLogScalarWhereInput[]
   id?: Prisma.StringFilter<"EquipmentLog"> | string
-  previous_condition?: Prisma.EnumEquipmentConditionFilter<"EquipmentLog"> | $Enums.EquipmentCondition
-  new_condition?: Prisma.EnumEquipmentConditionFilter<"EquipmentLog"> | $Enums.EquipmentCondition
+  equipment_id?: Prisma.StringFilter<"EquipmentLog"> | string
+  action?: Prisma.EnumMaintenanceActionFilter<"EquipmentLog"> | $Enums.MaintenanceAction
+  condition_after?: Prisma.EnumEquipmentConditionNullableFilter<"EquipmentLog"> | $Enums.EquipmentCondition | null
   notes?: Prisma.StringNullableFilter<"EquipmentLog"> | string | null
   created_at?: Prisma.DateTimeFilter<"EquipmentLog"> | Date | string
-  equipment_id?: Prisma.StringFilter<"EquipmentLog"> | string
   updated_by?: Prisma.StringFilter<"EquipmentLog"> | string
 }
 
 export type EquipmentLogCreateWithoutEquipmentInput = {
   id?: string
-  previous_condition: $Enums.EquipmentCondition
-  new_condition: $Enums.EquipmentCondition
+  action: $Enums.MaintenanceAction
+  condition_after?: $Enums.EquipmentCondition | null
   notes?: string | null
   created_at?: Date | string
   user: Prisma.ProfileCreateNestedOneWithoutEquipmentLogsInput
@@ -515,8 +523,8 @@ export type EquipmentLogCreateWithoutEquipmentInput = {
 
 export type EquipmentLogUncheckedCreateWithoutEquipmentInput = {
   id?: string
-  previous_condition: $Enums.EquipmentCondition
-  new_condition: $Enums.EquipmentCondition
+  action: $Enums.MaintenanceAction
+  condition_after?: $Enums.EquipmentCondition | null
   notes?: string | null
   created_at?: Date | string
   updated_by: string
@@ -550,17 +558,17 @@ export type EquipmentLogUpdateManyWithWhereWithoutEquipmentInput = {
 
 export type EquipmentLogCreateManyUserInput = {
   id?: string
-  previous_condition: $Enums.EquipmentCondition
-  new_condition: $Enums.EquipmentCondition
+  equipment_id: string
+  action: $Enums.MaintenanceAction
+  condition_after?: $Enums.EquipmentCondition | null
   notes?: string | null
   created_at?: Date | string
-  equipment_id: string
 }
 
 export type EquipmentLogUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  previous_condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
-  new_condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
+  action?: Prisma.EnumMaintenanceActionFieldUpdateOperationsInput | $Enums.MaintenanceAction
+  condition_after?: Prisma.NullableEnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   equipment?: Prisma.EquipmentUpdateOneRequiredWithoutLogsNestedInput
@@ -568,26 +576,26 @@ export type EquipmentLogUpdateWithoutUserInput = {
 
 export type EquipmentLogUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  previous_condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
-  new_condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
+  equipment_id?: Prisma.StringFieldUpdateOperationsInput | string
+  action?: Prisma.EnumMaintenanceActionFieldUpdateOperationsInput | $Enums.MaintenanceAction
+  condition_after?: Prisma.NullableEnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  equipment_id?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type EquipmentLogUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  previous_condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
-  new_condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
+  equipment_id?: Prisma.StringFieldUpdateOperationsInput | string
+  action?: Prisma.EnumMaintenanceActionFieldUpdateOperationsInput | $Enums.MaintenanceAction
+  condition_after?: Prisma.NullableEnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  equipment_id?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type EquipmentLogCreateManyEquipmentInput = {
   id?: string
-  previous_condition: $Enums.EquipmentCondition
-  new_condition: $Enums.EquipmentCondition
+  action: $Enums.MaintenanceAction
+  condition_after?: $Enums.EquipmentCondition | null
   notes?: string | null
   created_at?: Date | string
   updated_by: string
@@ -595,8 +603,8 @@ export type EquipmentLogCreateManyEquipmentInput = {
 
 export type EquipmentLogUpdateWithoutEquipmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  previous_condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
-  new_condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
+  action?: Prisma.EnumMaintenanceActionFieldUpdateOperationsInput | $Enums.MaintenanceAction
+  condition_after?: Prisma.NullableEnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.ProfileUpdateOneRequiredWithoutEquipmentLogsNestedInput
@@ -604,8 +612,8 @@ export type EquipmentLogUpdateWithoutEquipmentInput = {
 
 export type EquipmentLogUncheckedUpdateWithoutEquipmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  previous_condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
-  new_condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
+  action?: Prisma.EnumMaintenanceActionFieldUpdateOperationsInput | $Enums.MaintenanceAction
+  condition_after?: Prisma.NullableEnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_by?: Prisma.StringFieldUpdateOperationsInput | string
@@ -613,8 +621,8 @@ export type EquipmentLogUncheckedUpdateWithoutEquipmentInput = {
 
 export type EquipmentLogUncheckedUpdateManyWithoutEquipmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  previous_condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
-  new_condition?: Prisma.EnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition
+  action?: Prisma.EnumMaintenanceActionFieldUpdateOperationsInput | $Enums.MaintenanceAction
+  condition_after?: Prisma.NullableEnumEquipmentConditionFieldUpdateOperationsInput | $Enums.EquipmentCondition | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_by?: Prisma.StringFieldUpdateOperationsInput | string
@@ -624,77 +632,77 @@ export type EquipmentLogUncheckedUpdateManyWithoutEquipmentInput = {
 
 export type EquipmentLogSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  previous_condition?: boolean
-  new_condition?: boolean
+  equipment_id?: boolean
+  action?: boolean
+  condition_after?: boolean
   notes?: boolean
   created_at?: boolean
-  equipment_id?: boolean
   updated_by?: boolean
-  equipment?: boolean | Prisma.EquipmentDefaultArgs<ExtArgs>
   user?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
+  equipment?: boolean | Prisma.EquipmentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["equipmentLog"]>
 
 export type EquipmentLogSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  previous_condition?: boolean
-  new_condition?: boolean
+  equipment_id?: boolean
+  action?: boolean
+  condition_after?: boolean
   notes?: boolean
   created_at?: boolean
-  equipment_id?: boolean
   updated_by?: boolean
-  equipment?: boolean | Prisma.EquipmentDefaultArgs<ExtArgs>
   user?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
+  equipment?: boolean | Prisma.EquipmentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["equipmentLog"]>
 
 export type EquipmentLogSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  previous_condition?: boolean
-  new_condition?: boolean
+  equipment_id?: boolean
+  action?: boolean
+  condition_after?: boolean
   notes?: boolean
   created_at?: boolean
-  equipment_id?: boolean
   updated_by?: boolean
-  equipment?: boolean | Prisma.EquipmentDefaultArgs<ExtArgs>
   user?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
+  equipment?: boolean | Prisma.EquipmentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["equipmentLog"]>
 
 export type EquipmentLogSelectScalar = {
   id?: boolean
-  previous_condition?: boolean
-  new_condition?: boolean
+  equipment_id?: boolean
+  action?: boolean
+  condition_after?: boolean
   notes?: boolean
   created_at?: boolean
-  equipment_id?: boolean
   updated_by?: boolean
 }
 
-export type EquipmentLogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "previous_condition" | "new_condition" | "notes" | "created_at" | "equipment_id" | "updated_by", ExtArgs["result"]["equipmentLog"]>
+export type EquipmentLogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "equipment_id" | "action" | "condition_after" | "notes" | "created_at" | "updated_by", ExtArgs["result"]["equipmentLog"]>
 export type EquipmentLogInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  equipment?: boolean | Prisma.EquipmentDefaultArgs<ExtArgs>
   user?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
+  equipment?: boolean | Prisma.EquipmentDefaultArgs<ExtArgs>
 }
 export type EquipmentLogIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  equipment?: boolean | Prisma.EquipmentDefaultArgs<ExtArgs>
   user?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
+  equipment?: boolean | Prisma.EquipmentDefaultArgs<ExtArgs>
 }
 export type EquipmentLogIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  equipment?: boolean | Prisma.EquipmentDefaultArgs<ExtArgs>
   user?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
+  equipment?: boolean | Prisma.EquipmentDefaultArgs<ExtArgs>
 }
 
 export type $EquipmentLogPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "EquipmentLog"
   objects: {
-    equipment: Prisma.$EquipmentPayload<ExtArgs>
     user: Prisma.$ProfilePayload<ExtArgs>
+    equipment: Prisma.$EquipmentPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    previous_condition: $Enums.EquipmentCondition
-    new_condition: $Enums.EquipmentCondition
+    equipment_id: string
+    action: $Enums.MaintenanceAction
+    condition_after: $Enums.EquipmentCondition | null
     notes: string | null
     created_at: Date
-    equipment_id: string
     updated_by: string
   }, ExtArgs["result"]["equipmentLog"]>
   composites: {}
@@ -1090,8 +1098,8 @@ readonly fields: EquipmentLogFieldRefs;
  */
 export interface Prisma__EquipmentLogClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  equipment<T extends Prisma.EquipmentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EquipmentDefaultArgs<ExtArgs>>): Prisma.Prisma__EquipmentClient<runtime.Types.Result.GetResult<Prisma.$EquipmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   user<T extends Prisma.ProfileDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProfileDefaultArgs<ExtArgs>>): Prisma.Prisma__ProfileClient<runtime.Types.Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  equipment<T extends Prisma.EquipmentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EquipmentDefaultArgs<ExtArgs>>): Prisma.Prisma__EquipmentClient<runtime.Types.Result.GetResult<Prisma.$EquipmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1122,11 +1130,11 @@ export interface Prisma__EquipmentLogClient<T, Null = never, ExtArgs extends run
  */
 export interface EquipmentLogFieldRefs {
   readonly id: Prisma.FieldRef<"EquipmentLog", 'String'>
-  readonly previous_condition: Prisma.FieldRef<"EquipmentLog", 'EquipmentCondition'>
-  readonly new_condition: Prisma.FieldRef<"EquipmentLog", 'EquipmentCondition'>
+  readonly equipment_id: Prisma.FieldRef<"EquipmentLog", 'String'>
+  readonly action: Prisma.FieldRef<"EquipmentLog", 'MaintenanceAction'>
+  readonly condition_after: Prisma.FieldRef<"EquipmentLog", 'EquipmentCondition'>
   readonly notes: Prisma.FieldRef<"EquipmentLog", 'String'>
   readonly created_at: Prisma.FieldRef<"EquipmentLog", 'DateTime'>
-  readonly equipment_id: Prisma.FieldRef<"EquipmentLog", 'String'>
   readonly updated_by: Prisma.FieldRef<"EquipmentLog", 'String'>
 }
     

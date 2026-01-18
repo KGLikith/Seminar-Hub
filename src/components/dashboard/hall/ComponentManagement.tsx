@@ -14,7 +14,7 @@ import { motion } from "framer-motion";
 import { useAuth } from "@clerk/nextjs";
 import { useProfile } from "@/hooks/react-query/useUser";
 import { useComponentsByHall } from "@/hooks/react-query/useEquipments";
-import { createHallComponent, updateHallComponent } from "@/actions/equipments";
+import { createHallComponent, updateHallComponent } from "@/actions/component_equipments";
 import { ComponentStatus, ComponentType } from "@/generated/enums";
 import { HallComponent } from "@/generated/client";
 

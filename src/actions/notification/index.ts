@@ -31,3 +31,20 @@ export async function markAllNotificationsAsRead(userId: string) {
     }
   })
 }
+
+export async function sendNotification(input: {
+  userId: string
+  title: string
+  message: string
+  type: string
+}) {
+  return prisma.notification.create({
+    data: {
+      user_id: input.userId,
+      title: input.title,
+      message: input.message,
+      type: input.type,
+    },
+  })
+}
+

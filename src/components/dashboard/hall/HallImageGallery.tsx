@@ -49,7 +49,7 @@ export default function HallImageGallery({ hallId, canManage, coverImage }: Prop
       if (!files.length) return
 
       for (const file of files) {
-        const signedUrl = await getHallImageUploadUrl(file.type, file.name, "system")
+        const signedUrl = await getHallImageUploadUrl(file.type, file.name, hallId)
         const publicUrl = await uploadToS3(file, signedUrl)
         await saveHallImage(hallId, publicUrl)
       }

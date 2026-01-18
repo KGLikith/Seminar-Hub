@@ -12,6 +12,7 @@ import {
   CheckSquare,
   Building2,
   Users,
+  Check,
 } from "lucide-react"
 import { useAuth } from "@clerk/nextjs"
 import { useProfile } from "@/hooks/react-query/useUser"
@@ -28,17 +29,19 @@ const menuItems = {
   ],
   [UserRole.hod]: [
     { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { label: "Book Hall", href: "/dashboard/book", icon: CalendarDays },
     { label: "Calendar", href: "/dashboard/calendar", icon: CalendarDays },
     { label: "Pending Requests", href: "/dashboard/hod/approval", icon: CheckSquare },
-    { label: "Analytics", href: "/dashboard/hod/analytics", icon: BarChart3 },
+    { label: "Maintenance Requests", href: "/dashboard/hod/maintenance-requests", icon: CheckSquare },
     { label: "Manage Halls", href: "/dashboard/hod/hall-management", icon: Building2 },
     { label: "Manage Department", href: "/dashboard/hod/department-management", icon: Users },
+    { label: "Analytics", href: "/dashboard/hod/analytics", icon: BarChart3 },
     { label: "Profile", href: "/dashboard/profile", icon: User },
   ],
   [UserRole.tech_staff]: [
     { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
     { label: "Calendar", href: "/dashboard/calendar", icon: CalendarDays },
+    { label: "Maintenance Requests", href: "/dashboard/tech-staff/maintenance-request", icon: CheckSquare },
+    { label: "Complete Maintenance", href: "/dashboard/tech-staff/complete-maintenance", icon: Check },
     { label: "Profile", href: "/dashboard/profile", icon: User },
   ],
 }

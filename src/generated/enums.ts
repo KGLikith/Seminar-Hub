@@ -115,3 +115,42 @@ export const DepartmentName = {
 } as const
 
 export type DepartmentName = (typeof DepartmentName)[keyof typeof DepartmentName]
+
+
+export const MaintenanceRequestType = {
+  new_installation: 'new_installation',
+  repair: 'repair',
+  replacement: 'replacement',
+  inspection: 'inspection',
+  calibration: 'calibration',
+  preventive: 'preventive',
+  general_issue: 'general_issue'
+} as const
+
+export type MaintenanceRequestType = (typeof MaintenanceRequestType)[keyof typeof MaintenanceRequestType]
+
+
+export const MaintenancePriority = {
+  low: 'low',
+  medium: 'medium',
+  high: 'high',
+  critical: 'critical'
+} as const
+
+export type MaintenancePriority = (typeof MaintenancePriority)[keyof typeof MaintenancePriority]
+
+
+export const MaintenanceAction = {
+  created: 'created',
+  inspected: 'inspected',
+  repaired: 'repaired',
+  replaced: 'replaced',
+  calibrated: 'calibrated',
+  cleaned: 'cleaned',
+  tested: 'tested',
+  marked_non_operational: 'marked_non_operational',
+  marked_operational: 'marked_operational',
+  completed: 'completed'
+} as const
+
+export type MaintenanceAction = (typeof MaintenanceAction)[keyof typeof MaintenanceAction]

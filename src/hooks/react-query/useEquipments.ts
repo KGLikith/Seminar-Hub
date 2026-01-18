@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { getEquipmentByHall, updateEquipmentCondition, getComponentsByHall, updateComponentStatus, getEquipmentLogsForHall, getComponentMaintenanceLogsForHall } from "@/actions/equipments"
+import { getEquipmentByHall, updateEquipmentCondition, getComponentsByHall, updateComponentStatus, getEquipmentLogsForHall, getComponentMaintenanceLogsForHall } from "@/actions/component_equipments"
 
 export const useEquipmentByHall = (hallId: string | undefined) => {
   return useQuery({
