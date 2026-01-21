@@ -1,5 +1,5 @@
 "use server";
-import { MaintenancePriority, MaintenanceRequestStatus, MaintenanceRequestType } from "@/generated/enums";
+import { MaintenancePriority, MaintenanceRequestStatus, MaintenanceRequestType, MaintenanceTarget } from "@/generated/enums";
 import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { sendNotification } from "../notification";
@@ -76,29 +76,6 @@ export async function assignHallToStaff(techStaffId: string, hallId: string) {
   }
 }
 
-export async function createMaintanaceRequest(data: createMaintanaceRequestInput) {
-  try {
-    await prisma.maintenanceRequest.create({
-      data: {
-        hall_id: data.hallId,
-        tech_staff_id: data.techStaffId,
-        request_type: data.requestType,
-        component_id: data.componentId || null,
-        equipment_id: data.equipmentId || null,
-        title: data.title,
-        description: data.description,
-        priority: data.priority,
-        status: data.status,
-      },
-    });
-    revalidatePath("/dashboard/tech-staff/maintenance-requests");
-    return { success: true };
-  } catch (error) {
-    console.error("Error creating maintenance request:", error);
-    return { error: "Failed to create maintenance request" };
-  }
-}
-
 export async function getAssignedHall(userId: string) {
   try {
     const data = await prisma.hallTechStaff.findMany({
@@ -126,64 +103,40 @@ export async function createMaintenanceRequest(input: {
   hallId: string
   techStaffId: string
   requestType: MaintenanceRequestType
+  target: MaintenanceTarget
   priority: MaintenancePriority
   title: string
   description: string
-
   equipmentId?: string | null
   componentId?: string | null
-
-  newEquipmentType?: string | null
-  newComponentType?: string | null
 }) {
   try {
-    if (input.requestType === "new_installation") {
-      if (input.equipmentId || input.componentId) {
-        return { error: "New installation cannot reference existing assets" }
-      }
-    } else {
-      if (!input.equipmentId && !input.componentId) {
-        return { error: "Select equipment or component" }
-      }
+    if (input.target === "equipment" && !input.equipmentId) {
+      return { error: "Equipment required" }
     }
 
-    const request = await prisma.maintenanceRequest.create({
+    if (input.target === "component" && !input.componentId) {
+      return { error: "Component required" }
+    }
+
+    await prisma.maintenanceRequest.create({
       data: {
         hall_id: input.hallId,
         tech_staff_id: input.techStaffId,
         request_type: input.requestType,
+        target: input.target,
         priority: input.priority,
         title: input.title,
         description: input.description,
-
         equipment_id: input.equipmentId ?? null,
         component_id: input.componentId ?? null,
       },
-      include: {
-        hall: {
-          include: {
-            department: {
-              include: { hod_profile: true },
-            },
-          },
-        },
-        techStaff: true,
-      },
     })
 
-    const hod = request.hall.department.hod_profile
-    if (hod) {
-      await sendNotification({
-        userId: hod.id,
-        title: "New Maintenance Request",
-        message: `Maintenance request raised for ${request.hall.name} by ${request.techStaff.name}`,
-        type: "maintenance_request_created",
-      })
-    }
-
+    revalidatePath("/dashboard/tech-staff/maintenance-requests")
     return { success: true }
   } catch (err) {
-    console.error("❌ createMaintenanceRequest:", err)
+    console.error("createMaintenanceRequest error:", err)
     return { error: "Failed to create maintenance request" }
   }
 }
