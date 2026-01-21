@@ -2022,6 +2022,9 @@ export const MaintenanceRequestScalarFieldEnum = {
   tech_staff_id: 'tech_staff_id',
   component_id: 'component_id',
   equipment_id: 'equipment_id',
+  target: 'target',
+  requested_component_type: 'requested_component_type',
+  requested_equipment_type: 'requested_equipment_type',
   request_type: 'request_type',
   priority: 'priority',
   status: 'status',
@@ -2269,6 +2272,20 @@ export type EnumComponentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$
  * Reference to a field of type 'ComponentStatus[]'
  */
 export type ListEnumComponentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ComponentStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'MaintenanceTarget'
+ */
+export type EnumMaintenanceTargetFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MaintenanceTarget'>
+    
+
+
+/**
+ * Reference to a field of type 'MaintenanceTarget[]'
+ */
+export type ListEnumMaintenanceTargetFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MaintenanceTarget[]'>
     
 
 

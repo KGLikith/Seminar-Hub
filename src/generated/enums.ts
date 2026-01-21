@@ -117,6 +117,15 @@ export const DepartmentName = {
 export type DepartmentName = (typeof DepartmentName)[keyof typeof DepartmentName]
 
 
+export const MaintenanceTarget = {
+  hall: 'hall',
+  equipment: 'equipment',
+  component: 'component'
+} as const
+
+export type MaintenanceTarget = (typeof MaintenanceTarget)[keyof typeof MaintenanceTarget]
+
+
 export const MaintenanceRequestType = {
   new_installation: 'new_installation',
   repair: 'repair',

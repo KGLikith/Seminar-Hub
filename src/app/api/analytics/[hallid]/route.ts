@@ -3,10 +3,11 @@ import { NextResponse } from "next/server"
 
 export async function GET(
   _req: Request,
-  { params }: { params: { hallid: string } }
+  { params }: { params: Promise<{ hallid: string }> }
 ) {
   try {
-    const pdfBuffer = await generateHallBookingReportPDF(params.hallid)
+    const hallId = (await params).hallid
+    const pdfBuffer = await generateHallBookingReportPDF(hallId)
 
     return new NextResponse(new Uint8Array(pdfBuffer), {
       headers: {

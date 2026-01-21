@@ -440,6 +440,27 @@ export type EnumComponentStatusNullableWithAggregatesFilter<$PrismaModel = never
   _max?: Prisma.NestedEnumComponentStatusNullableFilter<$PrismaModel>
 }
 
+export type EnumMaintenanceTargetFilter<$PrismaModel = never> = {
+  equals?: $Enums.MaintenanceTarget | Prisma.EnumMaintenanceTargetFieldRefInput<$PrismaModel>
+  in?: $Enums.MaintenanceTarget[] | Prisma.ListEnumMaintenanceTargetFieldRefInput<$PrismaModel>
+  notIn?: $Enums.MaintenanceTarget[] | Prisma.ListEnumMaintenanceTargetFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumMaintenanceTargetFilter<$PrismaModel> | $Enums.MaintenanceTarget
+}
+
+export type EnumComponentTypeNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.ComponentType | Prisma.EnumComponentTypeFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ComponentType[] | Prisma.ListEnumComponentTypeFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.ComponentType[] | Prisma.ListEnumComponentTypeFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumComponentTypeNullableFilter<$PrismaModel> | $Enums.ComponentType | null
+}
+
+export type EnumEquipmentTypeNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.EquipmentType | Prisma.EnumEquipmentTypeFieldRefInput<$PrismaModel> | null
+  in?: $Enums.EquipmentType[] | Prisma.ListEnumEquipmentTypeFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.EquipmentType[] | Prisma.ListEnumEquipmentTypeFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumEquipmentTypeNullableFilter<$PrismaModel> | $Enums.EquipmentType | null
+}
+
 export type EnumMaintenanceRequestTypeFilter<$PrismaModel = never> = {
   equals?: $Enums.MaintenanceRequestType | Prisma.EnumMaintenanceRequestTypeFieldRefInput<$PrismaModel>
   in?: $Enums.MaintenanceRequestType[] | Prisma.ListEnumMaintenanceRequestTypeFieldRefInput<$PrismaModel>
@@ -459,6 +480,36 @@ export type EnumMaintenanceRequestStatusFilter<$PrismaModel = never> = {
   in?: $Enums.MaintenanceRequestStatus[] | Prisma.ListEnumMaintenanceRequestStatusFieldRefInput<$PrismaModel>
   notIn?: $Enums.MaintenanceRequestStatus[] | Prisma.ListEnumMaintenanceRequestStatusFieldRefInput<$PrismaModel>
   not?: Prisma.NestedEnumMaintenanceRequestStatusFilter<$PrismaModel> | $Enums.MaintenanceRequestStatus
+}
+
+export type EnumMaintenanceTargetWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.MaintenanceTarget | Prisma.EnumMaintenanceTargetFieldRefInput<$PrismaModel>
+  in?: $Enums.MaintenanceTarget[] | Prisma.ListEnumMaintenanceTargetFieldRefInput<$PrismaModel>
+  notIn?: $Enums.MaintenanceTarget[] | Prisma.ListEnumMaintenanceTargetFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumMaintenanceTargetWithAggregatesFilter<$PrismaModel> | $Enums.MaintenanceTarget
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumMaintenanceTargetFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumMaintenanceTargetFilter<$PrismaModel>
+}
+
+export type EnumComponentTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ComponentType | Prisma.EnumComponentTypeFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ComponentType[] | Prisma.ListEnumComponentTypeFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.ComponentType[] | Prisma.ListEnumComponentTypeFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumComponentTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.ComponentType | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumComponentTypeNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumComponentTypeNullableFilter<$PrismaModel>
+}
+
+export type EnumEquipmentTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.EquipmentType | Prisma.EnumEquipmentTypeFieldRefInput<$PrismaModel> | null
+  in?: $Enums.EquipmentType[] | Prisma.ListEnumEquipmentTypeFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.EquipmentType[] | Prisma.ListEnumEquipmentTypeFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumEquipmentTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.EquipmentType | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumEquipmentTypeNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumEquipmentTypeNullableFilter<$PrismaModel>
 }
 
 export type EnumMaintenanceRequestTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -903,6 +954,27 @@ export type NestedEnumComponentStatusNullableWithAggregatesFilter<$PrismaModel =
   _max?: Prisma.NestedEnumComponentStatusNullableFilter<$PrismaModel>
 }
 
+export type NestedEnumMaintenanceTargetFilter<$PrismaModel = never> = {
+  equals?: $Enums.MaintenanceTarget | Prisma.EnumMaintenanceTargetFieldRefInput<$PrismaModel>
+  in?: $Enums.MaintenanceTarget[] | Prisma.ListEnumMaintenanceTargetFieldRefInput<$PrismaModel>
+  notIn?: $Enums.MaintenanceTarget[] | Prisma.ListEnumMaintenanceTargetFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumMaintenanceTargetFilter<$PrismaModel> | $Enums.MaintenanceTarget
+}
+
+export type NestedEnumComponentTypeNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.ComponentType | Prisma.EnumComponentTypeFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ComponentType[] | Prisma.ListEnumComponentTypeFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.ComponentType[] | Prisma.ListEnumComponentTypeFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumComponentTypeNullableFilter<$PrismaModel> | $Enums.ComponentType | null
+}
+
+export type NestedEnumEquipmentTypeNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.EquipmentType | Prisma.EnumEquipmentTypeFieldRefInput<$PrismaModel> | null
+  in?: $Enums.EquipmentType[] | Prisma.ListEnumEquipmentTypeFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.EquipmentType[] | Prisma.ListEnumEquipmentTypeFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumEquipmentTypeNullableFilter<$PrismaModel> | $Enums.EquipmentType | null
+}
+
 export type NestedEnumMaintenanceRequestTypeFilter<$PrismaModel = never> = {
   equals?: $Enums.MaintenanceRequestType | Prisma.EnumMaintenanceRequestTypeFieldRefInput<$PrismaModel>
   in?: $Enums.MaintenanceRequestType[] | Prisma.ListEnumMaintenanceRequestTypeFieldRefInput<$PrismaModel>
@@ -922,6 +994,36 @@ export type NestedEnumMaintenanceRequestStatusFilter<$PrismaModel = never> = {
   in?: $Enums.MaintenanceRequestStatus[] | Prisma.ListEnumMaintenanceRequestStatusFieldRefInput<$PrismaModel>
   notIn?: $Enums.MaintenanceRequestStatus[] | Prisma.ListEnumMaintenanceRequestStatusFieldRefInput<$PrismaModel>
   not?: Prisma.NestedEnumMaintenanceRequestStatusFilter<$PrismaModel> | $Enums.MaintenanceRequestStatus
+}
+
+export type NestedEnumMaintenanceTargetWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.MaintenanceTarget | Prisma.EnumMaintenanceTargetFieldRefInput<$PrismaModel>
+  in?: $Enums.MaintenanceTarget[] | Prisma.ListEnumMaintenanceTargetFieldRefInput<$PrismaModel>
+  notIn?: $Enums.MaintenanceTarget[] | Prisma.ListEnumMaintenanceTargetFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumMaintenanceTargetWithAggregatesFilter<$PrismaModel> | $Enums.MaintenanceTarget
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumMaintenanceTargetFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumMaintenanceTargetFilter<$PrismaModel>
+}
+
+export type NestedEnumComponentTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ComponentType | Prisma.EnumComponentTypeFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ComponentType[] | Prisma.ListEnumComponentTypeFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.ComponentType[] | Prisma.ListEnumComponentTypeFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumComponentTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.ComponentType | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumComponentTypeNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumComponentTypeNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumEquipmentTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.EquipmentType | Prisma.EnumEquipmentTypeFieldRefInput<$PrismaModel> | null
+  in?: $Enums.EquipmentType[] | Prisma.ListEnumEquipmentTypeFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.EquipmentType[] | Prisma.ListEnumEquipmentTypeFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumEquipmentTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.EquipmentType | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumEquipmentTypeNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumEquipmentTypeNullableFilter<$PrismaModel>
 }
 
 export type NestedEnumMaintenanceRequestTypeWithAggregatesFilter<$PrismaModel = never> = {

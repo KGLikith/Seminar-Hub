@@ -30,6 +30,9 @@ export type MaintenanceRequestMinAggregateOutputType = {
   tech_staff_id: string | null
   component_id: string | null
   equipment_id: string | null
+  target: $Enums.MaintenanceTarget | null
+  requested_component_type: $Enums.ComponentType | null
+  requested_equipment_type: $Enums.EquipmentType | null
   request_type: $Enums.MaintenanceRequestType | null
   priority: $Enums.MaintenancePriority | null
   status: $Enums.MaintenanceRequestStatus | null
@@ -48,6 +51,9 @@ export type MaintenanceRequestMaxAggregateOutputType = {
   tech_staff_id: string | null
   component_id: string | null
   equipment_id: string | null
+  target: $Enums.MaintenanceTarget | null
+  requested_component_type: $Enums.ComponentType | null
+  requested_equipment_type: $Enums.EquipmentType | null
   request_type: $Enums.MaintenanceRequestType | null
   priority: $Enums.MaintenancePriority | null
   status: $Enums.MaintenanceRequestStatus | null
@@ -66,6 +72,9 @@ export type MaintenanceRequestCountAggregateOutputType = {
   tech_staff_id: number
   component_id: number
   equipment_id: number
+  target: number
+  requested_component_type: number
+  requested_equipment_type: number
   request_type: number
   priority: number
   status: number
@@ -86,6 +95,9 @@ export type MaintenanceRequestMinAggregateInputType = {
   tech_staff_id?: true
   component_id?: true
   equipment_id?: true
+  target?: true
+  requested_component_type?: true
+  requested_equipment_type?: true
   request_type?: true
   priority?: true
   status?: true
@@ -104,6 +116,9 @@ export type MaintenanceRequestMaxAggregateInputType = {
   tech_staff_id?: true
   component_id?: true
   equipment_id?: true
+  target?: true
+  requested_component_type?: true
+  requested_equipment_type?: true
   request_type?: true
   priority?: true
   status?: true
@@ -122,6 +137,9 @@ export type MaintenanceRequestCountAggregateInputType = {
   tech_staff_id?: true
   component_id?: true
   equipment_id?: true
+  target?: true
+  requested_component_type?: true
+  requested_equipment_type?: true
   request_type?: true
   priority?: true
   status?: true
@@ -213,6 +231,9 @@ export type MaintenanceRequestGroupByOutputType = {
   tech_staff_id: string
   component_id: string | null
   equipment_id: string | null
+  target: $Enums.MaintenanceTarget
+  requested_component_type: $Enums.ComponentType | null
+  requested_equipment_type: $Enums.EquipmentType | null
   request_type: $Enums.MaintenanceRequestType
   priority: $Enums.MaintenancePriority
   status: $Enums.MaintenanceRequestStatus
@@ -252,6 +273,9 @@ export type MaintenanceRequestWhereInput = {
   tech_staff_id?: Prisma.StringFilter<"MaintenanceRequest"> | string
   component_id?: Prisma.StringNullableFilter<"MaintenanceRequest"> | string | null
   equipment_id?: Prisma.StringNullableFilter<"MaintenanceRequest"> | string | null
+  target?: Prisma.EnumMaintenanceTargetFilter<"MaintenanceRequest"> | $Enums.MaintenanceTarget
+  requested_component_type?: Prisma.EnumComponentTypeNullableFilter<"MaintenanceRequest"> | $Enums.ComponentType | null
+  requested_equipment_type?: Prisma.EnumEquipmentTypeNullableFilter<"MaintenanceRequest"> | $Enums.EquipmentType | null
   request_type?: Prisma.EnumMaintenanceRequestTypeFilter<"MaintenanceRequest"> | $Enums.MaintenanceRequestType
   priority?: Prisma.EnumMaintenancePriorityFilter<"MaintenanceRequest"> | $Enums.MaintenancePriority
   status?: Prisma.EnumMaintenanceRequestStatusFilter<"MaintenanceRequest"> | $Enums.MaintenanceRequestStatus
@@ -275,6 +299,9 @@ export type MaintenanceRequestOrderByWithRelationInput = {
   tech_staff_id?: Prisma.SortOrder
   component_id?: Prisma.SortOrderInput | Prisma.SortOrder
   equipment_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  target?: Prisma.SortOrder
+  requested_component_type?: Prisma.SortOrderInput | Prisma.SortOrder
+  requested_equipment_type?: Prisma.SortOrderInput | Prisma.SortOrder
   request_type?: Prisma.SortOrder
   priority?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -301,6 +328,9 @@ export type MaintenanceRequestWhereUniqueInput = Prisma.AtLeast<{
   tech_staff_id?: Prisma.StringFilter<"MaintenanceRequest"> | string
   component_id?: Prisma.StringNullableFilter<"MaintenanceRequest"> | string | null
   equipment_id?: Prisma.StringNullableFilter<"MaintenanceRequest"> | string | null
+  target?: Prisma.EnumMaintenanceTargetFilter<"MaintenanceRequest"> | $Enums.MaintenanceTarget
+  requested_component_type?: Prisma.EnumComponentTypeNullableFilter<"MaintenanceRequest"> | $Enums.ComponentType | null
+  requested_equipment_type?: Prisma.EnumEquipmentTypeNullableFilter<"MaintenanceRequest"> | $Enums.EquipmentType | null
   request_type?: Prisma.EnumMaintenanceRequestTypeFilter<"MaintenanceRequest"> | $Enums.MaintenanceRequestType
   priority?: Prisma.EnumMaintenancePriorityFilter<"MaintenanceRequest"> | $Enums.MaintenancePriority
   status?: Prisma.EnumMaintenanceRequestStatusFilter<"MaintenanceRequest"> | $Enums.MaintenanceRequestStatus
@@ -324,6 +354,9 @@ export type MaintenanceRequestOrderByWithAggregationInput = {
   tech_staff_id?: Prisma.SortOrder
   component_id?: Prisma.SortOrderInput | Prisma.SortOrder
   equipment_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  target?: Prisma.SortOrder
+  requested_component_type?: Prisma.SortOrderInput | Prisma.SortOrder
+  requested_equipment_type?: Prisma.SortOrderInput | Prisma.SortOrder
   request_type?: Prisma.SortOrder
   priority?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -348,6 +381,9 @@ export type MaintenanceRequestScalarWhereWithAggregatesInput = {
   tech_staff_id?: Prisma.StringWithAggregatesFilter<"MaintenanceRequest"> | string
   component_id?: Prisma.StringNullableWithAggregatesFilter<"MaintenanceRequest"> | string | null
   equipment_id?: Prisma.StringNullableWithAggregatesFilter<"MaintenanceRequest"> | string | null
+  target?: Prisma.EnumMaintenanceTargetWithAggregatesFilter<"MaintenanceRequest"> | $Enums.MaintenanceTarget
+  requested_component_type?: Prisma.EnumComponentTypeNullableWithAggregatesFilter<"MaintenanceRequest"> | $Enums.ComponentType | null
+  requested_equipment_type?: Prisma.EnumEquipmentTypeNullableWithAggregatesFilter<"MaintenanceRequest"> | $Enums.EquipmentType | null
   request_type?: Prisma.EnumMaintenanceRequestTypeWithAggregatesFilter<"MaintenanceRequest"> | $Enums.MaintenanceRequestType
   priority?: Prisma.EnumMaintenancePriorityWithAggregatesFilter<"MaintenanceRequest"> | $Enums.MaintenancePriority
   status?: Prisma.EnumMaintenanceRequestStatusWithAggregatesFilter<"MaintenanceRequest"> | $Enums.MaintenanceRequestStatus
@@ -362,6 +398,9 @@ export type MaintenanceRequestScalarWhereWithAggregatesInput = {
 
 export type MaintenanceRequestCreateInput = {
   id?: string
+  target: $Enums.MaintenanceTarget
+  requested_component_type?: $Enums.ComponentType | null
+  requested_equipment_type?: $Enums.EquipmentType | null
   request_type: $Enums.MaintenanceRequestType
   priority?: $Enums.MaintenancePriority
   status?: $Enums.MaintenanceRequestStatus
@@ -384,6 +423,9 @@ export type MaintenanceRequestUncheckedCreateInput = {
   tech_staff_id: string
   component_id?: string | null
   equipment_id?: string | null
+  target: $Enums.MaintenanceTarget
+  requested_component_type?: $Enums.ComponentType | null
+  requested_equipment_type?: $Enums.EquipmentType | null
   request_type: $Enums.MaintenanceRequestType
   priority?: $Enums.MaintenancePriority
   status?: $Enums.MaintenanceRequestStatus
@@ -398,6 +440,9 @@ export type MaintenanceRequestUncheckedCreateInput = {
 
 export type MaintenanceRequestUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  target?: Prisma.EnumMaintenanceTargetFieldUpdateOperationsInput | $Enums.MaintenanceTarget
+  requested_component_type?: Prisma.NullableEnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType | null
+  requested_equipment_type?: Prisma.NullableEnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType | null
   request_type?: Prisma.EnumMaintenanceRequestTypeFieldUpdateOperationsInput | $Enums.MaintenanceRequestType
   priority?: Prisma.EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
   status?: Prisma.EnumMaintenanceRequestStatusFieldUpdateOperationsInput | $Enums.MaintenanceRequestStatus
@@ -420,6 +465,9 @@ export type MaintenanceRequestUncheckedUpdateInput = {
   tech_staff_id?: Prisma.StringFieldUpdateOperationsInput | string
   component_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   equipment_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  target?: Prisma.EnumMaintenanceTargetFieldUpdateOperationsInput | $Enums.MaintenanceTarget
+  requested_component_type?: Prisma.NullableEnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType | null
+  requested_equipment_type?: Prisma.NullableEnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType | null
   request_type?: Prisma.EnumMaintenanceRequestTypeFieldUpdateOperationsInput | $Enums.MaintenanceRequestType
   priority?: Prisma.EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
   status?: Prisma.EnumMaintenanceRequestStatusFieldUpdateOperationsInput | $Enums.MaintenanceRequestStatus
@@ -438,6 +486,9 @@ export type MaintenanceRequestCreateManyInput = {
   tech_staff_id: string
   component_id?: string | null
   equipment_id?: string | null
+  target: $Enums.MaintenanceTarget
+  requested_component_type?: $Enums.ComponentType | null
+  requested_equipment_type?: $Enums.EquipmentType | null
   request_type: $Enums.MaintenanceRequestType
   priority?: $Enums.MaintenancePriority
   status?: $Enums.MaintenanceRequestStatus
@@ -452,6 +503,9 @@ export type MaintenanceRequestCreateManyInput = {
 
 export type MaintenanceRequestUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  target?: Prisma.EnumMaintenanceTargetFieldUpdateOperationsInput | $Enums.MaintenanceTarget
+  requested_component_type?: Prisma.NullableEnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType | null
+  requested_equipment_type?: Prisma.NullableEnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType | null
   request_type?: Prisma.EnumMaintenanceRequestTypeFieldUpdateOperationsInput | $Enums.MaintenanceRequestType
   priority?: Prisma.EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
   status?: Prisma.EnumMaintenanceRequestStatusFieldUpdateOperationsInput | $Enums.MaintenanceRequestStatus
@@ -469,6 +523,9 @@ export type MaintenanceRequestUncheckedUpdateManyInput = {
   tech_staff_id?: Prisma.StringFieldUpdateOperationsInput | string
   component_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   equipment_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  target?: Prisma.EnumMaintenanceTargetFieldUpdateOperationsInput | $Enums.MaintenanceTarget
+  requested_component_type?: Prisma.NullableEnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType | null
+  requested_equipment_type?: Prisma.NullableEnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType | null
   request_type?: Prisma.EnumMaintenanceRequestTypeFieldUpdateOperationsInput | $Enums.MaintenanceRequestType
   priority?: Prisma.EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
   status?: Prisma.EnumMaintenanceRequestStatusFieldUpdateOperationsInput | $Enums.MaintenanceRequestStatus
@@ -497,6 +554,9 @@ export type MaintenanceRequestCountOrderByAggregateInput = {
   tech_staff_id?: Prisma.SortOrder
   component_id?: Prisma.SortOrder
   equipment_id?: Prisma.SortOrder
+  target?: Prisma.SortOrder
+  requested_component_type?: Prisma.SortOrder
+  requested_equipment_type?: Prisma.SortOrder
   request_type?: Prisma.SortOrder
   priority?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -515,6 +575,9 @@ export type MaintenanceRequestMaxOrderByAggregateInput = {
   tech_staff_id?: Prisma.SortOrder
   component_id?: Prisma.SortOrder
   equipment_id?: Prisma.SortOrder
+  target?: Prisma.SortOrder
+  requested_component_type?: Prisma.SortOrder
+  requested_equipment_type?: Prisma.SortOrder
   request_type?: Prisma.SortOrder
   priority?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -533,6 +596,9 @@ export type MaintenanceRequestMinOrderByAggregateInput = {
   tech_staff_id?: Prisma.SortOrder
   component_id?: Prisma.SortOrder
   equipment_id?: Prisma.SortOrder
+  target?: Prisma.SortOrder
+  requested_component_type?: Prisma.SortOrder
+  requested_equipment_type?: Prisma.SortOrder
   request_type?: Prisma.SortOrder
   priority?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -755,6 +821,18 @@ export type MaintenanceRequestUncheckedUpdateManyWithoutComponentNestedInput = {
   deleteMany?: Prisma.MaintenanceRequestScalarWhereInput | Prisma.MaintenanceRequestScalarWhereInput[]
 }
 
+export type EnumMaintenanceTargetFieldUpdateOperationsInput = {
+  set?: $Enums.MaintenanceTarget
+}
+
+export type NullableEnumComponentTypeFieldUpdateOperationsInput = {
+  set?: $Enums.ComponentType | null
+}
+
+export type NullableEnumEquipmentTypeFieldUpdateOperationsInput = {
+  set?: $Enums.EquipmentType | null
+}
+
 export type EnumMaintenanceRequestTypeFieldUpdateOperationsInput = {
   set?: $Enums.MaintenanceRequestType
 }
@@ -769,6 +847,9 @@ export type EnumMaintenanceRequestStatusFieldUpdateOperationsInput = {
 
 export type MaintenanceRequestCreateWithoutTechStaffInput = {
   id?: string
+  target: $Enums.MaintenanceTarget
+  requested_component_type?: $Enums.ComponentType | null
+  requested_equipment_type?: $Enums.EquipmentType | null
   request_type: $Enums.MaintenanceRequestType
   priority?: $Enums.MaintenancePriority
   status?: $Enums.MaintenanceRequestStatus
@@ -789,6 +870,9 @@ export type MaintenanceRequestUncheckedCreateWithoutTechStaffInput = {
   hall_id: string
   component_id?: string | null
   equipment_id?: string | null
+  target: $Enums.MaintenanceTarget
+  requested_component_type?: $Enums.ComponentType | null
+  requested_equipment_type?: $Enums.EquipmentType | null
   request_type: $Enums.MaintenanceRequestType
   priority?: $Enums.MaintenancePriority
   status?: $Enums.MaintenanceRequestStatus
@@ -813,6 +897,9 @@ export type MaintenanceRequestCreateManyTechStaffInputEnvelope = {
 
 export type MaintenanceRequestCreateWithoutHodInput = {
   id?: string
+  target: $Enums.MaintenanceTarget
+  requested_component_type?: $Enums.ComponentType | null
+  requested_equipment_type?: $Enums.EquipmentType | null
   request_type: $Enums.MaintenanceRequestType
   priority?: $Enums.MaintenancePriority
   status?: $Enums.MaintenanceRequestStatus
@@ -834,6 +921,9 @@ export type MaintenanceRequestUncheckedCreateWithoutHodInput = {
   tech_staff_id: string
   component_id?: string | null
   equipment_id?: string | null
+  target: $Enums.MaintenanceTarget
+  requested_component_type?: $Enums.ComponentType | null
+  requested_equipment_type?: $Enums.EquipmentType | null
   request_type: $Enums.MaintenanceRequestType
   priority?: $Enums.MaintenancePriority
   status?: $Enums.MaintenanceRequestStatus
@@ -880,6 +970,9 @@ export type MaintenanceRequestScalarWhereInput = {
   tech_staff_id?: Prisma.StringFilter<"MaintenanceRequest"> | string
   component_id?: Prisma.StringNullableFilter<"MaintenanceRequest"> | string | null
   equipment_id?: Prisma.StringNullableFilter<"MaintenanceRequest"> | string | null
+  target?: Prisma.EnumMaintenanceTargetFilter<"MaintenanceRequest"> | $Enums.MaintenanceTarget
+  requested_component_type?: Prisma.EnumComponentTypeNullableFilter<"MaintenanceRequest"> | $Enums.ComponentType | null
+  requested_equipment_type?: Prisma.EnumEquipmentTypeNullableFilter<"MaintenanceRequest"> | $Enums.EquipmentType | null
   request_type?: Prisma.EnumMaintenanceRequestTypeFilter<"MaintenanceRequest"> | $Enums.MaintenanceRequestType
   priority?: Prisma.EnumMaintenancePriorityFilter<"MaintenanceRequest"> | $Enums.MaintenancePriority
   status?: Prisma.EnumMaintenanceRequestStatusFilter<"MaintenanceRequest"> | $Enums.MaintenanceRequestStatus
@@ -910,6 +1003,9 @@ export type MaintenanceRequestUpdateManyWithWhereWithoutHodInput = {
 
 export type MaintenanceRequestCreateWithoutHallInput = {
   id?: string
+  target: $Enums.MaintenanceTarget
+  requested_component_type?: $Enums.ComponentType | null
+  requested_equipment_type?: $Enums.EquipmentType | null
   request_type: $Enums.MaintenanceRequestType
   priority?: $Enums.MaintenancePriority
   status?: $Enums.MaintenanceRequestStatus
@@ -930,6 +1026,9 @@ export type MaintenanceRequestUncheckedCreateWithoutHallInput = {
   tech_staff_id: string
   component_id?: string | null
   equipment_id?: string | null
+  target: $Enums.MaintenanceTarget
+  requested_component_type?: $Enums.ComponentType | null
+  requested_equipment_type?: $Enums.EquipmentType | null
   request_type: $Enums.MaintenanceRequestType
   priority?: $Enums.MaintenancePriority
   status?: $Enums.MaintenanceRequestStatus
@@ -970,6 +1069,9 @@ export type MaintenanceRequestUpdateManyWithWhereWithoutHallInput = {
 
 export type MaintenanceRequestCreateWithoutEquipmentInput = {
   id?: string
+  target: $Enums.MaintenanceTarget
+  requested_component_type?: $Enums.ComponentType | null
+  requested_equipment_type?: $Enums.EquipmentType | null
   request_type: $Enums.MaintenanceRequestType
   priority?: $Enums.MaintenancePriority
   status?: $Enums.MaintenanceRequestStatus
@@ -990,6 +1092,9 @@ export type MaintenanceRequestUncheckedCreateWithoutEquipmentInput = {
   hall_id: string
   tech_staff_id: string
   component_id?: string | null
+  target: $Enums.MaintenanceTarget
+  requested_component_type?: $Enums.ComponentType | null
+  requested_equipment_type?: $Enums.EquipmentType | null
   request_type: $Enums.MaintenanceRequestType
   priority?: $Enums.MaintenancePriority
   status?: $Enums.MaintenanceRequestStatus
@@ -1030,6 +1135,9 @@ export type MaintenanceRequestUpdateManyWithWhereWithoutEquipmentInput = {
 
 export type MaintenanceRequestCreateWithoutComponentInput = {
   id?: string
+  target: $Enums.MaintenanceTarget
+  requested_component_type?: $Enums.ComponentType | null
+  requested_equipment_type?: $Enums.EquipmentType | null
   request_type: $Enums.MaintenanceRequestType
   priority?: $Enums.MaintenancePriority
   status?: $Enums.MaintenanceRequestStatus
@@ -1050,6 +1158,9 @@ export type MaintenanceRequestUncheckedCreateWithoutComponentInput = {
   hall_id: string
   tech_staff_id: string
   equipment_id?: string | null
+  target: $Enums.MaintenanceTarget
+  requested_component_type?: $Enums.ComponentType | null
+  requested_equipment_type?: $Enums.EquipmentType | null
   request_type: $Enums.MaintenanceRequestType
   priority?: $Enums.MaintenancePriority
   status?: $Enums.MaintenanceRequestStatus
@@ -1093,6 +1204,9 @@ export type MaintenanceRequestCreateManyTechStaffInput = {
   hall_id: string
   component_id?: string | null
   equipment_id?: string | null
+  target: $Enums.MaintenanceTarget
+  requested_component_type?: $Enums.ComponentType | null
+  requested_equipment_type?: $Enums.EquipmentType | null
   request_type: $Enums.MaintenanceRequestType
   priority?: $Enums.MaintenancePriority
   status?: $Enums.MaintenanceRequestStatus
@@ -1111,6 +1225,9 @@ export type MaintenanceRequestCreateManyHodInput = {
   tech_staff_id: string
   component_id?: string | null
   equipment_id?: string | null
+  target: $Enums.MaintenanceTarget
+  requested_component_type?: $Enums.ComponentType | null
+  requested_equipment_type?: $Enums.EquipmentType | null
   request_type: $Enums.MaintenanceRequestType
   priority?: $Enums.MaintenancePriority
   status?: $Enums.MaintenanceRequestStatus
@@ -1124,6 +1241,9 @@ export type MaintenanceRequestCreateManyHodInput = {
 
 export type MaintenanceRequestUpdateWithoutTechStaffInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  target?: Prisma.EnumMaintenanceTargetFieldUpdateOperationsInput | $Enums.MaintenanceTarget
+  requested_component_type?: Prisma.NullableEnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType | null
+  requested_equipment_type?: Prisma.NullableEnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType | null
   request_type?: Prisma.EnumMaintenanceRequestTypeFieldUpdateOperationsInput | $Enums.MaintenanceRequestType
   priority?: Prisma.EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
   status?: Prisma.EnumMaintenanceRequestStatusFieldUpdateOperationsInput | $Enums.MaintenanceRequestStatus
@@ -1144,6 +1264,9 @@ export type MaintenanceRequestUncheckedUpdateWithoutTechStaffInput = {
   hall_id?: Prisma.StringFieldUpdateOperationsInput | string
   component_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   equipment_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  target?: Prisma.EnumMaintenanceTargetFieldUpdateOperationsInput | $Enums.MaintenanceTarget
+  requested_component_type?: Prisma.NullableEnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType | null
+  requested_equipment_type?: Prisma.NullableEnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType | null
   request_type?: Prisma.EnumMaintenanceRequestTypeFieldUpdateOperationsInput | $Enums.MaintenanceRequestType
   priority?: Prisma.EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
   status?: Prisma.EnumMaintenanceRequestStatusFieldUpdateOperationsInput | $Enums.MaintenanceRequestStatus
@@ -1161,6 +1284,9 @@ export type MaintenanceRequestUncheckedUpdateManyWithoutTechStaffInput = {
   hall_id?: Prisma.StringFieldUpdateOperationsInput | string
   component_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   equipment_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  target?: Prisma.EnumMaintenanceTargetFieldUpdateOperationsInput | $Enums.MaintenanceTarget
+  requested_component_type?: Prisma.NullableEnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType | null
+  requested_equipment_type?: Prisma.NullableEnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType | null
   request_type?: Prisma.EnumMaintenanceRequestTypeFieldUpdateOperationsInput | $Enums.MaintenanceRequestType
   priority?: Prisma.EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
   status?: Prisma.EnumMaintenanceRequestStatusFieldUpdateOperationsInput | $Enums.MaintenanceRequestStatus
@@ -1175,6 +1301,9 @@ export type MaintenanceRequestUncheckedUpdateManyWithoutTechStaffInput = {
 
 export type MaintenanceRequestUpdateWithoutHodInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  target?: Prisma.EnumMaintenanceTargetFieldUpdateOperationsInput | $Enums.MaintenanceTarget
+  requested_component_type?: Prisma.NullableEnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType | null
+  requested_equipment_type?: Prisma.NullableEnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType | null
   request_type?: Prisma.EnumMaintenanceRequestTypeFieldUpdateOperationsInput | $Enums.MaintenanceRequestType
   priority?: Prisma.EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
   status?: Prisma.EnumMaintenanceRequestStatusFieldUpdateOperationsInput | $Enums.MaintenanceRequestStatus
@@ -1196,6 +1325,9 @@ export type MaintenanceRequestUncheckedUpdateWithoutHodInput = {
   tech_staff_id?: Prisma.StringFieldUpdateOperationsInput | string
   component_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   equipment_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  target?: Prisma.EnumMaintenanceTargetFieldUpdateOperationsInput | $Enums.MaintenanceTarget
+  requested_component_type?: Prisma.NullableEnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType | null
+  requested_equipment_type?: Prisma.NullableEnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType | null
   request_type?: Prisma.EnumMaintenanceRequestTypeFieldUpdateOperationsInput | $Enums.MaintenanceRequestType
   priority?: Prisma.EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
   status?: Prisma.EnumMaintenanceRequestStatusFieldUpdateOperationsInput | $Enums.MaintenanceRequestStatus
@@ -1213,6 +1345,9 @@ export type MaintenanceRequestUncheckedUpdateManyWithoutHodInput = {
   tech_staff_id?: Prisma.StringFieldUpdateOperationsInput | string
   component_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   equipment_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  target?: Prisma.EnumMaintenanceTargetFieldUpdateOperationsInput | $Enums.MaintenanceTarget
+  requested_component_type?: Prisma.NullableEnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType | null
+  requested_equipment_type?: Prisma.NullableEnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType | null
   request_type?: Prisma.EnumMaintenanceRequestTypeFieldUpdateOperationsInput | $Enums.MaintenanceRequestType
   priority?: Prisma.EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
   status?: Prisma.EnumMaintenanceRequestStatusFieldUpdateOperationsInput | $Enums.MaintenanceRequestStatus
@@ -1229,6 +1364,9 @@ export type MaintenanceRequestCreateManyHallInput = {
   tech_staff_id: string
   component_id?: string | null
   equipment_id?: string | null
+  target: $Enums.MaintenanceTarget
+  requested_component_type?: $Enums.ComponentType | null
+  requested_equipment_type?: $Enums.EquipmentType | null
   request_type: $Enums.MaintenanceRequestType
   priority?: $Enums.MaintenancePriority
   status?: $Enums.MaintenanceRequestStatus
@@ -1243,6 +1381,9 @@ export type MaintenanceRequestCreateManyHallInput = {
 
 export type MaintenanceRequestUpdateWithoutHallInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  target?: Prisma.EnumMaintenanceTargetFieldUpdateOperationsInput | $Enums.MaintenanceTarget
+  requested_component_type?: Prisma.NullableEnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType | null
+  requested_equipment_type?: Prisma.NullableEnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType | null
   request_type?: Prisma.EnumMaintenanceRequestTypeFieldUpdateOperationsInput | $Enums.MaintenanceRequestType
   priority?: Prisma.EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
   status?: Prisma.EnumMaintenanceRequestStatusFieldUpdateOperationsInput | $Enums.MaintenanceRequestStatus
@@ -1263,6 +1404,9 @@ export type MaintenanceRequestUncheckedUpdateWithoutHallInput = {
   tech_staff_id?: Prisma.StringFieldUpdateOperationsInput | string
   component_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   equipment_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  target?: Prisma.EnumMaintenanceTargetFieldUpdateOperationsInput | $Enums.MaintenanceTarget
+  requested_component_type?: Prisma.NullableEnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType | null
+  requested_equipment_type?: Prisma.NullableEnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType | null
   request_type?: Prisma.EnumMaintenanceRequestTypeFieldUpdateOperationsInput | $Enums.MaintenanceRequestType
   priority?: Prisma.EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
   status?: Prisma.EnumMaintenanceRequestStatusFieldUpdateOperationsInput | $Enums.MaintenanceRequestStatus
@@ -1280,6 +1424,9 @@ export type MaintenanceRequestUncheckedUpdateManyWithoutHallInput = {
   tech_staff_id?: Prisma.StringFieldUpdateOperationsInput | string
   component_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   equipment_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  target?: Prisma.EnumMaintenanceTargetFieldUpdateOperationsInput | $Enums.MaintenanceTarget
+  requested_component_type?: Prisma.NullableEnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType | null
+  requested_equipment_type?: Prisma.NullableEnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType | null
   request_type?: Prisma.EnumMaintenanceRequestTypeFieldUpdateOperationsInput | $Enums.MaintenanceRequestType
   priority?: Prisma.EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
   status?: Prisma.EnumMaintenanceRequestStatusFieldUpdateOperationsInput | $Enums.MaintenanceRequestStatus
@@ -1297,6 +1444,9 @@ export type MaintenanceRequestCreateManyEquipmentInput = {
   hall_id: string
   tech_staff_id: string
   component_id?: string | null
+  target: $Enums.MaintenanceTarget
+  requested_component_type?: $Enums.ComponentType | null
+  requested_equipment_type?: $Enums.EquipmentType | null
   request_type: $Enums.MaintenanceRequestType
   priority?: $Enums.MaintenancePriority
   status?: $Enums.MaintenanceRequestStatus
@@ -1311,6 +1461,9 @@ export type MaintenanceRequestCreateManyEquipmentInput = {
 
 export type MaintenanceRequestUpdateWithoutEquipmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  target?: Prisma.EnumMaintenanceTargetFieldUpdateOperationsInput | $Enums.MaintenanceTarget
+  requested_component_type?: Prisma.NullableEnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType | null
+  requested_equipment_type?: Prisma.NullableEnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType | null
   request_type?: Prisma.EnumMaintenanceRequestTypeFieldUpdateOperationsInput | $Enums.MaintenanceRequestType
   priority?: Prisma.EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
   status?: Prisma.EnumMaintenanceRequestStatusFieldUpdateOperationsInput | $Enums.MaintenanceRequestStatus
@@ -1331,6 +1484,9 @@ export type MaintenanceRequestUncheckedUpdateWithoutEquipmentInput = {
   hall_id?: Prisma.StringFieldUpdateOperationsInput | string
   tech_staff_id?: Prisma.StringFieldUpdateOperationsInput | string
   component_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  target?: Prisma.EnumMaintenanceTargetFieldUpdateOperationsInput | $Enums.MaintenanceTarget
+  requested_component_type?: Prisma.NullableEnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType | null
+  requested_equipment_type?: Prisma.NullableEnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType | null
   request_type?: Prisma.EnumMaintenanceRequestTypeFieldUpdateOperationsInput | $Enums.MaintenanceRequestType
   priority?: Prisma.EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
   status?: Prisma.EnumMaintenanceRequestStatusFieldUpdateOperationsInput | $Enums.MaintenanceRequestStatus
@@ -1348,6 +1504,9 @@ export type MaintenanceRequestUncheckedUpdateManyWithoutEquipmentInput = {
   hall_id?: Prisma.StringFieldUpdateOperationsInput | string
   tech_staff_id?: Prisma.StringFieldUpdateOperationsInput | string
   component_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  target?: Prisma.EnumMaintenanceTargetFieldUpdateOperationsInput | $Enums.MaintenanceTarget
+  requested_component_type?: Prisma.NullableEnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType | null
+  requested_equipment_type?: Prisma.NullableEnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType | null
   request_type?: Prisma.EnumMaintenanceRequestTypeFieldUpdateOperationsInput | $Enums.MaintenanceRequestType
   priority?: Prisma.EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
   status?: Prisma.EnumMaintenanceRequestStatusFieldUpdateOperationsInput | $Enums.MaintenanceRequestStatus
@@ -1365,6 +1524,9 @@ export type MaintenanceRequestCreateManyComponentInput = {
   hall_id: string
   tech_staff_id: string
   equipment_id?: string | null
+  target: $Enums.MaintenanceTarget
+  requested_component_type?: $Enums.ComponentType | null
+  requested_equipment_type?: $Enums.EquipmentType | null
   request_type: $Enums.MaintenanceRequestType
   priority?: $Enums.MaintenancePriority
   status?: $Enums.MaintenanceRequestStatus
@@ -1379,6 +1541,9 @@ export type MaintenanceRequestCreateManyComponentInput = {
 
 export type MaintenanceRequestUpdateWithoutComponentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  target?: Prisma.EnumMaintenanceTargetFieldUpdateOperationsInput | $Enums.MaintenanceTarget
+  requested_component_type?: Prisma.NullableEnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType | null
+  requested_equipment_type?: Prisma.NullableEnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType | null
   request_type?: Prisma.EnumMaintenanceRequestTypeFieldUpdateOperationsInput | $Enums.MaintenanceRequestType
   priority?: Prisma.EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
   status?: Prisma.EnumMaintenanceRequestStatusFieldUpdateOperationsInput | $Enums.MaintenanceRequestStatus
@@ -1399,6 +1564,9 @@ export type MaintenanceRequestUncheckedUpdateWithoutComponentInput = {
   hall_id?: Prisma.StringFieldUpdateOperationsInput | string
   tech_staff_id?: Prisma.StringFieldUpdateOperationsInput | string
   equipment_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  target?: Prisma.EnumMaintenanceTargetFieldUpdateOperationsInput | $Enums.MaintenanceTarget
+  requested_component_type?: Prisma.NullableEnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType | null
+  requested_equipment_type?: Prisma.NullableEnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType | null
   request_type?: Prisma.EnumMaintenanceRequestTypeFieldUpdateOperationsInput | $Enums.MaintenanceRequestType
   priority?: Prisma.EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
   status?: Prisma.EnumMaintenanceRequestStatusFieldUpdateOperationsInput | $Enums.MaintenanceRequestStatus
@@ -1416,6 +1584,9 @@ export type MaintenanceRequestUncheckedUpdateManyWithoutComponentInput = {
   hall_id?: Prisma.StringFieldUpdateOperationsInput | string
   tech_staff_id?: Prisma.StringFieldUpdateOperationsInput | string
   equipment_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  target?: Prisma.EnumMaintenanceTargetFieldUpdateOperationsInput | $Enums.MaintenanceTarget
+  requested_component_type?: Prisma.NullableEnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType | null
+  requested_equipment_type?: Prisma.NullableEnumEquipmentTypeFieldUpdateOperationsInput | $Enums.EquipmentType | null
   request_type?: Prisma.EnumMaintenanceRequestTypeFieldUpdateOperationsInput | $Enums.MaintenanceRequestType
   priority?: Prisma.EnumMaintenancePriorityFieldUpdateOperationsInput | $Enums.MaintenancePriority
   status?: Prisma.EnumMaintenanceRequestStatusFieldUpdateOperationsInput | $Enums.MaintenanceRequestStatus
@@ -1436,6 +1607,9 @@ export type MaintenanceRequestSelect<ExtArgs extends runtime.Types.Extensions.In
   tech_staff_id?: boolean
   component_id?: boolean
   equipment_id?: boolean
+  target?: boolean
+  requested_component_type?: boolean
+  requested_equipment_type?: boolean
   request_type?: boolean
   priority?: boolean
   status?: boolean
@@ -1459,6 +1633,9 @@ export type MaintenanceRequestSelectCreateManyAndReturn<ExtArgs extends runtime.
   tech_staff_id?: boolean
   component_id?: boolean
   equipment_id?: boolean
+  target?: boolean
+  requested_component_type?: boolean
+  requested_equipment_type?: boolean
   request_type?: boolean
   priority?: boolean
   status?: boolean
@@ -1482,6 +1659,9 @@ export type MaintenanceRequestSelectUpdateManyAndReturn<ExtArgs extends runtime.
   tech_staff_id?: boolean
   component_id?: boolean
   equipment_id?: boolean
+  target?: boolean
+  requested_component_type?: boolean
+  requested_equipment_type?: boolean
   request_type?: boolean
   priority?: boolean
   status?: boolean
@@ -1505,6 +1685,9 @@ export type MaintenanceRequestSelectScalar = {
   tech_staff_id?: boolean
   component_id?: boolean
   equipment_id?: boolean
+  target?: boolean
+  requested_component_type?: boolean
+  requested_equipment_type?: boolean
   request_type?: boolean
   priority?: boolean
   status?: boolean
@@ -1517,7 +1700,7 @@ export type MaintenanceRequestSelectScalar = {
   updated_at?: boolean
 }
 
-export type MaintenanceRequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "hall_id" | "tech_staff_id" | "component_id" | "equipment_id" | "request_type" | "priority" | "status" | "title" | "description" | "hod_id" | "approved_at" | "rejection_reason" | "created_at" | "updated_at", ExtArgs["result"]["maintenanceRequest"]>
+export type MaintenanceRequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "hall_id" | "tech_staff_id" | "component_id" | "equipment_id" | "target" | "requested_component_type" | "requested_equipment_type" | "request_type" | "priority" | "status" | "title" | "description" | "hod_id" | "approved_at" | "rejection_reason" | "created_at" | "updated_at", ExtArgs["result"]["maintenanceRequest"]>
 export type MaintenanceRequestInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   hall?: boolean | Prisma.SeminarHallDefaultArgs<ExtArgs>
   component?: boolean | Prisma.MaintenanceRequest$componentArgs<ExtArgs>
@@ -1555,6 +1738,9 @@ export type $MaintenanceRequestPayload<ExtArgs extends runtime.Types.Extensions.
     tech_staff_id: string
     component_id: string | null
     equipment_id: string | null
+    target: $Enums.MaintenanceTarget
+    requested_component_type: $Enums.ComponentType | null
+    requested_equipment_type: $Enums.EquipmentType | null
     request_type: $Enums.MaintenanceRequestType
     priority: $Enums.MaintenancePriority
     status: $Enums.MaintenanceRequestStatus
@@ -1998,6 +2184,9 @@ export interface MaintenanceRequestFieldRefs {
   readonly tech_staff_id: Prisma.FieldRef<"MaintenanceRequest", 'String'>
   readonly component_id: Prisma.FieldRef<"MaintenanceRequest", 'String'>
   readonly equipment_id: Prisma.FieldRef<"MaintenanceRequest", 'String'>
+  readonly target: Prisma.FieldRef<"MaintenanceRequest", 'MaintenanceTarget'>
+  readonly requested_component_type: Prisma.FieldRef<"MaintenanceRequest", 'ComponentType'>
+  readonly requested_equipment_type: Prisma.FieldRef<"MaintenanceRequest", 'EquipmentType'>
   readonly request_type: Prisma.FieldRef<"MaintenanceRequest", 'MaintenanceRequestType'>
   readonly priority: Prisma.FieldRef<"MaintenanceRequest", 'MaintenancePriority'>
   readonly status: Prisma.FieldRef<"MaintenanceRequest", 'MaintenanceRequestStatus'>

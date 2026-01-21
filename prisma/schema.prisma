@@ -423,11 +423,9 @@ model MaintenanceRequest {
   hall_id          String
   tech_staff_id    String
 
-  /* EXISTING ASSET (only for non-new requests) */
   component_id     String?
   equipment_id     String?
 
-  /* NEW INSTALLATION SUPPORT */
   target           MaintenanceTarget
   requested_component_type ComponentType?
   requested_equipment_type EquipmentType?
