@@ -10,6 +10,7 @@ import {
 } from "@/generated/enums"
 import prisma from "@/lib/db"
 import { sendNotification } from "../notification"
+import { sendNotificationEmail } from "../notification/send-email"
 
 export async function approveMaintenance(requestId: string, hodId: string) {
   const request = await prisma.maintenanceRequest.update({
@@ -31,6 +32,13 @@ export async function approveMaintenance(requestId: string, hodId: string) {
     message: `Your maintenance request for ${request.hall.name} has been approved.`,
     type: "maintenance_request_approved",
   })
+
+  sendNotificationEmail({
+    type: "maintenance_request_approved",
+    to: request.techStaff.email,
+    techName: request.techStaff.name,
+    hallName: request.hall.name,
+  }).catch(console.error);
 
   return { success: true }
 }
@@ -59,6 +67,14 @@ export async function rejectMaintenance(
     message: `Your request for ${request.hall.name} was rejected. Reason: ${reason}`,
     type: "maintenance_request_rejected",
   })
+
+  sendNotificationEmail({
+    type: "maintenance_request_rejected",
+    to: request.techStaff.email,
+    techName: request.techStaff.name,
+    hallName: request.hall.name,
+    reason,
+  }).catch(console.error);
 
   return { success: true }
 }

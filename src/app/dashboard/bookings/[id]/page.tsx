@@ -7,7 +7,15 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useGetBookingById } from "@/hooks/react-query/useBookings"
-import { addBookingSummary, addBookingMedia, deleteBookingMedia } from "@/actions/booking"
+import {
+  useApproveBooking,
+  useRejectBooking,
+} from "@/hooks/react-query/useBookings"
+import {
+  addBookingSummary,
+  addBookingMedia,
+  deleteBookingMedia,
+} from "@/actions/booking"
 import { useProfile } from "@/hooks/react-query/useUser"
 import { toast } from "sonner"
 import {
@@ -15,34 +23,48 @@ import {
   MapPin,
   Calendar,
   Users,
-  FileText,
-  Sparkles,
   Loader2,
   CheckCircle,
-  Upload,
   Trash2,
   User,
   Clock,
   Download,
   X,
+  FileText,
+  ArrowUpRight,
 } from "lucide-react"
 import { BookingTimeline } from "@/components/dashboard/booking/BookingTimeline"
 import { getSignedURL } from "@/actions/aws/s3"
+import { UserRole } from "@/generated/enums"
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 
 export default function BookingDetailPage() {
   const { id } = useParams<{ id: string }>()
   const router = useRouter()
   const { userId } = useAuth()
-  const { data: profile } = useProfile(userId ?? undefined)
+
+  const { data: profile, isLoading: profileLoading } = useProfile(userId ?? "")
   const { data: booking, isLoading, refetch } = useGetBookingById(id)
+
+  const { mutate: approveBooking, isPending: approving } = useApproveBooking()
+  const { mutate: rejectBooking, isPending: rejecting } = useRejectBooking()
 
   const [summary, setSummary] = useState("")
   const [savingSummary, setSavingSummary] = useState(false)
-  const [isLoadingReport, setIsLoadingReport] = useState(false);
   const [uploading, setUploading] = useState(false)
   const [previewImage, setPreviewImage] = useState<string | null>(null)
+  const [showLetter, setShowLetter] = useState(false)
+  const [showRejectDialog, setShowRejectDialog] = useState(false)
+  const [rejectionReason, setRejectionReason] = useState("")
+  const [isLoadingReport, setIsLoadingReport] = useState(false)
 
-  if (isLoading || !booking) {
+  if (isLoading || profileLoading || !booking || !profile) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin" />
@@ -50,15 +72,23 @@ export default function BookingDetailPage() {
     )
   }
 
-  const isTeacher = booking.teacher_id === profile?.id
+  /* ---------------- AUTH CHECKS ---------------- */
+  const isTeacher = booking.teacher_id === profile.id
   const isStaff = booking.hall.hallTechStaffs?.some(
-    (s) => s.tech_staff_id === profile?.id,
+    (s) => s.tech_staff_id === profile.id
   )
 
   const isCompleted = booking.status === "completed"
+  const isPending = booking.status === "pending"
+
+  const isAuthorizedHod =
+    profile.roles.some((r) => r.role === UserRole.hod) &&
+    profile.id === booking.hall.department.hod_id
+
   const canEditSummary = isTeacher && isCompleted
   const canManageMedia = (isTeacher || isStaff) && isCompleted
 
+  /* ---------------- ACTIONS ---------------- */
   async function saveSummary() {
     if (!summary.trim() || !canEditSummary || !booking?.id) return
 
@@ -86,20 +116,21 @@ export default function BookingDetailPage() {
   }
 
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
-    if (!canManageMedia || !profile?.id || !booking?.id) return
+    if (!canManageMedia || !booking?.id || !profile?.id) return
 
     try {
       setUploading(true)
       const files = Array.from(e.target.files ?? [])
+
       for (const file of files) {
         const signedUrl = await getSignedURL(
           file.type,
           file.name,
           booking.id,
-          "booking_image",
+          "booking_image"
         )
         const publicUrl = await uploadToS3(file, signedUrl)
-        await addBookingMedia(booking.id, publicUrl, profile.id)
+        await addBookingMedia(booking.id, publicUrl, profile?.id as string)
       }
 
       toast.success("Images uploaded")
@@ -122,7 +153,6 @@ export default function BookingDetailPage() {
     setIsLoadingReport(true)
     const res = await fetch(`/api/bookings/${booking.id}/report`)
     const blob = await res.blob()
-
     const url = URL.createObjectURL(blob)
     const a = document.createElement("a")
     a.href = url
@@ -131,10 +161,49 @@ export default function BookingDetailPage() {
     setIsLoadingReport(false)
   }
 
+  const handleApprove = () => {
+    approveBooking(
+      { bookingId: booking.id, hodId: profile.id },
+      {
+        onSuccess: () => {
+          toast.success("Booking approved")
+          refetch()
+        },
+        onError: () => toast.error("Approval failed"),
+      }
+    )
+  }
+
+  const handleReject = () => {
+    if (!rejectionReason.trim()) {
+      toast.error("Rejection reason required")
+      return
+    }
+
+    rejectBooking(
+      {
+        bookingId: booking.id,
+        hodId: profile.id,
+        reason: rejectionReason,
+      },
+      {
+        onSuccess: () => {
+          toast.success("Booking rejected")
+          setShowRejectDialog(false)
+          setRejectionReason("")
+          refetch()
+        },
+        onError: () => toast.error("Rejection failed"),
+      }
+    )
+  }
+
+  /* ---------------- UI ---------------- */
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
 
+        {/* HEADER */}
         <div className="flex items-center gap-4">
           <Button variant="ghost" size="icon" onClick={() => router.back()}>
             <ArrowLeft className="h-5 w-5" />
@@ -146,43 +215,121 @@ export default function BookingDetailPage() {
           </div>
 
           {isCompleted && (
-            <Button
-              variant="outline"
-              size="sm"
-              className="gap-2"
-              onClick={downloadReport}
-            >
-              {isLoadingReport ? <>
-                <Loader2 className="h-4 w-4 animate-spin" />
-                Generating Report...
-              </> : <>
-                <Download className="h-4 w-4" />
-                Download Report
-              </>
-              }
+            <Button variant="outline" size="sm" onClick={downloadReport}>
+              {isLoadingReport ? "Generating..." : "Download Report"}
             </Button>
           )}
         </div>
 
+        {/* HOD APPROVAL CARD */}
+        {isAuthorizedHod && isPending && (
+          <Card className="border-amber-300 bg-amber-50">
+            <CardHeader>
+              <CardTitle className="text-amber-700">
+                HOD Approval Required
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="flex gap-3">
+              <Button onClick={() => setShowLetter(true)} variant="outline">
+                <FileText className="h-4 w-4 mr-2" />
+                View Letter
+              </Button>
+
+              <Button
+                onClick={() =>
+                  window.open(booking.permission_letter_url, "_blank")
+                }
+                variant="outline"
+              >
+                <Download className="h-4 w-4 mr-2" />
+                Download
+              </Button>
+
+              <div className="flex-1" />
+
+              <Button
+                className="bg-emerald-600 hover:bg-emerald-700"
+                onClick={handleApprove}
+                disabled={approving}
+              >
+                Approve
+              </Button>
+
+              <Button
+                variant="destructive"
+                onClick={() => setShowRejectDialog(true)}
+                disabled={rejecting}
+              >
+                Reject
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* BOOKING INFO */}
         <Card>
           <CardHeader>
             <CardTitle>Booking Information</CardTitle>
           </CardHeader>
           <CardContent className="grid gap-5 sm:grid-cols-2">
-            <Info icon={MapPin} label="Hall" value={`${booking.hall.name} • ${booking.hall.location}`} />
-            <Info icon={User} label="Booked By" value={booking.teacher.name} />
-            <Info icon={Calendar} label="Date" value={new Date(booking.booking_date).toLocaleDateString()} />
+            <Info
+              icon={MapPin}
+              label="Hall"
+              value={
+                <button
+                  onClick={() =>
+                    router.push(`/dashboard/halls/${booking.hall.id}`)
+                  }
+                  className="flex items-center gap-1 text-primary hover:underline"
+                >
+                  {booking.hall.name} • {booking.hall.location}
+                  <ArrowUpRight className="h-4 w-4" />
+                </button>
+              }
+            />
+
+            <Info
+              icon={User}
+              label="Booked By"
+              value={
+                <a
+                  href={`mailto:${booking.teacher.email}`}
+                  className="text-primary hover:underline"
+                >
+                  {booking.teacher.name} ({booking.teacher.email})
+                </a>
+              }
+            />
+
+            <Info
+              icon={Calendar}
+              label="Date"
+              value={new Date(booking.booking_date).toLocaleDateString()}
+            />
+
             <Info
               icon={Clock}
               label="Time"
-              value={`${new Date(booking.start_time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} – ${new Date(booking.end_time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`}
+              value={`${new Date(booking.start_time).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })} – ${new Date(booking.end_time).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}`}
             />
+
             {booking.expected_participants && (
-              <Info icon={Users} label="Participants" value={booking.expected_participants.toString()} />
+              <Info
+                icon={Users}
+                label="Participants"
+                value={booking.expected_participants.toString()}
+              />
             )}
           </CardContent>
         </Card>
 
+        {/* TIMELINE */}
         <Card>
           <CardHeader>
             <CardTitle>Activity Timeline</CardTitle>
@@ -192,11 +339,12 @@ export default function BookingDetailPage() {
           </CardContent>
         </Card>
 
+        {/* MEDIA */}
         <Card>
           <CardHeader>
             <CardTitle>Session Media</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {booking.media.map((m) => (
                 <div key={m.id} className="relative group">
@@ -222,37 +370,20 @@ export default function BookingDetailPage() {
             {canManageMedia && (
               <label>
                 <input
-                  id="upload"
                   type="file"
                   multiple
-                  accept="image/*"
                   hidden
                   onChange={handleUpload}
-                  disabled={uploading}
                 />
-                <Button
-                  onClick={() => document.getElementById("upload")?.click()}
-                  disabled={uploading}
-                  className="gap-2 shadow-sm hover:shadow-md transition-all"
-                  size="sm"
-                >
-                  {uploading ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                      Uploading...
-                    </>
-                  ) : (
-                    <>
-                      <Upload className="h-4 w-4" />
-                      Upload Images
-                    </>
-                  )}
+                <Button size="sm" disabled={uploading}>
+                  Upload Images
                 </Button>
               </label>
             )}
           </CardContent>
         </Card>
 
+        {/* SUMMARY */}
         <Card>
           <CardHeader>
             <CardTitle>Session Summary</CardTitle>
@@ -271,15 +402,8 @@ export default function BookingDetailPage() {
                   defaultValue={booking.session_summary ?? ""}
                   onChange={(e) => setSummary(e.target.value)}
                 />
-                <Button onClick={saveSummary} className="mt-3 gap-2">
-                  {savingSummary ? <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Saving...
-                  </> : <>
-                    <Sparkles className="h-4 w-4" />
-                    Save / Update Summary
-                  </>
-                  }
+                <Button onClick={saveSummary} className="mt-3">
+                  Save Summary
                 </Button>
               </>
             )}
@@ -287,33 +411,54 @@ export default function BookingDetailPage() {
         </Card>
       </div>
 
-      {previewImage && (
+      {/* PERMISSION LETTER */}
+      {showLetter && (
         <div
-          className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4"
-          onClick={() => setPreviewImage(null)}
+          className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center"
+          onClick={() => setShowLetter(false)}
         >
-          <div onClick={(e) => e.stopPropagation()} className="relative max-w-5xl w-full">
-            <img src={previewImage} className="rounded-xl object-contain max-h-[90vh] w-full" />
-            <div className="absolute top-3 right-3 flex gap-2">
-              <Button
-                size="icon"
-                variant="secondary"
-                onClick={() => {
-                  const a = document.createElement("a")
-                  a.href = previewImage
-                  a.download = "booking-image"
-                  a.click()
-                }}
-              >
-                <Download className="h-4 w-4" />
-              </Button>
-              <Button size="icon" variant="ghost" onClick={() => setPreviewImage(null)}>
-                <X className="h-4 w-4 text-white" />
-              </Button>
-            </div>
+          <div
+            className="bg-white w-[90%] h-[90%] rounded-lg"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {booking.permission_letter_url.endsWith(".pdf") ? (
+              <iframe
+                src={booking.permission_letter_url}
+                className="w-full h-full"
+              />
+            ) : (
+              <img
+                src={booking.permission_letter_url}
+                className="w-full h-full object-contain"
+              />
+            )}
           </div>
         </div>
       )}
+
+      {/* REJECT DIALOG */}
+      <Dialog open={showRejectDialog} onOpenChange={setShowRejectDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Reject Booking</DialogTitle>
+          </DialogHeader>
+
+          <Textarea
+            placeholder="Reason for rejection"
+            value={rejectionReason}
+            onChange={(e) => setRejectionReason(e.target.value)}
+          />
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowRejectDialog(false)}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleReject}>
+              Confirm Reject
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

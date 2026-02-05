@@ -24,7 +24,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { useRouter } from "next/navigation"
-import { useProfile, useUserRole } from "@/hooks/react-query/useUser"
+import { useProfile } from "@/hooks/react-query/useUser"
 import { useAuth } from "@clerk/nextjs"
 import { useMyBookings } from "@/hooks/react-query/useBookings"
 import { cancelBooking } from "@/actions/booking"
@@ -37,7 +37,6 @@ const MyBookings = () => {
   const router = useRouter()
   const { userId } = useAuth()
   const { data: profile } = useProfile(userId ?? undefined)
-  const { data: roleUserId } = useUserRole(profile?.id ?? undefined)
   const { data: bookings, isLoading } = useMyBookings(profile?.id ?? undefined)
 
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all")
@@ -45,7 +44,7 @@ const MyBookings = () => {
 
   const handleCancelBooking = async (bookingId: string) => {
     try {
-      const { error } = await cancelBooking(bookingId, roleUserId || "")
+      const { error } = await cancelBooking(bookingId, profile?.user_id || "")
       if (error) throw error
       toast.success("Booking cancelled successfully")
     } catch {

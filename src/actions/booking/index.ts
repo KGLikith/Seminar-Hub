@@ -3,6 +3,8 @@
 import { BookingStatus } from "@/generated/enums"
 import prisma from "@/lib/db"
 import { revalidatePath } from "next/cache"
+import { sendEmail, sendNotification } from "../notification"
+import { sendNotificationEmail } from "../notification/send-email"
 
 export type BookingFilters = {
   hallId?: string
@@ -13,7 +15,6 @@ export type BookingFilters = {
   dateTo?: Date
   limit?: number
 }
-
 
 export async function getBookings(filters?: BookingFilters) {
   const where: any = {}
@@ -61,7 +62,7 @@ export async function getBookingById(id: string) {
   return prisma.booking.findUnique({
     where: { id },
     include: {
-      hall: { include: { hallTechStaffs: true } },
+      hall: { include: { hallTechStaffs: true, department: true } },
       teacher: true,
       hod: true,
       logs: { orderBy: { created_at: "asc" } },
@@ -95,6 +96,9 @@ export async function createBooking(data: {
         special_requirements: data.specialRequirements,
         status: BookingStatus.pending,
       },
+      include: {
+        hall: true
+      }
     })
 
     await prisma.bookingLog.create({
@@ -111,19 +115,26 @@ export async function createBooking(data: {
         department: { halls: { some: { id: data.hallId } } },
         roles: { some: { role: "hod" } },
       },
-      select: { id: true },
+      select: { id: true, email: true, name: true },
     })
 
     if (hod) {
-      await prisma.notification.create({
-        data: {
-          user_id: hod.id,
-          title: "New Booking Request",
-          message: "A new booking request is awaiting approval.",
-          type: "booking_pending",
-          related_booking_id: booking.id,
-        },
+      await sendNotification({
+        userId: hod.id,
+        title: "New Booking Request",
+        message: "A new booking request is awaiting approval.",
+        type: "booking_pending",
+        related_booking_id: booking.id,
       })
+
+      sendNotificationEmail({
+        type: "booking_pending",
+        to: hod.email,
+        hodName: hod.name,
+        hallName: booking.hall.name,
+        bookingDate: booking.booking_date.toDateString(),
+        bookingId: booking.id,
+      }).catch(console.error);
     }
 
     return { error: null }
@@ -155,6 +166,9 @@ export async function approveBooking(bookingId: string, hodId: string) {
       hod_id: hodId,
       approved_at: new Date(),
     },
+    include: {
+      teacher: true
+    }
   })
 
   await prisma.bookingLog.create({
@@ -165,17 +179,24 @@ export async function approveBooking(bookingId: string, hodId: string) {
       new_status: BookingStatus.approved,
       performed_by: hodId,
     },
+
   })
 
-  await prisma.notification.create({
-    data: {
-      user_id: booking.teacher_id,
-      title: "Booking Approved",
-      message: `Your booking for ${booking.purpose} has been approved.`,
-      type: "booking_approved",
-      related_booking_id: bookingId,
-    },
+  await sendNotification({
+    userId: booking.teacher_id,
+    title: "Booking Approved",
+    message: `Your booking for ${booking.purpose} has been approved.`,
+    type: "booking_approved",
+    related_booking_id: bookingId,
   })
+
+  sendNotificationEmail({
+    type: "booking_approved",
+    to: booking.teacher.email,
+    teacherName: booking.teacher.name,
+    purpose: booking.purpose,
+    bookingId,
+  }).catch(console.error);
 
   return booking
 }
@@ -192,6 +213,9 @@ export async function rejectBooking(
       hod_id: hodId,
       rejection_reason: reason,
     },
+    include: {
+      teacher: true
+    }
   })
 
   await prisma.bookingLog.create({
@@ -205,15 +229,13 @@ export async function rejectBooking(
     },
   })
 
-  await prisma.notification.create({
-    data: {
-      user_id: booking.teacher_id,
-      title: "Booking Rejected",
-      message: reason,
-      type: "booking_rejected",
-      related_booking_id: bookingId,
-    },
-  })
+  sendNotificationEmail({
+    type: "booking_rejected",
+    to: booking.teacher.email,
+    teacherName: booking.teacher.name,
+    reason,
+    bookingId,
+  }).catch(console.error);
 
   return booking
 }

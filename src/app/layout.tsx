@@ -11,7 +11,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "College Seminar Hall Management",
+  title: "Seminar Hub",
   description:
     "Manage seminar hall bookings, equipment, and approvals efficiently",
   viewport: {

@@ -20,7 +20,7 @@ const OTPForm = dynamic(() => import('./otp-form'), {
 const RegistrationFormStep = () => {
   const {
     register,
-    formState: { errors, isSubmitted, submitCount },
+    formState: { errors, isSubmitted, submitCount, touchedFields },
     setValue,
   } = useFormContext()
   const { currentStep } = useAuthContextHook()
@@ -47,6 +47,7 @@ const RegistrationFormStep = () => {
           errors={errors}
           register={register}
           showError={submitCount > 0}
+          touchedFields={touchedFields}
         />
       )
     case 3:

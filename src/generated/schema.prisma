@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_DATABASE_URL")
 }
@@ -174,7 +174,7 @@ model UserRoleAssignment {
   @@unique([profile_id, role])
 }
 
-model SeminarHall { 
+model SeminarHall {
   id               String     @id @default(uuid())
   name             String
   seating_capacity Int
@@ -200,16 +200,15 @@ model SeminarHall {
 }
 
 model HallImage {
-  id        String   @id @default(uuid())
-  hall_id   String
-  image_url String
+  id         String   @id @default(uuid())
+  hall_id    String
+  image_url  String
   created_at DateTime @default(now())
 
   hall SeminarHall @relation(fields: [hall_id], references: [id], onDelete: Cascade)
 
   @@index([hall_id])
 }
-
 
 model FavoriteHall {
   id         String   @id @default(uuid())
@@ -262,23 +261,22 @@ model Equipment {
 }
 
 model EquipmentLog {
-  id              String              @id @default(uuid())
-  equipment_id    String
+  id           String @id @default(uuid())
+  equipment_id String
 
   action          MaintenanceAction
   condition_after EquipmentCondition?
   notes           String?
 
-  created_at      DateTime            @default(now())
+  created_at DateTime @default(now())
 
   updated_by String
-  user       Profile  @relation("updated_by_log", fields: [updated_by], references: [id])
+  user       Profile @relation("updated_by_log", fields: [updated_by], references: [id])
 
   equipment Equipment @relation(fields: [equipment_id], references: [id], onDelete: Cascade)
 
   @@index([equipment_id])
 }
-
 
 model Booking {
   id                    String        @id @default(uuid())
@@ -310,10 +308,10 @@ model Booking {
   logs          BookingLog[]
   notifications Notification[]
   emailLogs     EmailLog[]
+  media         BookingMedia[]
 
   @@index([status])
   @@index([hod_id])
-  media BookingMedia[]
 }
 
 model BookingLog {
@@ -336,17 +334,16 @@ model BookingLog {
 
 model BookingMedia {
   id          String   @id @default(uuid())
-  booking_id String
+  booking_id  String
   url         String
   uploaded_by String
-  created_at DateTime @default(now())
+  created_at  DateTime @default(now())
 
-  booking Booking @relation(fields: [booking_id], references: [id], onDelete: Cascade)
+  booking  Booking @relation(fields: [booking_id], references: [id], onDelete: Cascade)
   uploader Profile @relation(fields: [uploaded_by], references: [id], onDelete: Cascade)
 
   @@index([booking_id])
 }
-
 
 model Notification {
   id         String   @id @default(uuid())
@@ -388,15 +385,15 @@ model HallComponent {
 }
 
 model ComponentMaintenanceLog {
-  id              String              @id @default(uuid())
-  component_id    String
+  id           String @id @default(uuid())
+  component_id String
 
-  action          MaintenanceAction
-  status_after    ComponentStatus?
-  notes           String?
+  action       MaintenanceAction
+  status_after ComponentStatus?
+  notes        String?
 
-  performed_by    String
-  created_at      DateTime            @default(now())
+  performed_by String
+  created_at   DateTime @default(now())
 
   component HallComponent @relation(fields: [component_id], references: [id], onDelete: Cascade)
   performer Profile       @relation("PerformedByProfile", fields: [performed_by], references: [id], onDelete: Cascade)
@@ -414,43 +411,42 @@ enum MaintenanceTarget {
 }
 
 model MaintenanceRequest {
-  id               String                   @id @default(uuid())
-  hall_id          String
-  tech_staff_id    String
+  id            String @id @default(uuid())
+  hall_id       String
+  tech_staff_id String
 
-  component_id     String?
-  equipment_id     String?
+  component_id String?
+  equipment_id String?
 
-  target           MaintenanceTarget
+  target                   MaintenanceTarget
   requested_component_type ComponentType?
   requested_equipment_type EquipmentType?
 
-  request_type     MaintenanceRequestType
-  priority         MaintenancePriority      @default(medium)
-  status           MaintenanceRequestStatus @default(pending)
+  request_type MaintenanceRequestType
+  priority     MaintenancePriority      @default(medium)
+  status       MaintenanceRequestStatus @default(pending)
 
-  title            String
-  description      String
+  title       String
+  description String
 
   hod_id           String?
   approved_at      DateTime?
   rejection_reason String?
 
-  created_at       DateTime                 @default(now())
-  updated_at       DateTime                 @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
-  hall      SeminarHall     @relation(fields: [hall_id], references: [id], onDelete: Cascade)
-  component HallComponent?  @relation(fields: [component_id], references: [id], onDelete: SetNull)
-  equipment Equipment?      @relation(fields: [equipment_id], references: [id], onDelete: SetNull)
-  techStaff Profile         @relation("tech_staff_fk", fields: [tech_staff_id], references: [id], onDelete: Cascade)
-  hod       Profile?        @relation(fields: [hod_id], references: [id], onDelete: SetNull)
+  hall      SeminarHall    @relation(fields: [hall_id], references: [id], onDelete: Cascade)
+  component HallComponent? @relation(fields: [component_id], references: [id], onDelete: SetNull)
+  equipment Equipment?     @relation(fields: [equipment_id], references: [id], onDelete: SetNull)
+  techStaff Profile        @relation("tech_staff_fk", fields: [tech_staff_id], references: [id], onDelete: Cascade)
+  hod       Profile?       @relation(fields: [hod_id], references: [id], onDelete: SetNull)
 
   @@index([hall_id])
   @@index([tech_staff_id])
   @@index([status])
   @@map("maintenance_requests")
 }
-
 
 enum MaintenanceRequestType {
   new_installation
@@ -487,8 +483,6 @@ enum MaintenanceAction {
 
   @@map("maintenance_action")
 }
-
-
 
 model EmailLog {
   id              String   @id @default(uuid())

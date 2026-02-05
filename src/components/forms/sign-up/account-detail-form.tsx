@@ -8,9 +8,10 @@ type Props = {
   errors: FieldErrors<FieldValues>;
   isSubmitted: boolean; 
   showError: boolean;
+  touchedFields: Record<string, boolean>
 };
 
-function AccountDetailsForm({ errors, register, isSubmitted, showError }: Props) {
+function AccountDetailsForm({ errors, register, isSubmitted, showError , touchedFields}: Props) {
   return (
     <>
       <h2 className="text-gray-400 md:text-4xl font-bold">Account details</h2>
@@ -23,7 +24,8 @@ function AccountDetailsForm({ errors, register, isSubmitted, showError }: Props)
           errors={errors}
           register={register}
           name={field.name}
-          isSubmitted={isSubmitted && showError} 
+          touchedFields={touchedFields}
+          isSubmitted={isSubmitted} 
         />
       ))}
     </>

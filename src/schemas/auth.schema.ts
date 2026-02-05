@@ -3,22 +3,22 @@ import { X } from "lucide-react";
 import { ZodType, z } from "zod";
 
 export const UserRegistrationSchema = z.object({
-    type: z.enum(UserRole),
-    department: z.enum(['Computer Science','Mechanical Engineering','Electrical Engineering','Civil Engineering','Business Administration','Mathematics','Physics','Chemistry']),
-    fullname: z
-      .string()
-      .min(4, { message: "your full name must be atleast 4 characters long" }),
-    email: z.email({ message: "Incorrect email format" }),
-    password: z
-      .string()
-      .min(8, { message: "Your password must be atleast 8 characters long" })
-      .max(64, {
-        message: "Your password can not be longer then 64 characters long",
-      })
-      ,
-    confirmPassword: z.string(),
-    otp: z.string().min(6, { message: "You must enter a 6 digit code" }),
-  })
+  type: z.enum(UserRole),
+  department: z.enum(['Computer Science', 'Mechanical Engineering', 'Electrical Engineering', 'Civil Engineering', 'Business Administration', 'Mathematics', 'Physics', 'Chemistry']),
+  fullname: z
+    .string()
+    .min(4, { message: "your full name must be atleast 4 characters long" }),
+  email: z.string().email("Incorrect email format"),
+  password: z
+    .string()
+    .min(8, { message: "Your password must be atleast 8 characters long" })
+    .max(64, {
+      message: "Your password can not be longer then 64 characters long",
+    })
+  ,
+  confirmPassword: z.string(),
+  otp: z.string().optional(),
+})
   .refine((schema) => schema.password === schema.confirmPassword, {
     message: "passwords do not match",
     path: ["confirmPassword"],

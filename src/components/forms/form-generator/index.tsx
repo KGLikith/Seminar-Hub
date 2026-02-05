@@ -18,6 +18,7 @@ type Props = {
   form?: string;
   defaultValue?: string;
   isSubmitted: boolean; // 👈 NEW
+  touchedFields: Record<string, Boolean>
 };
 
 const FormGenerator = ({
@@ -33,8 +34,9 @@ const FormGenerator = ({
   lines,
   options,
   isSubmitted,
+  touchedFields
 }: Props) => {
-  const showError = isSubmitted && errors[name]; 
+  const error = errors[name] && touchedFields[name]; 
 
   switch (inputType) {
     case "input":
@@ -55,7 +57,7 @@ const FormGenerator = ({
             {...register(name)}
           />
 
-          {showError && (
+          {isSubmitted && error &&  (
             <ErrorMessage
               errors={errors}
               name={name}
@@ -84,7 +86,7 @@ const FormGenerator = ({
             ))}
           </select>
 
-          {showError && (
+          {isSubmitted && error && (
             <ErrorMessage
               errors={errors}
               name={name}
@@ -109,7 +111,7 @@ const FormGenerator = ({
             {...register(name)}
           />
 
-          {showError && (
+          {isSubmitted  && error && (
             <ErrorMessage
               errors={errors}
               name={name}

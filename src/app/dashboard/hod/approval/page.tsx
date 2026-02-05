@@ -23,6 +23,7 @@ import {
   Check,
   X,
   Loader2,
+  ArrowUpRight,
 } from "lucide-react"
 import { toast } from "sonner"
 import { useAuth } from "@clerk/nextjs"
@@ -49,7 +50,6 @@ const HODApproval = () => {
   const [actionType, setActionType] = useState<"approve" | "reject" | null>(null)
   const [rejectionReason, setRejectionReason] = useState("")
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
-
   const [isProcessing, setIsProcessing] = useState(false)
 
   useEffect(() => {
@@ -67,54 +67,8 @@ const HODApproval = () => {
     }
   }, [profile, profileLoading, clerkId, router])
 
-  const handleAction = (booking: Booking, type: "approve" | "reject") => {
-    if (isProcessing) return
-    setSelectedBooking(booking)
-    setActionType(type)
-    setRejectionReason("")
-  }
-
-  const confirmAction = () => {
-    if (!selectedBooking || !actionType || !profile?.id || isProcessing) return
-
-    if (actionType === "reject" && !rejectionReason.trim()) {
-      toast.error("Please provide a rejection reason")
-      return
-    }
-
-    setIsProcessing(true)
-
-    if (actionType === "approve") {
-      approveBooking(
-        { bookingId: selectedBooking.id, hodId: profile.id },
-        {
-          onSuccess: () => {
-            toast.success("Booking approved")
-            setSelectedBooking(null)
-            setActionType(null)
-          },
-          onError: () => toast.error("Failed to approve booking"),
-          onSettled: () => setIsProcessing(false),
-        },
-      )
-    } else {
-      rejectBooking(
-        {
-          bookingId: selectedBooking.id,
-          hodId: profile.id,
-          reason: rejectionReason,
-        },
-        {
-          onSuccess: () => {
-            toast.success("Booking rejected")
-            setSelectedBooking(null)
-            setActionType(null)
-          },
-          onError: () => toast.error("Failed to reject booking"),
-          onSettled: () => setIsProcessing(false),
-        },
-      )
-    }
+  const goToBooking = (bookingId: string) => {
+    router.push(`/dashboard/bookings/${bookingId}`)
   }
 
   if (profileLoading) {
@@ -135,22 +89,40 @@ const HODApproval = () => {
 
         {bookings?.length ? (
           bookings.map((booking) => (
-            <Card key={booking.id} className="border-border/60 hover:shadow-md transition">
+            <Card
+              key={booking.id}
+              className="border-border/60 hover:shadow-md transition py-2 cursor-pointer"
+              onClick={() => goToBooking(booking.id)} // 🔹 ADDED
+            >
               <CardContent className="p-4 space-y-3">
                 <div className="flex items-start justify-between gap-4">
                   <div className="space-y-1">
                     <p className="font-semibold text-lg">{booking.purpose}</p>
 
                     <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-                      <span className="flex items-center gap-1">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation() // 🔹 ADDED
+                          router.push(`/dashboard/halls/${booking.hall.id}`)
+                        }}
+                        className="flex items-center gap-1 text-primary hover:underline"
+                      >
                         <MapPin className="h-4 w-4" />
                         {booking.hall.name}
-                      </span>
+                        <ArrowUpRight className="h-4 w-4 ml-1 text-blue-600" />
+                      </button>
 
-                      <span className="flex items-center gap-1">
+                      <a
+                        href={`mailto:${booking.teacher.email}`}
+                        onClick={(e) => e.stopPropagation()} // 🔹 ADDED
+                        className="flex items-center gap-1 text-primary hover:underline"
+                      >
                         <User className="h-4 w-4" />
                         {booking.teacher.name}
-                      </span>
+                        <span className="text-xs text-muted-foreground">
+                          ({booking.teacher.email})
+                        </span>
+                      </a>
 
                       <span className="flex items-center gap-1">
                         <Calendar className="h-4 w-4" />
@@ -191,8 +163,11 @@ const HODApproval = () => {
                     variant="outline"
                     size="sm"
                     className="gap-2"
-                    onClick={() => setPreviewUrl(booking.permission_letter_url)}
                     disabled={isProcessing}
+                    onClick={(e) => {
+                      e.stopPropagation() // 🔹 ADDED
+                      setPreviewUrl(booking.permission_letter_url)
+                    }}
                   >
                     <FileText className="h-4 w-4" />
                     View Letter
@@ -203,7 +178,10 @@ const HODApproval = () => {
                     size="sm"
                     className="gap-2"
                     disabled={isProcessing}
-                    onClick={() => window.open(booking.permission_letter_url, "_blank")}
+                    onClick={(e) => {
+                      e.stopPropagation() // 🔹 ADDED
+                      window.open(booking.permission_letter_url, "_blank")
+                    }}
                   >
                     <Download className="h-4 w-4" />
                     Download
@@ -214,8 +192,12 @@ const HODApproval = () => {
                   <Button
                     size="sm"
                     disabled={isProcessing}
-                    className="gap-1 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60"
-                    onClick={() => handleAction(booking, "approve")}
+                    className="gap-1 bg-emerald-600 hover:bg-emerald-700"
+                    onClick={(e) => {
+                      e.stopPropagation() // 🔹 ADDED
+                      setSelectedBooking(booking)
+                      setActionType("approve")
+                    }}
                   >
                     <Check className="h-4 w-4" />
                     Approve
@@ -225,8 +207,12 @@ const HODApproval = () => {
                     size="sm"
                     variant="destructive"
                     disabled={isProcessing}
-                    className="gap-1 disabled:opacity-60"
-                    onClick={() => handleAction(booking, "reject")}
+                    className="gap-1"
+                    onClick={(e) => {
+                      e.stopPropagation() // 🔹 ADDED
+                      setSelectedBooking(booking)
+                      setActionType("reject")
+                    }}
                   >
                     <X className="h-4 w-4" />
                     Reject
@@ -243,89 +229,6 @@ const HODApproval = () => {
           </Card>
         )}
       </main>
-
-      <Dialog
-        open={!!selectedBooking && !!actionType}
-        onOpenChange={(open) => {
-          if (isProcessing) return
-          if (!open) {
-            setSelectedBooking(null)
-            setActionType(null)
-          }
-        }}
-      >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>
-              {actionType === "approve" ? "Approve Booking" : "Reject Booking"}
-            </DialogTitle>
-            <DialogDescription>
-              {actionType === "approve"
-                ? "Confirm booking approval."
-                : "Provide a reason for rejection."}
-            </DialogDescription>
-          </DialogHeader>
-
-          {actionType === "reject" && (
-            <Textarea
-              value={rejectionReason}
-              onChange={(e) => setRejectionReason(e.target.value)}
-              placeholder="Rejection reason"
-              disabled={isProcessing}
-            />
-          )}
-
-          <DialogFooter>
-            <Button
-              variant="outline"
-              disabled={isProcessing}
-              onClick={() => {
-                if (isProcessing) return
-                setSelectedBooking(null)
-                setActionType(null)
-              }}
-            >
-              Cancel
-            </Button>
-
-            <Button
-              disabled={isProcessing}
-              variant={actionType === "approve" ? "default" : "destructive"}
-              onClick={confirmAction}
-              className="min-w-[120px]"
-            >
-              {isProcessing ? (
-                <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Processing
-                </>
-              ) : (
-                "Confirm"
-              )}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={!!previewUrl} onOpenChange={() => !isProcessing && setPreviewUrl(null)}>
-        <DialogContent className="max-w-5xl h-[85vh]">
-          <DialogHeader>
-            <DialogTitle>Permission Letter</DialogTitle>
-          </DialogHeader>
-
-          <div className="w-full h-full border rounded-md overflow-hidden">
-            {previewUrl?.endsWith(".pdf") ? (
-              <iframe src={previewUrl} className="w-full h-full" />
-            ) : (
-              <img
-                src={previewUrl ?? ""}
-                alt="Permission Letter"
-                className="w-full h-full object-contain"
-              />
-            )}
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   )
 }

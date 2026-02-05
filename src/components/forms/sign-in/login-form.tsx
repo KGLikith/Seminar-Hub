@@ -8,7 +8,7 @@ import { USER_LOGIN_FORM } from '@/constants/forms'
 const LoginForm = () => {
   const {
     register,
-    formState: { errors },
+    formState: { errors, touchedFields },
   } = useFormContext()
   return (
     <>
@@ -24,6 +24,7 @@ const LoginForm = () => {
           register={register}
           name={field.name}
           isSubmitted={false}
+          touchedFields={touchedFields}
         />
       ))}
     </>

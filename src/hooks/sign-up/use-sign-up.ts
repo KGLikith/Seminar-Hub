@@ -22,6 +22,11 @@ export const useSignUpForm = () => {
     defaultValues: {
       type: UserRole.teacher,
       department: "Computer Science",
+      fullname: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    otp: "",
     },
     mode: "onSubmit",
     reValidateMode: "onChange",
@@ -58,7 +63,7 @@ export const useSignUpForm = () => {
       setLoading(true);
       try {
         const completeSignUp = await signUp.attemptEmailAddressVerification({
-          code: values.otp,
+          code: values.otp as string,
         });
 
         if (completeSignUp.status !== "complete") {
