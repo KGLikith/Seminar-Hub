@@ -1,6 +1,9 @@
 import { detectIntent } from "./intent"
-import { handleAvailability } from "./availability"
-import { handleMaintenance } from "./maintenance"
+import {
+  handleAvailability,
+  handleMyBookings,
+  handleHodPendingBookings,
+} from "./handlers"
 import { ChatContext } from "./types"
 
 export async function routeChatbotMessage(ctx: ChatContext) {
@@ -10,10 +13,13 @@ export async function routeChatbotMessage(ctx: ChatContext) {
     case "availability":
       return handleAvailability(ctx)
 
-    case "maintenance":
-      return handleMaintenance(ctx)
+    case "my_bookings":
+      return handleMyBookings(ctx)
+
+    case "hod_pending_bookings":
+      return handleHodPendingBookings(ctx)
 
     default:
-      return "I’m not sure how to help with that yet."
+      return "I can help with hall availability, your bookings, or pending approvals."
   }
 }

@@ -102,8 +102,6 @@ model Department {
   halls    SeminarHall[]
 }
 
-// WIP: Department names
-
 enum DepartmentName {
   Computer_Science
   Electrical_Engineering

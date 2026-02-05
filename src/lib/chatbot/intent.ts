@@ -1,30 +1,16 @@
-export type Intent =
-  | "availability"
-  | "maintenance"
-  | "booking"
-  | "status"
-  | "unknown"
+import { Intent } from "./types"
 
 export function detectIntent(message: string): Intent {
   const msg = message.toLowerCase()
 
-  if (msg.includes("available") || msg.includes("free"))
+  if (msg.includes("available") || msg.includes("free") || msg.includes("free after") || msg.includes("available after"))
     return "availability"
 
-  if (
-    msg.includes("not working") ||
-    msg.includes("broken") ||
-    msg.includes("issue") ||
-    msg.includes("repair") ||
-    msg.includes("install")
-  )
-    return "maintenance"
+  if (msg.includes("my booking") || msg.includes("history"))
+    return "my_bookings"
 
-  if (msg.includes("book") || msg.includes("reserve"))
-    return "booking"
-
-  if (msg.includes("status") || msg.includes("update"))
-    return "status"
+  if (msg.includes("pending") && msg.includes("approval"))
+    return "hod_pending_bookings"
 
   return "unknown"
 }
