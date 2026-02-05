@@ -92,7 +92,7 @@ export const useAddBookingSummary = () => {
       bookingId: string
       summary: string
       aiSummary?: any
-    }) => addBookingSummary(bookingId, summary, aiSummary),
+    }) => addBookingSummary(bookingId, summary),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["myBookings"] })
       await queryClient.invalidateQueries({ queryKey: ["bookings"] })

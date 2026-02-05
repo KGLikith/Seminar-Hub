@@ -5,6 +5,7 @@ import { MessageCircle, X, Send, Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useAuth } from "@clerk/nextjs"
 import { useProfile } from "@/hooks/react-query/useUser"
+import { useRouter } from "next/navigation"
 
 /* ================= TYPES ================= */
 
@@ -16,13 +17,13 @@ type ChatMessage = {
 type ParsedBlock =
   | { type: "date"; value: string }
   | {
-      type: "booking"
-      hall: string
-      time: string
-      status: string
-      id: string
-      past: boolean
-    }
+    type: "booking"
+    hall: string
+    time: string
+    status: string
+    id: string
+    past: boolean
+  }
 
 /* ================= ACTION-AWARE FALLBACK ================= */
 
@@ -31,14 +32,14 @@ function renderTextWithActions(
   onOpenBooking: (id: string) => void,
   onCreateBooking: (hallId: string, start: string, end: string) => void
 ) {
-  const regex =
-    /\[OPEN_BOOKING:([a-zA-Z0-9-]+)\]|\[CREATE_BOOKING:([a-zA-Z0-9-]+)\|([^|]+)\|([^|\]]+)\]/g
-
+  const tokenRegex = /\[(OPEN_BOOKING|CREATE_BOOKING):([^\]]+)\]/g
   const parts: React.ReactNode[] = []
+
   let lastIndex = 0
   let match: RegExpExecArray | null
 
-  while ((match = regex.exec(text)) !== null) {
+  while ((match = tokenRegex.exec(text)) !== null) {
+    // Push text before token
     if (match.index > lastIndex) {
       parts.push(
         <span key={lastIndex}>
@@ -47,41 +48,52 @@ function renderTextWithActions(
       )
     }
 
-    if (match[1]) {
-      // OPEN_BOOKING
+    const type = match[1]
+    const payload = match[2]
+
+    if (type === "OPEN_BOOKING") {
       parts.push(
         <button
-          key={match[1]}
-          onClick={() => onOpenBooking(match![1])}
+          key={payload}
+          onClick={() => onOpenBooking(payload)}
           className="block mt-2 text-xs text-blue-600 hover:underline"
         >
           Open booking →
         </button>
       )
-    } else {
-      // CREATE_BOOKING
-      parts.push(
-        <button
-          key={`${match[2]}-${match[3]}`}
-          onClick={() =>
-            onCreateBooking(match![2], match![3], match![4])
-          }
-          className="block mt-2 text-xs text-green-600 hover:underline"
-        >
-          Create booking →
-        </button>
-      )
     }
 
-    lastIndex = regex.lastIndex
+    if (type === "CREATE_BOOKING") {
+      const [hallId, start, end] = payload.split("|")
+
+      if (hallId && start && end) {
+        parts.push(
+          <button
+            key={`${hallId}-${start}`}
+            onClick={() => onCreateBooking(hallId, start, end)}
+            className="block mt-2 text-xs text-green-600 hover:underline"
+          >
+            Create booking →
+          </button>
+        )
+      }
+    }
+
+    lastIndex = tokenRegex.lastIndex
   }
 
+  // Remaining text
   if (lastIndex < text.length) {
-    parts.push(<span key="end">{text.slice(lastIndex)}</span>)
+    parts.push(
+      <span key="end">
+        {text.slice(lastIndex)}
+      </span>
+    )
   }
 
   return <div className="whitespace-pre-line">{parts}</div>
 }
+
 
 /* ================= STRUCTURED PARSER ================= */
 
@@ -107,7 +119,7 @@ function parseBotMessage(content: string) {
       const isPast =
         currentDate !== null &&
         new Date(currentDate) <
-          new Date(new Date().toDateString())
+        new Date(new Date().toDateString())
 
       blocks.push({
         type: "booking",
@@ -146,6 +158,7 @@ function statusColor(status: string) {
 
 export default function FloatingAskBar() {
   const { userId } = useAuth()
+  const router = useRouter
   const { data: profile } = useProfile(userId || "")
 
   const [open, setOpen] = useState(false)
@@ -256,8 +269,8 @@ export default function FloatingAskBar() {
                         return renderTextWithActions(
                           msg.content,
                           (id) =>
-                            (window.location.href =
-                              `/dashboard/bookings/${id}`),
+                          (window.location.href =
+                            `/dashboard/bookings/${id}`),
                           (hallId, start, end) => {
                             const params = new URLSearchParams({
                               hallId,
@@ -265,7 +278,7 @@ export default function FloatingAskBar() {
                               end,
                             })
                             window.location.href =
-                              `/dashboard/book}`
+                              `/dashboard/book`
                           }
                         )
                       }
@@ -308,8 +321,8 @@ export default function FloatingAskBar() {
                                   </div>
                                   <button
                                     onClick={() =>
-                                      (window.location.href =
-                                        `/dashboard/bookings/${b.id}`)
+                                    (window.location.href =
+                                      `/dashboard/bookings/${b.id}`)
                                     }
                                     className="mt-2 text-xs text-blue-600 hover:underline"
                                   >
@@ -323,17 +336,17 @@ export default function FloatingAskBar() {
                           {blocks.some(
                             (b) => b.type === "booking" && b.past
                           ) && (
-                            <button
-                              onClick={() =>
-                                setShowPast(!showPast)
-                              }
-                              className="text-xs text-blue-600 hover:underline"
-                            >
-                              {showPast
-                                ? "Hide past bookings"
-                                : "Show past bookings"}
-                            </button>
-                          )}
+                              <button
+                                onClick={() =>
+                                  setShowPast(!showPast)
+                                }
+                                className="text-xs text-blue-600 hover:underline"
+                              >
+                                {showPast
+                                  ? "Hide past bookings"
+                                  : "Show past bookings"}
+                              </button>
+                            )}
                         </div>
                       )
                     })()
