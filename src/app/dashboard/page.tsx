@@ -13,6 +13,28 @@ import { UserRole } from "@/generated/enums"
 import { useMemo } from "react"
 import { useGetHallForTechStaff } from "@/hooks/react-query/useTechStaff"
 
+const getLiveHallStatus = (hall: any) => {
+  const now = new Date()
+
+  if (hall.maintenanceRequests?.length > 0) {
+    return "maintenance"
+  }
+
+  const hasOngoing = hall.bookings?.some(
+    (b: any) =>
+    {
+      return b.start_time <= now &&
+      b.end_time >= now
+    }
+  )
+
+  if (hasOngoing) return "ongoing"
+
+  if (hall.bookings?.length > 0) return "booked"
+
+  return "available"
+}
+
 export default function Dashboard() {
   const router = useRouter()
   const { userId } = useAuth()
@@ -71,6 +93,9 @@ export default function Dashboard() {
       primaryTitle: "Halls",
     }
   }, [halls, profile, role, hallForTechStaff])
+
+
+
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -286,6 +311,7 @@ export default function Dashboard() {
   )
 }
 function HallCard({ hall, idx, onClick, getStatusColor }: any) {
+  const status = getLiveHallStatus(hall)
   return (
     <Card
       className="shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer 
@@ -305,9 +331,9 @@ function HallCard({ hall, idx, onClick, getStatusColor }: any) {
           </div>
 
           <Badge
-            className={`${getStatusColor(hall.status)} text-[11px] font-medium px-2 py-0.5`}
+            className={`${getStatusColor(status)} text-[11px] font-medium px-2 py-0.5`}
           >
-            {hall.status}
+            {status}
           </Badge>
         </div>
       </CardHeader>

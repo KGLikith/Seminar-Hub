@@ -29,6 +29,8 @@ export async function getBookings(filters?: BookingFilters) {
     if (filters.dateTo) where.booking_date.lte = filters.dateTo
   }
 
+  console.log(filters?.hallId, "hello")
+
   return prisma.booking.findMany({
     where: {
       ...where,
@@ -97,7 +99,8 @@ export async function createBooking(data: {
         status: BookingStatus.pending,
       },
       include: {
-        hall: true
+        hall: true,
+        teacher: true
       }
     })
 
@@ -131,10 +134,14 @@ export async function createBooking(data: {
         type: "booking_pending",
         to: hod.email,
         hodName: hod.name,
+        teacherName: booking.teacher.name ?? "Teacher",
         hallName: booking.hall.name,
-        bookingDate: booking.booking_date.toDateString(),
+        bookingDate: booking.booking_date.toISOString(),
+        startTime: booking.start_time.toISOString(),
+        endTime: booking.end_time.toISOString(),
         bookingId: booking.id,
-      }).catch(console.error);
+        teacherEmail: booking.teacher.email
+      }).catch(console.error)
     }
 
     return { error: null }
@@ -157,48 +164,131 @@ export async function getPendingBookingsForHOD(hodDepartmentId: string) {
     orderBy: { created_at: "asc" },
   })
 }
-
 export async function approveBooking(bookingId: string, hodId: string) {
-  const booking = await prisma.booking.update({
-    where: { id: bookingId },
-    data: {
-      status: BookingStatus.approved,
-      hod_id: hodId,
-      approved_at: new Date(),
-    },
-    include: {
-      teacher: true
+  return prisma.$transaction(async (tx) => {
+
+    /* ---------------- FETCH BOOKING ---------------- */
+    const booking = await tx.booking.findUnique({
+      where: { id: bookingId },
+      include: {
+        teacher: true,
+        hall: true,
+        hod: true,
+      },
+    })
+
+    if (!booking) throw new Error("Booking not found")
+
+    if (booking.status !== BookingStatus.pending) {
+      throw new Error("Only pending bookings can be approved")
     }
+
+    /* ---------------- APPROVE THIS BOOKING ---------------- */
+    const approvedBooking = await tx.booking.update({
+      where: { id: booking.id },
+      data: {
+        status: BookingStatus.approved,
+        hod_id: hodId,
+        approved_at: new Date(),
+      },
+    })
+
+    await tx.bookingLog.create({
+      data: {
+        booking_id: booking.id,
+        action: "Booking Approved",
+        previous_status: BookingStatus.pending,
+        new_status: BookingStatus.approved,
+        performed_by: hodId,
+      },
+    })
+
+    /* ---------------- FIND CONFLICTING BOOKINGS ---------------- */
+    const conflictingBookings = await tx.booking.findMany({
+      where: {
+        hall_id: booking.hall_id,
+        status: BookingStatus.pending,
+
+        // OVERLAP CONDITION
+        start_time: { lt: booking.end_time },
+        end_time: { gt: booking.start_time },
+
+        NOT: { id: booking.id },
+      },
+      include: {
+        teacher: true,
+      },
+    })
+
+    for (const conflict of conflictingBookings) {
+      await tx.booking.update({
+        where: { id: conflict.id },
+        data: {
+          status: BookingStatus.rejected,
+          rejection_reason:
+            "Automatically rejected due to another approved booking for the same time slot",
+        },
+      })
+
+      await tx.bookingLog.create({
+        data: {
+          booking_id: conflict.id,
+          action: "Booking Auto-Rejected (Conflict)",
+          previous_status: BookingStatus.pending,
+          new_status: BookingStatus.rejected,
+          performed_by: hodId,
+          notes: `Conflicted with approved booking ${booking.id}`,
+        },
+      })
+
+      sendNotification({
+        userId: conflict.teacher_id,
+        title: "Booking Rejected",
+        message:
+          "Your booking was rejected because another booking was approved for the same time slot.",
+        type: "booking_rejected",
+        related_booking_id: conflict.id,
+      })
+
+      sendNotificationEmail({
+        type: "booking_rejected",
+        to: conflict.teacher.email,
+        teacherName: conflict.teacher.name,
+        hallName: booking.hall.name,
+        bookingDate: booking.booking_date.toISOString(),
+        startTime: booking.start_time.toISOString(),
+        endTime: booking.end_time.toISOString(),
+        reason:
+          "Another booking was approved for the same time slot",
+        rejectedBy: "System (Auto)",
+        bookingId: conflict.id,
+      }).catch(console.error)
+    }
+
+    sendNotification({
+      userId: booking.teacher_id,
+      title: "Booking Approved",
+      message: `Your booking for ${booking.purpose} has been approved.`,
+      type: "booking_approved",
+      related_booking_id: booking.id,
+    })
+
+    sendNotificationEmail({
+      type: "booking_approved",
+      to: booking.teacher.email,
+      teacherName: booking.teacher.name,
+      hallName: booking.hall.name,
+      purpose: booking.purpose,
+      bookingDate: booking.booking_date.toISOString(),
+      startTime: booking.start_time.toISOString(),
+      endTime: booking.end_time.toISOString(),
+      approvedBy: "HOD",
+      bookingId: booking.id,
+      hodEmail: booking.hod?.email,
+    }).catch(console.error)
+
+    return approvedBooking
   })
-
-  await prisma.bookingLog.create({
-    data: {
-      booking_id: bookingId,
-      action: "Booking Approved",
-      previous_status: BookingStatus.pending,
-      new_status: BookingStatus.approved,
-      performed_by: hodId,
-    },
-
-  })
-
-  await sendNotification({
-    userId: booking.teacher_id,
-    title: "Booking Approved",
-    message: `Your booking for ${booking.purpose} has been approved.`,
-    type: "booking_approved",
-    related_booking_id: bookingId,
-  })
-
-  sendNotificationEmail({
-    type: "booking_approved",
-    to: booking.teacher.email,
-    teacherName: booking.teacher.name,
-    purpose: booking.purpose,
-    bookingId,
-  }).catch(console.error);
-
-  return booking
 }
 
 export async function rejectBooking(
@@ -214,11 +304,13 @@ export async function rejectBooking(
       rejection_reason: reason,
     },
     include: {
-      teacher: true
+      teacher: true,
+      hall: true,
+      hod: true
     }
   })
 
-  await prisma.bookingLog.create({
+  prisma.bookingLog.create({
     data: {
       booking_id: bookingId,
       action: "Booking Rejected",
@@ -233,9 +325,16 @@ export async function rejectBooking(
     type: "booking_rejected",
     to: booking.teacher.email,
     teacherName: booking.teacher.name,
+    hallName: booking.hall.name,
+    bookingDate: booking.booking_date.toISOString(),
+    startTime: booking.start_time.toISOString(),
+    endTime: booking.end_time.toISOString(),
+    rejectedBy: "HOD",
     reason,
     bookingId,
-  }).catch(console.error);
+    hodEmail: booking.hod?.email
+  }).catch(console.error)
+
 
   return booking
 }

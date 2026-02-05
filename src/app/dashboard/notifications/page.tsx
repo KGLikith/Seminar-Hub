@@ -4,6 +4,7 @@ import { Bell, CheckCircle2, AlertCircle, Clock } from "lucide-react"
 import { useAuth } from "@clerk/nextjs"
 import { useNotifications, useMarkNotificationAsRead, useMarkAllNotificationsAsRead } from "@/hooks/react-query/useNotifications"
 import { useProfile } from "@/hooks/react-query/useUser"
+import { useEffect, useState } from "react"
 
 interface Notification {
   id: string
@@ -17,19 +18,29 @@ interface Notification {
 
 export default function NotificationsPage() {
   const { userId: clerkId } = useAuth()
-  const { data: profile, isLoading: profileLoading, refetch } = useProfile(clerkId ?? undefined)
+  const { data: profile, isLoading: profileLoading } = useProfile(clerkId ?? undefined)
+  const [notifications, setNotifications] = useState<Notification[]>([]);
 
-  const { data: notifications = [], isLoading } = useNotifications(profile?.id as string)
+  const { data: noti = [], isLoading } = useNotifications(profile?.id as string)
+
+  useEffect(() => {
+    if(noti.length > 0)
+      setNotifications(noti);
+  }, [noti, isLoading])
 
   const markAsReadMutation = useMarkNotificationAsRead()
 
   const markAllMutation = useMarkAllNotificationsAsRead()
 
-
   const unreadCount = notifications.filter((n: any) => !n.read).length
 
-  const handleMarkAsRead = (notificationId: string) => {
-    markAsReadMutation.mutate(notificationId)
+  const handleMarkAsRead = async (notificationId: string) => {
+    setNotifications((prevNotifications) =>
+      prevNotifications.map((notification: any) =>
+        notification.id === notificationId ? { ...notification, read: true } : notification
+      )
+    )
+    await markAsReadMutation.mutateAsync(notificationId)
   }
 
   const getNotificationIcon = (type: string) => {
@@ -58,9 +69,10 @@ export default function NotificationsPage() {
     }
   }
 
-  const handleMarkAllAsRead = () => {
+  const handleMarkAllAsRead = async () => {
     if (!profile?.id) return
-    markAllMutation.mutate(profile.id)
+    setNotifications([])
+    await markAllMutation.mutateAsync(profile.id)
   }
 
   if (isLoading || profileLoading) {
@@ -90,7 +102,7 @@ export default function NotificationsPage() {
           <button
             onClick={handleMarkAllAsRead}
             disabled={markAllMutation.isPending}
-            className="text-sm font-semibold text-blue-600 hover:text-blue-800 transition"
+            className="text-sm font-semibold text-blue-600 hover:text-blue-800 transition cursor-pointer"
           >
             Mark all as read
           </button>

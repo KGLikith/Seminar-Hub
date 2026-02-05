@@ -309,7 +309,6 @@ model Booking {
 
   logs          BookingLog[]
   notifications Notification[]
-  emailLogs     EmailLog[]
 
   @@index([status])
   @@index([hod_id])
@@ -486,18 +485,4 @@ enum MaintenanceAction {
   completed
 
   @@map("maintenance_action")
-}
-
-
-
-model EmailLog {
-  id              String   @id @default(uuid())
-  booking_id      String?
-  recipient_email String
-  email_type      String
-  sent_at         DateTime @default(now())
-  status          String   @default("sent")
-  error_message   String?
-
-  booking Booking? @relation(fields: [booking_id], references: [id], onDelete: SetNull)
 }

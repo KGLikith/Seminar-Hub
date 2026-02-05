@@ -88,6 +88,9 @@ export default function BookingDetailPage() {
   const canEditSummary = isTeacher && isCompleted
   const canManageMedia = (isTeacher || isStaff) && isCompleted
 
+  const isRejected = booking.status === "rejected"
+
+
   /* ---------------- ACTIONS ---------------- */
   async function saveSummary() {
     if (!summary.trim() || !canEditSummary || !booking?.id) return
@@ -116,6 +119,7 @@ export default function BookingDetailPage() {
   }
 
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    console.log(canManageMedia)
     if (!canManageMedia || !booking?.id || !profile?.id) return
 
     try {
@@ -220,6 +224,27 @@ export default function BookingDetailPage() {
             </Button>
           )}
         </div>
+
+        {/* REJECTION NOTICE */}
+        {isRejected && booking.rejection_reason && (
+          <Card className="border-red-300 bg-red-50">
+            <CardHeader>
+              <CardTitle className="text-red-700 flex items-center gap-2">
+                <X className="h-5 w-5" />
+                Booking Rejected
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-red-800 mb-2">
+                This booking request was rejected for the following reason:
+              </p>
+              <div className="rounded-md bg-white border border-red-200 p-3 text-sm text-red-900">
+                {booking.rejection_reason}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
 
         {/* HOD APPROVAL CARD */}
         {isAuthorizedHod && isPending && (

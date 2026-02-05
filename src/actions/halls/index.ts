@@ -3,13 +3,42 @@ import { HallStatus } from "@/generated/enums";
 import prisma from "@/lib/db";
 
 export async function getHalls() {
-  return await prisma.seminarHall.findMany({
+  const now = new Date()
+  const todayStart = new Date()
+  todayStart.setHours(0, 0, 0, 0)
+
+  const todayEnd = new Date()
+  todayEnd.setHours(23, 59, 59, 999)
+
+  return prisma.seminarHall.findMany({
     include: {
       department: true,
+
+      bookings: {
+        where: {
+          status: "approved",
+          booking_date: {
+            gte: todayStart,
+            lte: todayEnd,
+          },
+        },
+        select: {
+          start_time: true,
+          end_time: true,
+        },
+      },
+
+      maintenanceRequests: {
+        where: {
+          status: "approved",
+        },
+        select: { id: true },
+      },
     },
     orderBy: { name: "asc" },
-  });
+  })
 }
+
 
 export async function getHallById(id: string) {
   return await prisma.seminarHall.findUnique({
@@ -62,11 +91,11 @@ export async function updateHallStatus(hallId: string, status: HallStatus) {
 }
 
 const combineDateAndTime = (d: string, t: string) => {
-    const date = new Date(d)
-    const [h, m] = t.split(":").map(Number)
-    date.setHours(h, m, 0, 0)
-    return date
-  }
+  const date = new Date(d)
+  const [h, m] = t.split(":").map(Number)
+  date.setHours(h, m, 0, 0)
+  return date
+}
 
 export const getBookingDetailsForHall = async (
   hallId: string,
@@ -75,31 +104,49 @@ export const getBookingDetailsForHall = async (
   endTime: string
 ) => {
   try {
-    const start = combineDateAndTime(date.toISOString().split("T")[0], startTime)
-    const end = combineDateAndTime(date.toISOString().split("T")[0], endTime)
+    const day = date.toISOString().split("T")[0]
 
-    console.log(start, end, new Date(date));
+    const start = combineDateAndTime(day, startTime)
+    const end = combineDateAndTime(day, endTime)
+
+    // ⛔ Safety check (server-side)
+    if (end <= start) {
+      return { data: [], error: null }
+    }
+
     const bookings = await prisma.booking.findMany({
       where: {
         hall_id: hallId,
-        booking_date: new Date(date),
-        status: { in: ["approved", "pending"] },
+        booking_date: new Date(day),
+        status: { in: ["approved"] },
 
-        AND: [{ start_time: { lte: start } }, { end_time: { gte: end } }],
+        AND: [
+          {
+            start_time: {
+              lt: end,
+            },
+          },
+          {
+            end_time: {
+              gt: start,
+            },
+          },
+        ],
       },
       include: {
         teacher: {
           select: { name: true },
         },
       },
-    });
+    })
 
-    return { data: bookings, error: null };
+    return { data: bookings, error: null }
   } catch (error) {
-    console.error("Error fetching booking details:", error);
-    return { data: null, error };
+    console.error("Error fetching booking details:", error)
+    return { data: null, error }
   }
-};
+}
+
 
 export async function getAnalytics() {
   try {
@@ -297,7 +344,6 @@ export async function getAnalyticsForHOD(departmentId: string) {
     activeTeachers,
   }
 }
-
 export async function getHallAnalyticsForHOD(
   hallId: string,
   departmentId: string
@@ -322,7 +368,7 @@ export async function getHallAnalyticsForHOD(
 
   if (!hall) throw new Error("Unauthorized")
 
-  const bookings = await prisma.booking.findMany({
+  const allBookings = await prisma.booking.findMany({
     where: { hall_id: hallId },
     orderBy: { booking_date: "desc" },
     include: {
@@ -330,13 +376,19 @@ export async function getHallAnalyticsForHOD(
     },
   })
 
+  const completedBookings = allBookings.filter(
+    (b) => b.status === "completed"
+  )
+
+  /* ---------- STATUS BREAKDOWN ---------- */
   const byStatus: Record<string, number> = {}
-  bookings.forEach(b => {
+  allBookings.forEach((b) => {
     byStatus[b.status] = (byStatus[b.status] || 0) + 1
   })
 
+  /* ---------- MONTHLY TREND ---------- */
   const monthMap: Record<string, number> = {}
-  bookings.forEach(b => {
+  completedBookings.forEach((b) => {
     const month = b.booking_date.toLocaleString("default", {
       month: "short",
       year: "numeric",
@@ -349,8 +401,9 @@ export async function getHallAnalyticsForHOD(
     count,
   }))
 
+  /* ---------- PEAK HOURS ---------- */
   const peakHourMap: Record<number, number> = {}
-  bookings.forEach(b => {
+  completedBookings.forEach((b) => {
     const hour = new Date(b.start_time).getHours()
     peakHourMap[hour] = (peakHourMap[hour] || 0) + 1
   })
@@ -360,19 +413,30 @@ export async function getHallAnalyticsForHOD(
     usage,
   }))
 
-  const durations = bookings.map(
-    b => (b.end_time.getTime() - b.start_time.getTime()) / 60000
+  /* ---------- SESSION DURATION ---------- */
+  const durations = completedBookings.map(
+    (b) => (b.end_time.getTime() - b.start_time.getTime()) / 60000
   )
 
   const avgSessionDuration =
-    durations.reduce((a, b) => a + b, 0) / (durations.length || 1)
+    durations.length > 0
+      ? Math.round(durations.reduce((a, b) => a + b, 0) / durations.length)
+      : 0
 
+  const longestSession = durations.length ? Math.max(...durations) : 0
+  const shortestSession = durations.length ? Math.min(...durations) : 0
+
+  /* ---------- EQUIPMENT USAGE (TEMP) ---------- */
   const equipmentUsage: Record<string, number> = {}
-  bookings.forEach(b => {
-    if (b.special_requirements) {
-      equipmentUsage[b.special_requirements] =
-        (equipmentUsage[b.special_requirements] || 0) + 1
-    }
+  completedBookings.forEach((b) => {
+    if (!b.special_requirements) return
+
+    b.special_requirements
+      .split(",")
+      .map((e) => e.trim())
+      .forEach((eq) => {
+        equipmentUsage[eq] = (equipmentUsage[eq] || 0) + 1
+      })
   })
 
   return {
@@ -384,19 +448,20 @@ export async function getHallAnalyticsForHOD(
       status: hall.status,
     },
     hod: hall.department.hod_profile,
-    techStaff: hall.hallTechStaffs.map(h => h.tech_staff),
+    techStaff: hall.hallTechStaffs.map((h) => h.tech_staff),
     stats: {
       byStatus,
       monthlyTrend,
       peakHours,
       equipmentUsage,
-      avgSessionDuration: Math.round(avgSessionDuration),
-      longestSession: Math.max(...durations, 0),
-      shortestSession: Math.min(...durations, 0),
+      avgSessionDuration,
+      longestSession,
+      shortestSession,
     },
-    bookings,
+    bookings: allBookings,
   }
 }
+
 
 
 export async function updateHall(

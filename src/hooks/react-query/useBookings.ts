@@ -18,7 +18,6 @@ export const useBookings = (filters?: BookingFilters) => {
   return useQuery({
     queryKey: ["bookings", filters],
     queryFn: () => getBookings(filters),
-    enabled: !!filters?.hallId
   })
 }
 
@@ -45,9 +44,9 @@ export const useCreateBooking = () => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: createBooking,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["bookings"] })
-      queryClient.invalidateQueries({ queryKey: ["myBookings"] })
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["bookings"] })
+      await queryClient.invalidateQueries({ queryKey: ["myBookings"] })
     },
   })
 }
@@ -56,9 +55,9 @@ export const useApproveBooking = () => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: ({ bookingId, hodId }: { bookingId: string; hodId: string }) => approveBooking(bookingId, hodId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["bookings"] })
-      queryClient.invalidateQueries({ queryKey: ["pendingBookings"] })
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["bookings"] })
+      await queryClient.invalidateQueries({ queryKey: ["pendingBookings"] })
     },
   })
 }
@@ -75,9 +74,9 @@ export const useRejectBooking = () => {
       hodId: string
       reason: string
     }) => rejectBooking(bookingId, hodId, reason),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["bookings"] })
-      queryClient.invalidateQueries({ queryKey: ["pendingBookings"] })
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["bookings"] })
+      await queryClient.invalidateQueries({ queryKey: ["pendingBookings"] })
     },
   })
 }
@@ -94,9 +93,9 @@ export const useAddBookingSummary = () => {
       summary: string
       aiSummary?: any
     }) => addBookingSummary(bookingId, summary, aiSummary),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["myBookings"] })
-      queryClient.invalidateQueries({ queryKey: ["bookings"] })
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["myBookings"] })
+      await queryClient.invalidateQueries({ queryKey: ["bookings"] })
     },
   })
 }

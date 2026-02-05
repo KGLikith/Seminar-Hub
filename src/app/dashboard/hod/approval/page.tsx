@@ -67,6 +67,62 @@ const HODApproval = () => {
     }
   }, [profile, profileLoading, clerkId, router])
 
+  const handleConfirmAction = async () => {
+    if (!selectedBooking || !actionType || !profile?.id) return
+
+    setIsProcessing(true)
+
+    if (actionType === "approve") {
+      approveBooking(
+        { bookingId: selectedBooking.id, hodId: profile?.id },
+        {
+          onSuccess: () => {
+            toast.success("Booking approved")
+            resetDialog()
+          },
+          onError: () => {
+            toast.error("Failed to approve booking")
+            setIsProcessing(false)
+          },
+        }
+      )
+    }
+
+    if (actionType === "reject") {
+      if (!rejectionReason.trim()) {
+        toast.error("Rejection reason is required")
+        setIsProcessing(false)
+        return
+      }
+
+      rejectBooking(
+        {
+          bookingId: selectedBooking.id,
+          reason: rejectionReason,
+          hodId: profile.id
+        },
+        {
+          onSuccess: () => {
+            toast.success("Booking rejected")
+            resetDialog()
+          },
+          onError: () => {
+            toast.error("Failed to reject booking")
+            setIsProcessing(false)
+          },
+        }
+      )
+    }
+  }
+
+  const resetDialog = () => {
+    setSelectedBooking(null)
+    setActionType(null)
+    setRejectionReason("")
+    setIsProcessing(false)
+  }
+
+
   const goToBooking = (bookingId: string) => {
     router.push(`/dashboard/bookings/${bookingId}`)
   }
@@ -229,6 +285,59 @@ const HODApproval = () => {
           </Card>
         )}
       </main>
+      <Dialog
+        open={!!actionType && !!selectedBooking}
+        onOpenChange={(open) => {
+          if (!open) resetDialog()
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              {actionType === "approve"
+                ? "Approve Booking"
+                : "Reject Booking"}
+            </DialogTitle>
+            <DialogDescription>
+              {actionType === "approve"
+                ? "Are you sure you want to approve this booking?"
+                : "Please provide a reason for rejecting this booking."}
+            </DialogDescription>
+          </DialogHeader>
+
+          {actionType === "reject" && (
+            <Textarea
+              placeholder="Enter rejection reason..."
+              value={rejectionReason}
+              onChange={(e) => setRejectionReason(e.target.value)}
+              className="min-h-[100px]"
+            />
+          )}
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={resetDialog}
+              disabled={isProcessing}
+            >
+              Cancel
+            </Button>
+
+            <Button
+              variant={actionType === "approve" ? "default" : "destructive"}
+              onClick={handleConfirmAction}
+              disabled={isProcessing}
+              className="gap-2"
+            >
+              {isProcessing && (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              )}
+              {actionType === "approve" ? "Approve" : "Reject"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
     </div>
   )
 }

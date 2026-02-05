@@ -19,7 +19,7 @@ export const useNotifications = (profileId: string | undefined) => {
 export const useMarkNotificationAsRead = () => {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: (notificationId: string) => markNotificationAsRead(notificationId),
+    mutationFn: async (notificationId: string) => await markNotificationAsRead(notificationId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notifications"] })
     },
@@ -31,7 +31,7 @@ export const useMarkAllNotificationsAsRead = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (userId: string) => markAllNotificationsAsRead(userId),
+    mutationFn: async (userId: string) => await markAllNotificationsAsRead(userId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notifications"] })
     },

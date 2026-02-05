@@ -25,7 +25,7 @@ import { Button } from "@/components/ui/button"
 import { useProfile } from "@/hooks/react-query/useUser"
 import { UserRole } from "@/generated/enums"
 import { useHallAnalytics } from "@/hooks/react-query/useHalls"
-import { Download, Calendar, Clock, Zap, AlertCircle, TrendingUp } from "lucide-react"
+import { Download, Calendar, Clock, Zap, AlertCircle, TrendingUp, ArrowLeft, ArrowUpRight } from "lucide-react"
 
 const COLORS = ["#10b981", "#f59e0b", "#ef4444", "#3b82f6", "#8b5cf6"]
 const STATUS_COLORS = {
@@ -75,10 +75,10 @@ const HallAnalyticsPage = () => {
 
   const equipmentData = stats.equipmentUsage
     ? Object.entries(stats.equipmentUsage).map(([type, count], idx) => ({
-        name: type,
-        value: count,
-        color: COLORS[idx % COLORS.length],
-      }))
+      name: type,
+      value: count,
+      color: COLORS[idx % COLORS.length],
+    }))
     : []
 
   return (
@@ -86,14 +86,30 @@ const HallAnalyticsPage = () => {
       <main className="container mx-auto px-4 py-8 space-y-8">
         <div className="space-y-4">
           <div className="flex justify-between items-start">
+
             <div>
               <h1 className="text-4xl font-bold text-pretty">{hall.name}</h1>
               <p className="text-muted-foreground mt-2">{hall.location}</p>
             </div>
-            <Button onClick={() => (window.location.href = `/api/analytics/${hallId}`)} className="gap-2">
-              <Download className="h-4 w-4" />
-              Download Report
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                onClick={() => router.push(`/dashboard/halls/${hallId}`)}
+                className="gap-2"
+              >
+                View Hall
+                <ArrowUpRight className="h-4 w-4" />
+              </Button>
+
+              <Button
+                onClick={() => (window.location.href = `/api/analytics/${hallId}`)}
+                className="gap-2"
+              >
+                <Download className="h-4 w-4" />
+                Download Report
+              </Button>
+            </div>
+
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

@@ -60,25 +60,9 @@ const BookingForm = ({ hallId, hallName, onSuccess }: BookingFormProps) => {
   }, [profile, profileLoading, isLoaded])
 
   useEffect(() => {
-    if (selectedHall && bookingDate && startTime && endTime) {
-      checkAvailability()
-    } else {
-      setAvailabilityStatus(null)
-    }
+    checkAvailability()
   }, [selectedHall, bookingDate, startTime, endTime])
 
-  const checkAvailability = async () => {
-    setAvailabilityStatus("checking")
-    const { data } = await getBookingDetailsForHall(
-      selectedHall,
-      new Date(bookingDate),
-      startTime,
-      endTime
-    )
-
-    console.log("Booking details:", data)
-    setAvailabilityStatus(data?.length ? "unavailable" : "available")
-  }
 
   async function uploadToS3(file: File, signedUrl: string) {
     const res = await fetch(signedUrl, {
@@ -109,6 +93,54 @@ const BookingForm = ({ hallId, hallName, onSuccess }: BookingFormProps) => {
     date.setHours(h, m, 0, 0)
     return date
   }
+  const isPastTimeForToday = (date: string, time: string) => {
+    if (!date || !time) return false
+
+    const today = new Date().toISOString().split("T")[0]
+    if (date !== today) return false
+
+    const now = new Date()
+    const [h, m] = time.split(":").map(Number)
+
+    const selected = new Date()
+    selected.setHours(h, m, 0, 0)
+
+    return selected <= now
+  }
+
+  const checkAvailability = async () => {
+    if (!selectedHall || !bookingDate || !startTime || !endTime) {
+      setAvailabilityStatus(null)
+      return
+    }
+
+    if (endTime <= startTime) {
+      setAvailabilityStatus("unavailable")
+      return
+    }
+
+    if (isPastTimeForToday(bookingDate, startTime)) {
+      setAvailabilityStatus("unavailable")
+      return
+    }
+
+    // ---------- VALID → CHECK ----------
+    try {
+      setAvailabilityStatus("checking")
+
+      const { data } = await getBookingDetailsForHall(
+        selectedHall,
+        new Date(bookingDate),
+        startTime,
+        endTime
+      )
+
+      setAvailabilityStatus(data?.length ? "unavailable" : "available")
+    } catch (err) {
+      console.error("Availability check failed", err)
+      setAvailabilityStatus(null)
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -122,14 +154,14 @@ const BookingForm = ({ hallId, hallName, onSuccess }: BookingFormProps) => {
       !startTime ||
       !endTime ||
       !purpose ||
-      expectedParticipants <= 0 
-      
+      expectedParticipants <= 0
+
     ) {
       toast.error("Please fill all required fields")
       return
     }
 
-    if(availabilityStatus !== "available"){
+    if (availabilityStatus !== "available") {
       toast.error("Selected time slot is not available")
       return
     }
@@ -163,6 +195,20 @@ const BookingForm = ({ hallId, hallName, onSuccess }: BookingFormProps) => {
       router.push("/dashboard")
     }
   }
+
+  const getMinStartTime = (bookingDate: string) => {
+    if (!bookingDate) return undefined
+
+    const today = new Date().toISOString().split("T")[0]
+    if (bookingDate !== today) return undefined
+
+    const now = new Date()
+    const hh = String(now.getHours()).padStart(2, "0")
+    const mm = String(now.getMinutes()).padStart(2, "0")
+
+    return `${hh}:${mm}`
+  }
+
 
   if (profileLoading || hallsLoading) {
     return <Loader2 className="mx-auto mt-20 animate-spin" />
@@ -205,6 +251,7 @@ const BookingForm = ({ hallId, hallName, onSuccess }: BookingFormProps) => {
 
               <TimeSlotSelector
                 value={timeSlot}
+                bookingDate={bookingDate}
                 onChange={setTimeSlot}
                 onTimeChange={(s, e) => {
                   setStartTime(s)
@@ -214,10 +261,22 @@ const BookingForm = ({ hallId, hallName, onSuccess }: BookingFormProps) => {
 
               {timeSlot === "Custom Time" && (
                 <div className="grid grid-cols-2 gap-4">
-                  <Input type="time" value={startTime} onChange={e => setStartTime(e.target.value)} />
-                  <Input type="time" value={endTime} onChange={e => setEndTime(e.target.value)} />
+                  <Input
+                    type="time"
+                    value={startTime}
+                    min={getMinStartTime(bookingDate)}
+                    onChange={(e) => setStartTime(e.target.value)}
+                  />
+
+                  <Input
+                    type="time"
+                    value={endTime}
+                    min={startTime || getMinStartTime(bookingDate)}
+                    onChange={(e) => setEndTime(e.target.value)}
+                  />
                 </div>
               )}
+
 
               {availabilityStatus && (
                 <div className="flex items-center gap-2">

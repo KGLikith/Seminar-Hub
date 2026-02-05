@@ -22,6 +22,7 @@ export async function approveMaintenance(requestId: string, hodId: string) {
     },
     include: {
       hall: true,
+      hod: true,
       techStaff: true,
     },
   })
@@ -38,7 +39,12 @@ export async function approveMaintenance(requestId: string, hodId: string) {
     to: request.techStaff.email,
     techName: request.techStaff.name,
     hallName: request.hall.name,
-  }).catch(console.error);
+    target: request.target,
+    priority: request.priority,
+    approvedBy: "HOD",
+    hodEmail: request.hod?.email
+  }).catch(console.error)
+
 
   return { success: true }
 }

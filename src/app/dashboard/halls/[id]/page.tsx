@@ -9,6 +9,7 @@ import {
   Wrench,
   Clock,
   ArrowRight,
+  User,
 } from "lucide-react"
 
 import { useAuth } from "@clerk/nextjs"
@@ -39,6 +40,15 @@ import HallBookingDialog from "@/components/dashboard/booking/HallBookingDialog"
 
 import { UserRole } from "@/generated/enums"
 
+const statusColorMap: Record<string, string> = {
+  approved: "bg-green-100 text-green-800 border-green-300",
+  pending: "bg-yellow-100 text-yellow-800 border-yellow-300",
+  rejected: "bg-red-100 text-red-800 border-red-300",
+  cancelled: "bg-gray-100 text-gray-700 border-gray-300",
+  completed: "bg-blue-100 text-blue-800 border-blue-300",
+  ongoing: "bg-purple-100 text-purple-800 border-purple-300",
+}
+
 export default function HallDetailPage() {
   const { id } = useParams<{ id: string }>()
   const router = useRouter()
@@ -48,20 +58,20 @@ export default function HallDetailPage() {
   const { data: hall, isLoading: hallLoading } = useHall(id)
 
   /* ---------------- BOOKINGS ---------------- */
-  const { data: upcomingBookings, isLoading: upcomingLoading } = useBookings({
+  const { data: upcomingBookings = [], isLoading: upcomingLoading } = useBookings({
     hallId: id,
     status: ["approved"],
     limit: 5,
   })
 
-  const { data: previousBookings, isLoading: previousLoading } = useBookings({
+  const { data: previousBookings = [], isLoading: previousLoading } = useBookings({
     hallId: id,
     status: ["completed", "cancelled", "rejected"],
     limit: 10,
   })
 
-  /* ---------------- MAINTENANCE REQUESTS ---------------- */
-  const { data: maintenanceRequests, isLoading: maintenanceLoading } =
+  /* ---------------- MAINTENANCE ---------------- */
+  const { data: maintenanceRequests = [], isLoading: maintenanceLoading } =
     useGetMaintenanceRequestsForHall(id)
 
   const { data: techStaff } = useGetTechStaffForHall(profile?.id!, id)
@@ -78,6 +88,27 @@ export default function HallDetailPage() {
       (h: any) => h.tech_staff.id === profile.id
     )
   }, [hall, profile])
+
+  /* ================= ONGOING BOOKING LOGIC ================= */
+
+  const now = new Date()
+
+  const ongoingBooking = useMemo(() => {
+    return upcomingBookings.find((b: any) => {
+      const start = new Date(b.start_time)
+      const end = new Date(b.end_time)
+      return start <= now && now < end
+    }) ?? null
+  }, [upcomingBookings])
+
+  const filteredUpcomingBookings = useMemo(() => {
+    if (!ongoingBooking) return upcomingBookings
+    return upcomingBookings.filter(
+      (b: any) => b.id !== ongoingBooking.id
+    )
+  }, [upcomingBookings, ongoingBooking])
+
+  /* ================= LOAD STATES ================= */
 
   if (profileLoading || hallLoading) {
     return (
@@ -98,6 +129,7 @@ export default function HallDetailPage() {
   return (
     <main className="container mx-auto px-4 py-8 space-y-8">
 
+      {/* ================= HEADER ================= */}
       <div className="flex justify-between items-start gap-4">
         <div>
           <h1 className="text-3xl font-bold">{hall.name}</h1>
@@ -120,13 +152,71 @@ export default function HallDetailPage() {
           size="lg"
           variant="secondary"
           className="gap-2"
-          onClick={() => router.push(`/dashboard/tech-staff/maintenance-request?hall_id=${id}`)}
+          onClick={() =>
+            router.push(`/dashboard/tech-staff/maintenance-request?hall_id=${id}`)
+          }
         >
           <Wrench className="h-4 w-4" />
           Add Maintenance Request
         </Button>
       )}
 
+      {ongoingBooking && (
+        <Card className="border-purple-200 bg-linear-to-br from-purple-50 to-purple-50/40 shadow-lg hover:shadow-xl transition-shadow">
+          <CardHeader className="flex flex-row items-start justify-between pb-0">
+            <div className="flex items-center gap-3">
+              <div className="relative flex h-3 w-3 shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-purple-600" />
+              </div>
+              <CardTitle className="text-base font-semibold text-purple-900">
+                Current Session
+              </CardTitle>
+            </div>
+            <Badge className="bg-purple-600 text-white text-xs font-semibold px-2.5 py-0.5">
+              LIVE
+            </Badge>
+          </CardHeader>
+
+          <CardContent className="space-y-4">
+            <div>
+              <p className="text-lg font-bold text-purple-950">
+                {ongoingBooking.purpose}
+              </p>
+            </div>
+
+            <div className="space-y-2.5">
+              <div className="flex items-center gap-2.5 text-sm text-muted-foreground">
+                <Clock className="h-4 w-4 text-purple-600 shrink-0" />
+                <span>
+                  {new Date(ongoingBooking.start_time).toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })} – {new Date(ongoingBooking.end_time).toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2.5 text-sm text-muted-foreground">
+                <User className="h-4 w-4 text-purple-600 shrink-0" />
+                <span>Conducted by {ongoingBooking.teacher.name}</span>
+              </div>
+            </div>
+
+            <Button
+              onClick={() => router.push(`/dashboard/bookings/${ongoingBooking.id}`)}
+              className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium gap-2"
+            >
+              View Booking Details
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* ================= HALL OVERVIEW ================= */}
       <Card>
         <CardHeader>
           <CardTitle>Hall Overview</CardTitle>
@@ -156,14 +246,8 @@ export default function HallDetailPage() {
         </CardContent>
       </Card>
 
-      {/* ================= GALLERY ================= */}
-      <HallImageGallery
-        hallId={id}
-        canManage={isAssignedTechStaff}
-        coverImage={hall.image_url}
-      />
-
-      {/* ================= EQUIPMENT & COMPONENTS ================= */}
+      {/* ================= MEDIA & MANAGEMENT ================= */}
+      <HallImageGallery hallId={id} canManage={isAssignedTechStaff} coverImage={hall.image_url} />
       <EquipmentManagement hallId={id} canManage={isAssignedTechStaff} />
       <ComponentManagement hallId={id} canManage={isAssignedTechStaff} />
 
@@ -192,9 +276,9 @@ export default function HallDetailPage() {
         <CardContent>
           {upcomingLoading ? (
             <p className="text-sm text-muted-foreground">Loading…</p>
-          ) : upcomingBookings?.length ? (
+          ) : filteredUpcomingBookings.length ? (
             <div className="space-y-3">
-              {upcomingBookings.map((b) => (
+              {filteredUpcomingBookings.map((b) => (
                 <BookingRow key={b.id} booking={b} />
               ))}
             </div>
@@ -213,7 +297,6 @@ export default function HallDetailPage() {
           <TabsTrigger value="maintenance">Maintenance Requests</TabsTrigger>
         </TabsList>
 
-        {/* -------- BOOKING HISTORY TAB -------- */}
         <TabsContent value="bookings">
           <Card>
             <CardHeader>
@@ -222,11 +305,10 @@ export default function HallDetailPage() {
                 Completed, cancelled, or rejected bookings
               </CardDescription>
             </CardHeader>
-
             <CardContent className="space-y-3">
               {previousLoading ? (
                 <p className="text-sm text-muted-foreground">Loading…</p>
-              ) : previousBookings?.length ? (
+              ) : previousBookings.length ? (
                 previousBookings.map((b) => (
                   <BookingRow key={b.id} booking={b} />
                 ))
@@ -239,7 +321,6 @@ export default function HallDetailPage() {
           </Card>
         </TabsContent>
 
-        {/* -------- MAINTENANCE TAB -------- */}
         <TabsContent value="maintenance">
           <Card>
             <CardHeader>
@@ -248,11 +329,10 @@ export default function HallDetailPage() {
                 Requests raised for this hall
               </CardDescription>
             </CardHeader>
-
             <CardContent className="space-y-3">
               {maintenanceLoading ? (
                 <p className="text-sm text-muted-foreground">Loading…</p>
-              ) : maintenanceRequests?.length ? (
+              ) : maintenanceRequests.length ? (
                 maintenanceRequests.map((r) => (
                   <div key={r.id} className="p-4 border rounded-xl space-y-1">
                     <div className="flex justify-between">
@@ -261,11 +341,9 @@ export default function HallDetailPage() {
                         {r.status}
                       </Badge>
                     </div>
-
                     <p className="text-sm text-muted-foreground">
                       {r.description}
                     </p>
-
                     <p className="text-xs text-muted-foreground">
                       Priority: {r.priority} •{" "}
                       {new Date(r.created_at).toLocaleDateString()}
@@ -331,7 +409,10 @@ function BookingRow({ booking }: any) {
       </div>
 
       <div className="flex items-center gap-3">
-        <Badge variant="outline" className="capitalize">
+        <Badge
+          variant="outline"
+          className={`capitalize ${statusColorMap[booking.status] ?? ""}`}
+        >
           {booking.status}
         </Badge>
 

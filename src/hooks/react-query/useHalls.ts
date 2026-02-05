@@ -6,7 +6,7 @@ import { getHallImages } from "@/actions/halls/image"
 export const useHalls = () => {
   return useQuery({
     queryKey: ["halls"],
-    queryFn: () => getHalls(),
+    queryFn: async () =>await getHalls(),
   })
 }
 
