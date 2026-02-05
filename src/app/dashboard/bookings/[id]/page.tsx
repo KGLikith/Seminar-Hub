@@ -1,41 +1,21 @@
 "use client"
 
+import React from "react"
+import Image from "next/image"
+
 import { useParams, useRouter } from "next/navigation"
 import { useAuth } from "@clerk/nextjs"
-import { useState } from "react"
+import { useState, useRef } from "react"
+
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { useGetBookingById } from "@/hooks/react-query/useBookings"
 import {
-  useApproveBooking,
-  useRejectBooking,
-} from "@/hooks/react-query/useBookings"
-import {
-  addBookingSummary,
-  addBookingMedia,
-  deleteBookingMedia,
-} from "@/actions/booking"
-import { useProfile } from "@/hooks/react-query/useUser"
-import { toast } from "sonner"
-import {
-  ArrowLeft,
-  MapPin,
-  Calendar,
-  Users,
-  Loader2,
-  CheckCircle,
-  Trash2,
-  User,
-  Clock,
-  Download,
-  X,
-  FileText,
-  ArrowUpRight,
-} from "lucide-react"
-import { BookingTimeline } from "@/components/dashboard/booking/BookingTimeline"
-import { getSignedURL } from "@/actions/aws/s3"
-import { UserRole } from "@/generated/enums"
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+
 import {
   Dialog,
   DialogContent,
@@ -44,7 +24,47 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 
+import { useGetBookingById } from "@/hooks/react-query/useBookings"
+import {
+  useApproveBooking,
+  useRejectBooking,
+} from "@/hooks/react-query/useBookings"
+
+import {
+  addBookingSummary,
+  addBookingMedia,
+  deleteBookingMedia,
+  addAiSummary,
+} from "@/actions/booking"
+
+import { useProfile } from "@/hooks/react-query/useUser"
+import { getSignedURL } from "@/actions/aws/s3"
+
+import { BookingTimeline } from "@/components/dashboard/booking/BookingTimeline"
+import { UserRole } from "@/generated/enums"
+
+import { toast } from "sonner"
+
+import {
+  ArrowLeft,
+  MapPin,
+  Calendar,
+  Users,
+  Loader2,
+  Trash2,
+  User,
+  Clock,
+  Download,
+  X,
+  FileText,
+  ArrowUpRight,
+  Plus,
+  Mic,
+} from "lucide-react"
+
 export default function BookingDetailPage() {
+  const audioInputRef = useRef<HTMLInputElement>(null)
+  const imageInputRef = useRef<HTMLInputElement>(null)
   const { id } = useParams<{ id: string }>()
   const router = useRouter()
   const { userId } = useAuth()
@@ -55,10 +75,20 @@ export default function BookingDetailPage() {
   const { mutate: approveBooking, isPending: approving } = useApproveBooking()
   const { mutate: rejectBooking, isPending: rejecting } = useRejectBooking()
 
+  /* ================= STATE ================= */
+
   const [summary, setSummary] = useState("")
   const [savingSummary, setSavingSummary] = useState(false)
+  const [showSummaryDialog, setShowSummaryDialog] = useState(false)
+
   const [uploading, setUploading] = useState(false)
+  const [aiLoading, setAiLoading] = useState(false)
+
   const [previewImage, setPreviewImage] = useState<string | null>(null)
+
+  const [mediaToDelete, setMediaToDelete] = useState<string | null>(null)
+  const [deletingMedia, setDeletingMedia] = useState(false)
+
   const [showLetter, setShowLetter] = useState(false)
   const [showRejectDialog, setShowRejectDialog] = useState(false)
   const [rejectionReason, setRejectionReason] = useState("")
@@ -72,7 +102,8 @@ export default function BookingDetailPage() {
     )
   }
 
-  /* ---------------- AUTH CHECKS ---------------- */
+  /* ================= PERMISSIONS ================= */
+
   const isTeacher = booking.teacher_id === profile.id
   const isStaff = booking.hall.hallTechStaffs?.some(
     (s) => s.tech_staff_id === profile.id
@@ -80,29 +111,29 @@ export default function BookingDetailPage() {
 
   const isCompleted = booking.status === "completed"
   const isPending = booking.status === "pending"
+  const isRejected = booking.status === "rejected"
 
   const isAuthorizedHod =
     profile.roles.some((r) => r.role === UserRole.hod) &&
     profile.id === booking.hall.department.hod_id
 
   const canEditSummary = isTeacher && isCompleted
-  const canManageMedia = (isTeacher || isStaff) && isCompleted
+  const canManageMedia =
+    (isTeacher || isStaff) &&
+    (booking.status === "completed")
 
-  const isRejected = booking.status === "rejected"
 
+  /* ================= ACTIONS ================= */
 
-  /* ---------------- ACTIONS ---------------- */
   async function saveSummary() {
-    if (!summary.trim() || !canEditSummary || !booking?.id) return
-
+    if (!summary.trim() || !booking?.id) return
     setSavingSummary(true)
     try {
-      await addBookingSummary(booking.id, summary.trim(), null)
-      toast.success("Summary saved")
-      setSummary("")
+      await addBookingSummary(booking.id, summary.trim())
       refetch()
-    } catch {
-      toast.error("Failed to save summary")
+      toast.success("Summary saved successfully")
+      setSummary("")
+      setShowSummaryDialog(false)
     } finally {
       setSavingSummary(false)
     }
@@ -119,13 +150,10 @@ export default function BookingDetailPage() {
   }
 
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
-    console.log(canManageMedia)
     if (!canManageMedia || !booking?.id || !profile?.id) return
-
     try {
       setUploading(true)
       const files = Array.from(e.target.files ?? [])
-
       for (const file of files) {
         const signedUrl = await getSignedURL(
           file.type,
@@ -133,36 +161,50 @@ export default function BookingDetailPage() {
           booking.id,
           "booking_image"
         )
-        const publicUrl = await uploadToS3(file, signedUrl)
-        await addBookingMedia(booking.id, publicUrl, profile?.id as string)
+        const url = await uploadToS3(file, signedUrl)
+        await addBookingMedia(booking.id, url, profile.id)
       }
-
       toast.success("Images uploaded")
       refetch()
-    } catch (e: any) {
-      toast.error(e.message)
     } finally {
       setUploading(false)
       e.target.value = ""
     }
   }
 
-  async function removeMedia(mediaId: string) {
-    await deleteBookingMedia(mediaId)
-    toast.success("Media removed")
+  async function handleDeleteMedia() {
+    if (!mediaToDelete) return
+    setDeletingMedia(true)
+    await deleteBookingMedia(mediaToDelete)
+    setMediaToDelete(null)
+    setDeletingMedia(false)
     refetch()
   }
 
-  const downloadReport = async () => {
-    setIsLoadingReport(true)
-    const res = await fetch(`/api/bookings/${booking.id}/report`)
-    const blob = await res.blob()
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement("a")
-    a.href = url
-    a.download = `booking-${booking.id}.pdf`
-    a.click()
-    setIsLoadingReport(false)
+  async function handleAudioUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file || !booking?.id) return
+
+    try {
+      setAiLoading(true)
+      const form = new FormData()
+      form.append("audio", file, file.name.replace(/\..+$/, ".mp3"))
+
+      const res = await fetch(
+        "https://n8n.charan.systems/webhook/fcabe50d-08cd-474c-9e98-08ca5d40efab",
+        { method: "POST", body: form }
+      )
+
+      const data = await res.json()
+      if (!data?.output) throw new Error("Invalid AI response")
+
+      await addAiSummary(booking.id, data.output)
+      refetch()
+      toast.success("AI summary added")
+    } finally {
+      setAiLoading(false)
+      e.target.value = ""
+    }
   }
 
   const handleApprove = () => {
@@ -202,30 +244,66 @@ export default function BookingDetailPage() {
     )
   }
 
-  /* ---------------- UI ---------------- */
+  const downloadReport = async () => {
+    setIsLoadingReport(true)
+    const res = await fetch(`/api/bookings/${booking.id}/report`)
+    if(res.status == 400) {
+      const data = await res.json()
+      toast.error("Failed to generate report")
+      setIsLoadingReport(false)
+      return
+    }
+    const blob = await res.blob()
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement("a")
+    a.href = url
+    a.download = `booking-${booking.id}.pdf`
+    a.click()
+    setIsLoadingReport(false)
+  }
+
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
-
+    <div className="min-h-screen bg-linear-to-b from-background to-secondary/5">
+      <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
         {/* HEADER */}
-        <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon" onClick={() => router.back()}>
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3 flex-1">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => router.back()}
+              className="hover:bg-secondary"
+            >
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
 
-          <div className="flex-1">
-            <h1 className="text-3xl font-bold">{booking.purpose}</h1>
-            <p className="text-sm text-muted-foreground">Booking details</p>
+            <div className="flex-1">
+              <h1 className="text-3xl font-bold text-balance">{booking.purpose}</h1>
+              <p className="text-sm text-muted-foreground mt-1">Booking Reference ID: {booking.id.slice(0, 8)}</p>
+            </div>
           </div>
 
-          {isCompleted && (
-            <Button variant="outline" size="sm" onClick={downloadReport}>
-              {isLoadingReport ? "Generating..." : "Download Report"}
+          {booking.status === "completed" && (
+            <Button
+              onClick={downloadReport}
+              disabled={isLoadingReport}
+              className="w-full sm:w-auto"
+            >
+              {isLoadingReport ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Generating...
+                </>
+              ) : (
+                <>
+                  <Download className="h-4 w-4 mr-2" />
+                  Download Report
+                </>
+              )}
             </Button>
           )}
         </div>
 
-        {/* REJECTION NOTICE */}
         {isRejected && booking.rejection_reason && (
           <Card className="border-red-300 bg-red-50">
             <CardHeader>
@@ -245,8 +323,6 @@ export default function BookingDetailPage() {
           </Card>
         )}
 
-
-        {/* HOD APPROVAL CARD */}
         {isAuthorizedHod && isPending && (
           <Card className="border-amber-300 bg-amber-50">
             <CardHeader>
@@ -291,7 +367,6 @@ export default function BookingDetailPage() {
           </Card>
         )}
 
-        {/* BOOKING INFO */}
         <Card>
           <CardHeader>
             <CardTitle>Booking Information</CardTitle>
@@ -357,7 +432,7 @@ export default function BookingDetailPage() {
         {/* TIMELINE */}
         <Card>
           <CardHeader>
-            <CardTitle>Activity Timeline</CardTitle>
+            <CardTitle>Timeline</CardTitle>
           </CardHeader>
           <CardContent>
             <BookingTimeline logs={booking.logs} completed={isCompleted} />
@@ -366,94 +441,260 @@ export default function BookingDetailPage() {
 
         {/* MEDIA */}
         <Card>
-          <CardHeader>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0">
             <CardTitle>Session Media</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {booking.media.map((m) => (
-                <div key={m.id} className="relative group">
-                  <img
-                    src={m.url}
-                    className="rounded-lg border h-40 w-full object-cover cursor-zoom-in"
-                    onClick={() => setPreviewImage(m.url)}
-                  />
-                  {canManageMedia && (
-                    <Button
-                      size="icon"
-                      variant="destructive"
-                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100"
-                      onClick={() => removeMedia(m.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  )}
-                </div>
-              ))}
-            </div>
-
             {canManageMedia && (
-              <label>
+              <>
                 <input
+                  ref={imageInputRef}
                   type="file"
+                  accept="image/*"
                   multiple
                   hidden
                   onChange={handleUpload}
                 />
-                <Button size="sm" disabled={uploading}>
-                  Upload Images
-                </Button>
-              </label>
-            )}
-          </CardContent>
-        </Card>
 
-        {/* SUMMARY */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Session Summary</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {booking.session_summary && !canEditSummary && (
-              <div className="p-4 rounded-lg bg-muted border">
-                <CheckCircle className="inline h-4 w-4 mr-2" />
-                {booking.session_summary}
-              </div>
-            )}
-
-            {canEditSummary && (
-              <>
-                <Textarea
-                  defaultValue={booking.session_summary ?? ""}
-                  onChange={(e) => setSummary(e.target.value)}
-                />
-                <Button onClick={saveSummary} className="mt-3">
-                  Save Summary
+                <Button
+                  size="sm"
+                  onClick={() => imageInputRef.current?.click()}
+                  disabled={uploading}
+                >
+                  {uploading ? (
+                    <>
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      Uploading...
+                    </>
+                  ) : (
+                    <>
+                      <Plus className="h-4 w-4 mr-2" />
+                      Upload Images
+                    </>
+                  )}
                 </Button>
               </>
             )}
+          </CardHeader>
+          <CardContent>
+            {booking.media.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">No media uploaded yet</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {booking.media.map((m) => (
+                  <div key={m.id} className="group relative rounded-lg overflow-hidden border border-border hover:border-primary/50 transition-colors">
+                    <img
+                      src={m.url || "/placeholder.svg"}
+                      alt="Session media"
+                      className="w-full h-48 object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                      onClick={() => setPreviewImage(m.url)}
+                    />
+                    {canManageMedia && (
+                      <Button
+                        size="icon"
+                        variant="destructive"
+                        className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                        onClick={() => setMediaToDelete(m.id)}
+                        disabled={deletingMedia}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
+
+        {/* AUDIO UPLOAD & AI SUMMARY SECTION */}
+        {canEditSummary && (
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0">
+              <CardTitle>AI Audio Summary</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  Upload an audio file to generate an AI-powered summary of your session.
+                </p>
+
+                <input
+                  ref={audioInputRef}
+                  type="file"
+                  accept=".mp3,.mpeg,audio/mpeg"
+                  hidden
+                  disabled={aiLoading}
+                  onChange={handleAudioUpload}
+                />
+
+                <Button
+                  onClick={() => audioInputRef.current?.click()}
+                  disabled={aiLoading}
+                  className="w-full sm:w-auto"
+                >
+                  {aiLoading ? (
+                    <>
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      Processing Audio...
+                    </>
+                  ) : (
+                    <>
+                      <Mic className="h-4 w-4 mr-2" />
+                      Upload Audio Summary
+                    </>
+                  )}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* AI SUMMARY DISPLAY */}
+        {booking.ai_summary && (
+          <Card className="border-primary/30 bg-primary/5">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Mic className="h-5 w-5 text-primary" />
+                AI Generated Summary
+              </CardTitle>
+            </CardHeader>
+
+            <CardContent className="whitespace-pre-line text-sm leading-relaxed text-foreground">
+              {(() => {
+                try {
+                  const parsed =
+                    typeof booking.ai_summary === "string"
+                      ? JSON.parse(booking.ai_summary)
+                      : booking.ai_summary
+
+                  return parsed.output ?? booking.ai_summary
+                } catch {
+                  return booking.ai_summary
+                }
+              })()}
+            </CardContent>
+          </Card>
+        )}
+
+        {/* MANUAL SUMMARY */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0">
+            <CardTitle>Session Summary</CardTitle>
+            {canEditSummary && !booking.session_summary && (
+              <Button
+                size="sm"
+                onClick={() => setShowSummaryDialog(true)}
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Add Summary
+              </Button>
+            )}
+          </CardHeader>
+          <CardContent>
+            {booking.session_summary ? (
+              <div className="space-y-4">
+                <div className="p-4 bg-secondary/50 rounded-lg border border-border">
+                  <p className="text-sm leading-relaxed whitespace-pre-wrap">
+                    {booking.session_summary}
+                  </p>
+                </div>
+                {canEditSummary && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setSummary(booking.session_summary || "")
+                      setShowSummaryDialog(true)
+                    }}
+                  >
+                    Edit Summary
+                  </Button>
+                )}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-muted-foreground">No summary added yet</p>
+                {canEditSummary && (
+                  <p className="text-xs text-muted-foreground mt-2">
+                    Click "Add Summary" to create one
+                  </p>
+                )}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
       </div>
 
-      {/* PERMISSION LETTER */}
+      {/* SUMMARY DIALOG */}
+      <Dialog open={showSummaryDialog} onOpenChange={setShowSummaryDialog}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Add Session Summary</DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            <Textarea
+              placeholder="Write a detailed summary of your session here..."
+              value={summary}
+              onChange={(e) => setSummary(e.target.value)}
+              disabled={savingSummary}
+              className="min-h-48"
+            />
+            <p className="text-xs text-muted-foreground">
+              {summary.length} characters
+            </p>
+          </div>
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setShowSummaryDialog(false)
+                setSummary("")
+              }}
+              disabled={savingSummary}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={saveSummary}
+              disabled={savingSummary || !summary.trim()}
+            >
+              {savingSummary ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                "Save Summary"
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* LETTER */}
       {showLetter && (
         <div
-          className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center"
+          className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4"
           onClick={() => setShowLetter(false)}
         >
           <div
-            className="bg-white w-[90%] h-[90%] rounded-lg"
+            className="bg-background w-full max-w-4xl h-[90vh] rounded-lg overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             {booking.permission_letter_url.endsWith(".pdf") ? (
               <iframe
                 src={booking.permission_letter_url}
                 className="w-full h-full"
+                title="Permission Letter"
               />
             ) : (
               <img
-                src={booking.permission_letter_url}
+                src={booking.permission_letter_url || "/placeholder.svg"}
+                alt="Permission Letter"
                 className="w-full h-full object-contain"
               />
             )}
@@ -484,9 +725,59 @@ export default function BookingDetailPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* PREVIEW IMAGE DIALOG */}
+      <Dialog open={!!previewImage} onOpenChange={() => setPreviewImage(null)}>
+        <DialogContent className="p-0 max-w-4xl">
+          <div className="relative bg-black/90 rounded-lg overflow-hidden">
+            <img
+              src={previewImage ?? ""}
+              alt="Image preview"
+              className="w-full h-auto max-h-[80vh] object-contain"
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* DELETE MEDIA DIALOG */}
+      <Dialog open={!!mediaToDelete} onOpenChange={() => setMediaToDelete(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete Media</DialogTitle>
+          </DialogHeader>
+          <p className="text-sm text-muted-foreground">
+            Are you sure you want to delete this media? This action cannot be undone.
+          </p>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setMediaToDelete(null)}
+              disabled={deletingMedia}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleDeleteMedia}
+              disabled={deletingMedia}
+            >
+              {deletingMedia ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Deleting...
+                </>
+              ) : (
+                "Delete"
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
+
+
 
 function Info({ icon: Icon, label, value }: any) {
   return (

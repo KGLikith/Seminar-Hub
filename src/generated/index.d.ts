@@ -98,11 +98,6 @@ export type ComponentMaintenanceLog = $Result.DefaultSelection<Prisma.$Component
  * 
  */
 export type MaintenanceRequest = $Result.DefaultSelection<Prisma.$MaintenanceRequestPayload>
-/**
- * Model EmailLog
- * 
- */
-export type EmailLog = $Result.DefaultSelection<Prisma.$EmailLogPayload>
 
 /**
  * Enums
@@ -604,16 +599,6 @@ export class PrismaClient<
     * ```
     */
   get maintenanceRequest(): Prisma.MaintenanceRequestDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.emailLog`: Exposes CRUD operations for the **EmailLog** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more EmailLogs
-    * const emailLogs = await prisma.emailLog.findMany()
-    * ```
-    */
-  get emailLog(): Prisma.EmailLogDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1071,8 +1056,7 @@ export namespace Prisma {
     Notification: 'Notification',
     HallComponent: 'HallComponent',
     ComponentMaintenanceLog: 'ComponentMaintenanceLog',
-    MaintenanceRequest: 'MaintenanceRequest',
-    EmailLog: 'EmailLog'
+    MaintenanceRequest: 'MaintenanceRequest'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1091,7 +1075,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "department" | "user" | "profile" | "userRoleAssignment" | "seminarHall" | "hallImage" | "favoriteHall" | "hallTechStaff" | "equipment" | "equipmentLog" | "booking" | "bookingLog" | "bookingMedia" | "notification" | "hallComponent" | "componentMaintenanceLog" | "maintenanceRequest" | "emailLog"
+      modelProps: "department" | "user" | "profile" | "userRoleAssignment" | "seminarHall" | "hallImage" | "favoriteHall" | "hallTechStaff" | "equipment" | "equipmentLog" | "booking" | "bookingLog" | "bookingMedia" | "notification" | "hallComponent" | "componentMaintenanceLog" | "maintenanceRequest"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2353,80 +2337,6 @@ export namespace Prisma {
           }
         }
       }
-      EmailLog: {
-        payload: Prisma.$EmailLogPayload<ExtArgs>
-        fields: Prisma.EmailLogFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.EmailLogFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.EmailLogFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload>
-          }
-          findFirst: {
-            args: Prisma.EmailLogFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.EmailLogFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload>
-          }
-          findMany: {
-            args: Prisma.EmailLogFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload>[]
-          }
-          create: {
-            args: Prisma.EmailLogCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload>
-          }
-          createMany: {
-            args: Prisma.EmailLogCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.EmailLogCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload>[]
-          }
-          delete: {
-            args: Prisma.EmailLogDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload>
-          }
-          update: {
-            args: Prisma.EmailLogUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload>
-          }
-          deleteMany: {
-            args: Prisma.EmailLogDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.EmailLogUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.EmailLogUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload>[]
-          }
-          upsert: {
-            args: Prisma.EmailLogUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EmailLogPayload>
-          }
-          aggregate: {
-            args: Prisma.EmailLogAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateEmailLog>
-          }
-          groupBy: {
-            args: Prisma.EmailLogGroupByArgs<ExtArgs>
-            result: $Utils.Optional<EmailLogGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.EmailLogCountArgs<ExtArgs>
-            result: $Utils.Optional<EmailLogCountAggregateOutputType> | number
-          }
-        }
-      }
     }
   } & {
     other: {
@@ -2540,7 +2450,6 @@ export namespace Prisma {
     hallComponent?: HallComponentOmit
     componentMaintenanceLog?: ComponentMaintenanceLogOmit
     maintenanceRequest?: MaintenanceRequestOmit
-    emailLog?: EmailLogOmit
   }
 
   /* Types for Logging */
@@ -2927,14 +2836,12 @@ export namespace Prisma {
   export type BookingCountOutputType = {
     logs: number
     notifications: number
-    emailLogs: number
     media: number
   }
 
   export type BookingCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     logs?: boolean | BookingCountOutputTypeCountLogsArgs
     notifications?: boolean | BookingCountOutputTypeCountNotificationsArgs
-    emailLogs?: boolean | BookingCountOutputTypeCountEmailLogsArgs
     media?: boolean | BookingCountOutputTypeCountMediaArgs
   }
 
@@ -2961,13 +2868,6 @@ export namespace Prisma {
    */
   export type BookingCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: NotificationWhereInput
-  }
-
-  /**
-   * BookingCountOutputType without action
-   */
-  export type BookingCountOutputTypeCountEmailLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: EmailLogWhereInput
   }
 
   /**
@@ -14945,7 +14845,6 @@ export namespace Prisma {
     hod?: boolean | Booking$hodArgs<ExtArgs>
     logs?: boolean | Booking$logsArgs<ExtArgs>
     notifications?: boolean | Booking$notificationsArgs<ExtArgs>
-    emailLogs?: boolean | Booking$emailLogsArgs<ExtArgs>
     media?: boolean | Booking$mediaArgs<ExtArgs>
     _count?: boolean | BookingCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["booking"]>
@@ -15026,7 +14925,6 @@ export namespace Prisma {
     hod?: boolean | Booking$hodArgs<ExtArgs>
     logs?: boolean | Booking$logsArgs<ExtArgs>
     notifications?: boolean | Booking$notificationsArgs<ExtArgs>
-    emailLogs?: boolean | Booking$emailLogsArgs<ExtArgs>
     media?: boolean | Booking$mediaArgs<ExtArgs>
     _count?: boolean | BookingCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -15049,7 +14947,6 @@ export namespace Prisma {
       hod: Prisma.$ProfilePayload<ExtArgs> | null
       logs: Prisma.$BookingLogPayload<ExtArgs>[]
       notifications: Prisma.$NotificationPayload<ExtArgs>[]
-      emailLogs: Prisma.$EmailLogPayload<ExtArgs>[]
       media: Prisma.$BookingMediaPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -15470,7 +15367,6 @@ export namespace Prisma {
     hod<T extends Booking$hodArgs<ExtArgs> = {}>(args?: Subset<T, Booking$hodArgs<ExtArgs>>): Prisma__ProfileClient<$Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     logs<T extends Booking$logsArgs<ExtArgs> = {}>(args?: Subset<T, Booking$logsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notifications<T extends Booking$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, Booking$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    emailLogs<T extends Booking$emailLogsArgs<ExtArgs> = {}>(args?: Subset<T, Booking$emailLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     media<T extends Booking$mediaArgs<ExtArgs> = {}>(args?: Subset<T, Booking$mediaArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingMediaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -15979,30 +15875,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
-  }
-
-  /**
-   * Booking.emailLogs
-   */
-  export type Booking$emailLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EmailLog
-     */
-    select?: EmailLogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the EmailLog
-     */
-    omit?: EmailLogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EmailLogInclude<ExtArgs> | null
-    where?: EmailLogWhereInput
-    orderBy?: EmailLogOrderByWithRelationInput | EmailLogOrderByWithRelationInput[]
-    cursor?: EmailLogWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: EmailLogScalarFieldEnum | EmailLogScalarFieldEnum[]
   }
 
   /**
@@ -22955,1109 +22827,6 @@ export namespace Prisma {
 
 
   /**
-   * Model EmailLog
-   */
-
-  export type AggregateEmailLog = {
-    _count: EmailLogCountAggregateOutputType | null
-    _min: EmailLogMinAggregateOutputType | null
-    _max: EmailLogMaxAggregateOutputType | null
-  }
-
-  export type EmailLogMinAggregateOutputType = {
-    id: string | null
-    booking_id: string | null
-    recipient_email: string | null
-    email_type: string | null
-    sent_at: Date | null
-    status: string | null
-    error_message: string | null
-  }
-
-  export type EmailLogMaxAggregateOutputType = {
-    id: string | null
-    booking_id: string | null
-    recipient_email: string | null
-    email_type: string | null
-    sent_at: Date | null
-    status: string | null
-    error_message: string | null
-  }
-
-  export type EmailLogCountAggregateOutputType = {
-    id: number
-    booking_id: number
-    recipient_email: number
-    email_type: number
-    sent_at: number
-    status: number
-    error_message: number
-    _all: number
-  }
-
-
-  export type EmailLogMinAggregateInputType = {
-    id?: true
-    booking_id?: true
-    recipient_email?: true
-    email_type?: true
-    sent_at?: true
-    status?: true
-    error_message?: true
-  }
-
-  export type EmailLogMaxAggregateInputType = {
-    id?: true
-    booking_id?: true
-    recipient_email?: true
-    email_type?: true
-    sent_at?: true
-    status?: true
-    error_message?: true
-  }
-
-  export type EmailLogCountAggregateInputType = {
-    id?: true
-    booking_id?: true
-    recipient_email?: true
-    email_type?: true
-    sent_at?: true
-    status?: true
-    error_message?: true
-    _all?: true
-  }
-
-  export type EmailLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which EmailLog to aggregate.
-     */
-    where?: EmailLogWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of EmailLogs to fetch.
-     */
-    orderBy?: EmailLogOrderByWithRelationInput | EmailLogOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: EmailLogWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` EmailLogs from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` EmailLogs.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned EmailLogs
-    **/
-    _count?: true | EmailLogCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: EmailLogMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: EmailLogMaxAggregateInputType
-  }
-
-  export type GetEmailLogAggregateType<T extends EmailLogAggregateArgs> = {
-        [P in keyof T & keyof AggregateEmailLog]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateEmailLog[P]>
-      : GetScalarType<T[P], AggregateEmailLog[P]>
-  }
-
-
-
-
-  export type EmailLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: EmailLogWhereInput
-    orderBy?: EmailLogOrderByWithAggregationInput | EmailLogOrderByWithAggregationInput[]
-    by: EmailLogScalarFieldEnum[] | EmailLogScalarFieldEnum
-    having?: EmailLogScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: EmailLogCountAggregateInputType | true
-    _min?: EmailLogMinAggregateInputType
-    _max?: EmailLogMaxAggregateInputType
-  }
-
-  export type EmailLogGroupByOutputType = {
-    id: string
-    booking_id: string | null
-    recipient_email: string
-    email_type: string
-    sent_at: Date
-    status: string
-    error_message: string | null
-    _count: EmailLogCountAggregateOutputType | null
-    _min: EmailLogMinAggregateOutputType | null
-    _max: EmailLogMaxAggregateOutputType | null
-  }
-
-  type GetEmailLogGroupByPayload<T extends EmailLogGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<EmailLogGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof EmailLogGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], EmailLogGroupByOutputType[P]>
-            : GetScalarType<T[P], EmailLogGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type EmailLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    booking_id?: boolean
-    recipient_email?: boolean
-    email_type?: boolean
-    sent_at?: boolean
-    status?: boolean
-    error_message?: boolean
-    booking?: boolean | EmailLog$bookingArgs<ExtArgs>
-  }, ExtArgs["result"]["emailLog"]>
-
-  export type EmailLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    booking_id?: boolean
-    recipient_email?: boolean
-    email_type?: boolean
-    sent_at?: boolean
-    status?: boolean
-    error_message?: boolean
-    booking?: boolean | EmailLog$bookingArgs<ExtArgs>
-  }, ExtArgs["result"]["emailLog"]>
-
-  export type EmailLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    booking_id?: boolean
-    recipient_email?: boolean
-    email_type?: boolean
-    sent_at?: boolean
-    status?: boolean
-    error_message?: boolean
-    booking?: boolean | EmailLog$bookingArgs<ExtArgs>
-  }, ExtArgs["result"]["emailLog"]>
-
-  export type EmailLogSelectScalar = {
-    id?: boolean
-    booking_id?: boolean
-    recipient_email?: boolean
-    email_type?: boolean
-    sent_at?: boolean
-    status?: boolean
-    error_message?: boolean
-  }
-
-  export type EmailLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "booking_id" | "recipient_email" | "email_type" | "sent_at" | "status" | "error_message", ExtArgs["result"]["emailLog"]>
-  export type EmailLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    booking?: boolean | EmailLog$bookingArgs<ExtArgs>
-  }
-  export type EmailLogIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    booking?: boolean | EmailLog$bookingArgs<ExtArgs>
-  }
-  export type EmailLogIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    booking?: boolean | EmailLog$bookingArgs<ExtArgs>
-  }
-
-  export type $EmailLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "EmailLog"
-    objects: {
-      booking: Prisma.$BookingPayload<ExtArgs> | null
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      booking_id: string | null
-      recipient_email: string
-      email_type: string
-      sent_at: Date
-      status: string
-      error_message: string | null
-    }, ExtArgs["result"]["emailLog"]>
-    composites: {}
-  }
-
-  type EmailLogGetPayload<S extends boolean | null | undefined | EmailLogDefaultArgs> = $Result.GetResult<Prisma.$EmailLogPayload, S>
-
-  type EmailLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<EmailLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: EmailLogCountAggregateInputType | true
-    }
-
-  export interface EmailLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EmailLog'], meta: { name: 'EmailLog' } }
-    /**
-     * Find zero or one EmailLog that matches the filter.
-     * @param {EmailLogFindUniqueArgs} args - Arguments to find a EmailLog
-     * @example
-     * // Get one EmailLog
-     * const emailLog = await prisma.emailLog.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends EmailLogFindUniqueArgs>(args: SelectSubset<T, EmailLogFindUniqueArgs<ExtArgs>>): Prisma__EmailLogClient<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one EmailLog that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {EmailLogFindUniqueOrThrowArgs} args - Arguments to find a EmailLog
-     * @example
-     * // Get one EmailLog
-     * const emailLog = await prisma.emailLog.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends EmailLogFindUniqueOrThrowArgs>(args: SelectSubset<T, EmailLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EmailLogClient<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first EmailLog that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {EmailLogFindFirstArgs} args - Arguments to find a EmailLog
-     * @example
-     * // Get one EmailLog
-     * const emailLog = await prisma.emailLog.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends EmailLogFindFirstArgs>(args?: SelectSubset<T, EmailLogFindFirstArgs<ExtArgs>>): Prisma__EmailLogClient<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first EmailLog that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {EmailLogFindFirstOrThrowArgs} args - Arguments to find a EmailLog
-     * @example
-     * // Get one EmailLog
-     * const emailLog = await prisma.emailLog.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends EmailLogFindFirstOrThrowArgs>(args?: SelectSubset<T, EmailLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__EmailLogClient<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more EmailLogs that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {EmailLogFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all EmailLogs
-     * const emailLogs = await prisma.emailLog.findMany()
-     * 
-     * // Get first 10 EmailLogs
-     * const emailLogs = await prisma.emailLog.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const emailLogWithIdOnly = await prisma.emailLog.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends EmailLogFindManyArgs>(args?: SelectSubset<T, EmailLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a EmailLog.
-     * @param {EmailLogCreateArgs} args - Arguments to create a EmailLog.
-     * @example
-     * // Create one EmailLog
-     * const EmailLog = await prisma.emailLog.create({
-     *   data: {
-     *     // ... data to create a EmailLog
-     *   }
-     * })
-     * 
-     */
-    create<T extends EmailLogCreateArgs>(args: SelectSubset<T, EmailLogCreateArgs<ExtArgs>>): Prisma__EmailLogClient<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many EmailLogs.
-     * @param {EmailLogCreateManyArgs} args - Arguments to create many EmailLogs.
-     * @example
-     * // Create many EmailLogs
-     * const emailLog = await prisma.emailLog.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends EmailLogCreateManyArgs>(args?: SelectSubset<T, EmailLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many EmailLogs and returns the data saved in the database.
-     * @param {EmailLogCreateManyAndReturnArgs} args - Arguments to create many EmailLogs.
-     * @example
-     * // Create many EmailLogs
-     * const emailLog = await prisma.emailLog.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many EmailLogs and only return the `id`
-     * const emailLogWithIdOnly = await prisma.emailLog.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends EmailLogCreateManyAndReturnArgs>(args?: SelectSubset<T, EmailLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a EmailLog.
-     * @param {EmailLogDeleteArgs} args - Arguments to delete one EmailLog.
-     * @example
-     * // Delete one EmailLog
-     * const EmailLog = await prisma.emailLog.delete({
-     *   where: {
-     *     // ... filter to delete one EmailLog
-     *   }
-     * })
-     * 
-     */
-    delete<T extends EmailLogDeleteArgs>(args: SelectSubset<T, EmailLogDeleteArgs<ExtArgs>>): Prisma__EmailLogClient<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one EmailLog.
-     * @param {EmailLogUpdateArgs} args - Arguments to update one EmailLog.
-     * @example
-     * // Update one EmailLog
-     * const emailLog = await prisma.emailLog.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends EmailLogUpdateArgs>(args: SelectSubset<T, EmailLogUpdateArgs<ExtArgs>>): Prisma__EmailLogClient<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more EmailLogs.
-     * @param {EmailLogDeleteManyArgs} args - Arguments to filter EmailLogs to delete.
-     * @example
-     * // Delete a few EmailLogs
-     * const { count } = await prisma.emailLog.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends EmailLogDeleteManyArgs>(args?: SelectSubset<T, EmailLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more EmailLogs.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {EmailLogUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many EmailLogs
-     * const emailLog = await prisma.emailLog.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends EmailLogUpdateManyArgs>(args: SelectSubset<T, EmailLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more EmailLogs and returns the data updated in the database.
-     * @param {EmailLogUpdateManyAndReturnArgs} args - Arguments to update many EmailLogs.
-     * @example
-     * // Update many EmailLogs
-     * const emailLog = await prisma.emailLog.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more EmailLogs and only return the `id`
-     * const emailLogWithIdOnly = await prisma.emailLog.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends EmailLogUpdateManyAndReturnArgs>(args: SelectSubset<T, EmailLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one EmailLog.
-     * @param {EmailLogUpsertArgs} args - Arguments to update or create a EmailLog.
-     * @example
-     * // Update or create a EmailLog
-     * const emailLog = await prisma.emailLog.upsert({
-     *   create: {
-     *     // ... data to create a EmailLog
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the EmailLog we want to update
-     *   }
-     * })
-     */
-    upsert<T extends EmailLogUpsertArgs>(args: SelectSubset<T, EmailLogUpsertArgs<ExtArgs>>): Prisma__EmailLogClient<$Result.GetResult<Prisma.$EmailLogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of EmailLogs.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {EmailLogCountArgs} args - Arguments to filter EmailLogs to count.
-     * @example
-     * // Count the number of EmailLogs
-     * const count = await prisma.emailLog.count({
-     *   where: {
-     *     // ... the filter for the EmailLogs we want to count
-     *   }
-     * })
-    **/
-    count<T extends EmailLogCountArgs>(
-      args?: Subset<T, EmailLogCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], EmailLogCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a EmailLog.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {EmailLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends EmailLogAggregateArgs>(args: Subset<T, EmailLogAggregateArgs>): Prisma.PrismaPromise<GetEmailLogAggregateType<T>>
-
-    /**
-     * Group by EmailLog.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {EmailLogGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends EmailLogGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: EmailLogGroupByArgs['orderBy'] }
-        : { orderBy?: EmailLogGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, EmailLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEmailLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the EmailLog model
-   */
-  readonly fields: EmailLogFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for EmailLog.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__EmailLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    booking<T extends EmailLog$bookingArgs<ExtArgs> = {}>(args?: Subset<T, EmailLog$bookingArgs<ExtArgs>>): Prisma__BookingClient<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the EmailLog model
-   */
-  interface EmailLogFieldRefs {
-    readonly id: FieldRef<"EmailLog", 'String'>
-    readonly booking_id: FieldRef<"EmailLog", 'String'>
-    readonly recipient_email: FieldRef<"EmailLog", 'String'>
-    readonly email_type: FieldRef<"EmailLog", 'String'>
-    readonly sent_at: FieldRef<"EmailLog", 'DateTime'>
-    readonly status: FieldRef<"EmailLog", 'String'>
-    readonly error_message: FieldRef<"EmailLog", 'String'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * EmailLog findUnique
-   */
-  export type EmailLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EmailLog
-     */
-    select?: EmailLogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the EmailLog
-     */
-    omit?: EmailLogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EmailLogInclude<ExtArgs> | null
-    /**
-     * Filter, which EmailLog to fetch.
-     */
-    where: EmailLogWhereUniqueInput
-  }
-
-  /**
-   * EmailLog findUniqueOrThrow
-   */
-  export type EmailLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EmailLog
-     */
-    select?: EmailLogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the EmailLog
-     */
-    omit?: EmailLogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EmailLogInclude<ExtArgs> | null
-    /**
-     * Filter, which EmailLog to fetch.
-     */
-    where: EmailLogWhereUniqueInput
-  }
-
-  /**
-   * EmailLog findFirst
-   */
-  export type EmailLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EmailLog
-     */
-    select?: EmailLogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the EmailLog
-     */
-    omit?: EmailLogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EmailLogInclude<ExtArgs> | null
-    /**
-     * Filter, which EmailLog to fetch.
-     */
-    where?: EmailLogWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of EmailLogs to fetch.
-     */
-    orderBy?: EmailLogOrderByWithRelationInput | EmailLogOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for EmailLogs.
-     */
-    cursor?: EmailLogWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` EmailLogs from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` EmailLogs.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of EmailLogs.
-     */
-    distinct?: EmailLogScalarFieldEnum | EmailLogScalarFieldEnum[]
-  }
-
-  /**
-   * EmailLog findFirstOrThrow
-   */
-  export type EmailLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EmailLog
-     */
-    select?: EmailLogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the EmailLog
-     */
-    omit?: EmailLogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EmailLogInclude<ExtArgs> | null
-    /**
-     * Filter, which EmailLog to fetch.
-     */
-    where?: EmailLogWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of EmailLogs to fetch.
-     */
-    orderBy?: EmailLogOrderByWithRelationInput | EmailLogOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for EmailLogs.
-     */
-    cursor?: EmailLogWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` EmailLogs from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` EmailLogs.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of EmailLogs.
-     */
-    distinct?: EmailLogScalarFieldEnum | EmailLogScalarFieldEnum[]
-  }
-
-  /**
-   * EmailLog findMany
-   */
-  export type EmailLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EmailLog
-     */
-    select?: EmailLogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the EmailLog
-     */
-    omit?: EmailLogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EmailLogInclude<ExtArgs> | null
-    /**
-     * Filter, which EmailLogs to fetch.
-     */
-    where?: EmailLogWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of EmailLogs to fetch.
-     */
-    orderBy?: EmailLogOrderByWithRelationInput | EmailLogOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing EmailLogs.
-     */
-    cursor?: EmailLogWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` EmailLogs from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` EmailLogs.
-     */
-    skip?: number
-    distinct?: EmailLogScalarFieldEnum | EmailLogScalarFieldEnum[]
-  }
-
-  /**
-   * EmailLog create
-   */
-  export type EmailLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EmailLog
-     */
-    select?: EmailLogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the EmailLog
-     */
-    omit?: EmailLogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EmailLogInclude<ExtArgs> | null
-    /**
-     * The data needed to create a EmailLog.
-     */
-    data: XOR<EmailLogCreateInput, EmailLogUncheckedCreateInput>
-  }
-
-  /**
-   * EmailLog createMany
-   */
-  export type EmailLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many EmailLogs.
-     */
-    data: EmailLogCreateManyInput | EmailLogCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * EmailLog createManyAndReturn
-   */
-  export type EmailLogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EmailLog
-     */
-    select?: EmailLogSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the EmailLog
-     */
-    omit?: EmailLogOmit<ExtArgs> | null
-    /**
-     * The data used to create many EmailLogs.
-     */
-    data: EmailLogCreateManyInput | EmailLogCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EmailLogIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * EmailLog update
-   */
-  export type EmailLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EmailLog
-     */
-    select?: EmailLogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the EmailLog
-     */
-    omit?: EmailLogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EmailLogInclude<ExtArgs> | null
-    /**
-     * The data needed to update a EmailLog.
-     */
-    data: XOR<EmailLogUpdateInput, EmailLogUncheckedUpdateInput>
-    /**
-     * Choose, which EmailLog to update.
-     */
-    where: EmailLogWhereUniqueInput
-  }
-
-  /**
-   * EmailLog updateMany
-   */
-  export type EmailLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update EmailLogs.
-     */
-    data: XOR<EmailLogUpdateManyMutationInput, EmailLogUncheckedUpdateManyInput>
-    /**
-     * Filter which EmailLogs to update
-     */
-    where?: EmailLogWhereInput
-    /**
-     * Limit how many EmailLogs to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * EmailLog updateManyAndReturn
-   */
-  export type EmailLogUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EmailLog
-     */
-    select?: EmailLogSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the EmailLog
-     */
-    omit?: EmailLogOmit<ExtArgs> | null
-    /**
-     * The data used to update EmailLogs.
-     */
-    data: XOR<EmailLogUpdateManyMutationInput, EmailLogUncheckedUpdateManyInput>
-    /**
-     * Filter which EmailLogs to update
-     */
-    where?: EmailLogWhereInput
-    /**
-     * Limit how many EmailLogs to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EmailLogIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * EmailLog upsert
-   */
-  export type EmailLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EmailLog
-     */
-    select?: EmailLogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the EmailLog
-     */
-    omit?: EmailLogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EmailLogInclude<ExtArgs> | null
-    /**
-     * The filter to search for the EmailLog to update in case it exists.
-     */
-    where: EmailLogWhereUniqueInput
-    /**
-     * In case the EmailLog found by the `where` argument doesn't exist, create a new EmailLog with this data.
-     */
-    create: XOR<EmailLogCreateInput, EmailLogUncheckedCreateInput>
-    /**
-     * In case the EmailLog was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<EmailLogUpdateInput, EmailLogUncheckedUpdateInput>
-  }
-
-  /**
-   * EmailLog delete
-   */
-  export type EmailLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EmailLog
-     */
-    select?: EmailLogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the EmailLog
-     */
-    omit?: EmailLogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EmailLogInclude<ExtArgs> | null
-    /**
-     * Filter which EmailLog to delete.
-     */
-    where: EmailLogWhereUniqueInput
-  }
-
-  /**
-   * EmailLog deleteMany
-   */
-  export type EmailLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which EmailLogs to delete
-     */
-    where?: EmailLogWhereInput
-    /**
-     * Limit how many EmailLogs to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * EmailLog.booking
-   */
-  export type EmailLog$bookingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Booking
-     */
-    select?: BookingSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Booking
-     */
-    omit?: BookingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BookingInclude<ExtArgs> | null
-    where?: BookingWhereInput
-  }
-
-  /**
-   * EmailLog without action
-   */
-  export type EmailLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EmailLog
-     */
-    select?: EmailLogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the EmailLog
-     */
-    omit?: EmailLogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EmailLogInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Enums
    */
 
@@ -24311,19 +23080,6 @@ export namespace Prisma {
   };
 
   export type MaintenanceRequestScalarFieldEnum = (typeof MaintenanceRequestScalarFieldEnum)[keyof typeof MaintenanceRequestScalarFieldEnum]
-
-
-  export const EmailLogScalarFieldEnum: {
-    id: 'id',
-    booking_id: 'booking_id',
-    recipient_email: 'recipient_email',
-    email_type: 'email_type',
-    sent_at: 'sent_at',
-    status: 'status',
-    error_message: 'error_message'
-  };
-
-  export type EmailLogScalarFieldEnum = (typeof EmailLogScalarFieldEnum)[keyof typeof EmailLogScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -25362,7 +24118,6 @@ export namespace Prisma {
     hod?: XOR<ProfileNullableScalarRelationFilter, ProfileWhereInput> | null
     logs?: BookingLogListRelationFilter
     notifications?: NotificationListRelationFilter
-    emailLogs?: EmailLogListRelationFilter
     media?: BookingMediaListRelationFilter
   }
 
@@ -25390,7 +24145,6 @@ export namespace Prisma {
     hod?: ProfileOrderByWithRelationInput
     logs?: BookingLogOrderByRelationAggregateInput
     notifications?: NotificationOrderByRelationAggregateInput
-    emailLogs?: EmailLogOrderByRelationAggregateInput
     media?: BookingMediaOrderByRelationAggregateInput
   }
 
@@ -25421,7 +24175,6 @@ export namespace Prisma {
     hod?: XOR<ProfileNullableScalarRelationFilter, ProfileWhereInput> | null
     logs?: BookingLogListRelationFilter
     notifications?: NotificationListRelationFilter
-    emailLogs?: EmailLogListRelationFilter
     media?: BookingMediaListRelationFilter
   }, "id">
 
@@ -25973,71 +24726,6 @@ export namespace Prisma {
     rejection_reason?: StringNullableWithAggregatesFilter<"MaintenanceRequest"> | string | null
     created_at?: DateTimeWithAggregatesFilter<"MaintenanceRequest"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"MaintenanceRequest"> | Date | string
-  }
-
-  export type EmailLogWhereInput = {
-    AND?: EmailLogWhereInput | EmailLogWhereInput[]
-    OR?: EmailLogWhereInput[]
-    NOT?: EmailLogWhereInput | EmailLogWhereInput[]
-    id?: StringFilter<"EmailLog"> | string
-    booking_id?: StringNullableFilter<"EmailLog"> | string | null
-    recipient_email?: StringFilter<"EmailLog"> | string
-    email_type?: StringFilter<"EmailLog"> | string
-    sent_at?: DateTimeFilter<"EmailLog"> | Date | string
-    status?: StringFilter<"EmailLog"> | string
-    error_message?: StringNullableFilter<"EmailLog"> | string | null
-    booking?: XOR<BookingNullableScalarRelationFilter, BookingWhereInput> | null
-  }
-
-  export type EmailLogOrderByWithRelationInput = {
-    id?: SortOrder
-    booking_id?: SortOrderInput | SortOrder
-    recipient_email?: SortOrder
-    email_type?: SortOrder
-    sent_at?: SortOrder
-    status?: SortOrder
-    error_message?: SortOrderInput | SortOrder
-    booking?: BookingOrderByWithRelationInput
-  }
-
-  export type EmailLogWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: EmailLogWhereInput | EmailLogWhereInput[]
-    OR?: EmailLogWhereInput[]
-    NOT?: EmailLogWhereInput | EmailLogWhereInput[]
-    booking_id?: StringNullableFilter<"EmailLog"> | string | null
-    recipient_email?: StringFilter<"EmailLog"> | string
-    email_type?: StringFilter<"EmailLog"> | string
-    sent_at?: DateTimeFilter<"EmailLog"> | Date | string
-    status?: StringFilter<"EmailLog"> | string
-    error_message?: StringNullableFilter<"EmailLog"> | string | null
-    booking?: XOR<BookingNullableScalarRelationFilter, BookingWhereInput> | null
-  }, "id">
-
-  export type EmailLogOrderByWithAggregationInput = {
-    id?: SortOrder
-    booking_id?: SortOrderInput | SortOrder
-    recipient_email?: SortOrder
-    email_type?: SortOrder
-    sent_at?: SortOrder
-    status?: SortOrder
-    error_message?: SortOrderInput | SortOrder
-    _count?: EmailLogCountOrderByAggregateInput
-    _max?: EmailLogMaxOrderByAggregateInput
-    _min?: EmailLogMinOrderByAggregateInput
-  }
-
-  export type EmailLogScalarWhereWithAggregatesInput = {
-    AND?: EmailLogScalarWhereWithAggregatesInput | EmailLogScalarWhereWithAggregatesInput[]
-    OR?: EmailLogScalarWhereWithAggregatesInput[]
-    NOT?: EmailLogScalarWhereWithAggregatesInput | EmailLogScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"EmailLog"> | string
-    booking_id?: StringNullableWithAggregatesFilter<"EmailLog"> | string | null
-    recipient_email?: StringWithAggregatesFilter<"EmailLog"> | string
-    email_type?: StringWithAggregatesFilter<"EmailLog"> | string
-    sent_at?: DateTimeWithAggregatesFilter<"EmailLog"> | Date | string
-    status?: StringWithAggregatesFilter<"EmailLog"> | string
-    error_message?: StringNullableWithAggregatesFilter<"EmailLog"> | string | null
   }
 
   export type DepartmentCreateInput = {
@@ -26809,7 +25497,6 @@ export namespace Prisma {
     hod?: ProfileCreateNestedOneWithoutHodBookingsInput
     logs?: BookingLogCreateNestedManyWithoutBookingInput
     notifications?: NotificationCreateNestedManyWithoutRelatedBookingInput
-    emailLogs?: EmailLogCreateNestedManyWithoutBookingInput
     media?: BookingMediaCreateNestedManyWithoutBookingInput
   }
 
@@ -26834,7 +25521,6 @@ export namespace Prisma {
     hod_id?: string | null
     logs?: BookingLogUncheckedCreateNestedManyWithoutBookingInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutRelatedBookingInput
-    emailLogs?: EmailLogUncheckedCreateNestedManyWithoutBookingInput
     media?: BookingMediaUncheckedCreateNestedManyWithoutBookingInput
   }
 
@@ -26859,7 +25545,6 @@ export namespace Prisma {
     hod?: ProfileUpdateOneWithoutHodBookingsNestedInput
     logs?: BookingLogUpdateManyWithoutBookingNestedInput
     notifications?: NotificationUpdateManyWithoutRelatedBookingNestedInput
-    emailLogs?: EmailLogUpdateManyWithoutBookingNestedInput
     media?: BookingMediaUpdateManyWithoutBookingNestedInput
   }
 
@@ -26884,7 +25569,6 @@ export namespace Prisma {
     hod_id?: NullableStringFieldUpdateOperationsInput | string | null
     logs?: BookingLogUncheckedUpdateManyWithoutBookingNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutRelatedBookingNestedInput
-    emailLogs?: EmailLogUncheckedUpdateManyWithoutBookingNestedInput
     media?: BookingMediaUncheckedUpdateManyWithoutBookingNestedInput
   }
 
@@ -27472,75 +26156,6 @@ export namespace Prisma {
     rejection_reason?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type EmailLogCreateInput = {
-    id?: string
-    recipient_email: string
-    email_type: string
-    sent_at?: Date | string
-    status?: string
-    error_message?: string | null
-    booking?: BookingCreateNestedOneWithoutEmailLogsInput
-  }
-
-  export type EmailLogUncheckedCreateInput = {
-    id?: string
-    booking_id?: string | null
-    recipient_email: string
-    email_type: string
-    sent_at?: Date | string
-    status?: string
-    error_message?: string | null
-  }
-
-  export type EmailLogUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    recipient_email?: StringFieldUpdateOperationsInput | string
-    email_type?: StringFieldUpdateOperationsInput | string
-    sent_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: StringFieldUpdateOperationsInput | string
-    error_message?: NullableStringFieldUpdateOperationsInput | string | null
-    booking?: BookingUpdateOneWithoutEmailLogsNestedInput
-  }
-
-  export type EmailLogUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    booking_id?: NullableStringFieldUpdateOperationsInput | string | null
-    recipient_email?: StringFieldUpdateOperationsInput | string
-    email_type?: StringFieldUpdateOperationsInput | string
-    sent_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: StringFieldUpdateOperationsInput | string
-    error_message?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type EmailLogCreateManyInput = {
-    id?: string
-    booking_id?: string | null
-    recipient_email: string
-    email_type: string
-    sent_at?: Date | string
-    status?: string
-    error_message?: string | null
-  }
-
-  export type EmailLogUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    recipient_email?: StringFieldUpdateOperationsInput | string
-    email_type?: StringFieldUpdateOperationsInput | string
-    sent_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: StringFieldUpdateOperationsInput | string
-    error_message?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type EmailLogUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    booking_id?: NullableStringFieldUpdateOperationsInput | string | null
-    recipient_email?: StringFieldUpdateOperationsInput | string
-    email_type?: StringFieldUpdateOperationsInput | string
-    sent_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: StringFieldUpdateOperationsInput | string
-    error_message?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -28310,16 +26925,6 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type EmailLogListRelationFilter = {
-    every?: EmailLogWhereInput
-    some?: EmailLogWhereInput
-    none?: EmailLogWhereInput
-  }
-
-  export type EmailLogOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type BookingCountOrderByAggregateInput = {
     id?: SortOrder
     booking_date?: SortOrder
@@ -28887,36 +27492,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumMaintenanceRequestStatusFilter<$PrismaModel>
     _max?: NestedEnumMaintenanceRequestStatusFilter<$PrismaModel>
-  }
-
-  export type EmailLogCountOrderByAggregateInput = {
-    id?: SortOrder
-    booking_id?: SortOrder
-    recipient_email?: SortOrder
-    email_type?: SortOrder
-    sent_at?: SortOrder
-    status?: SortOrder
-    error_message?: SortOrder
-  }
-
-  export type EmailLogMaxOrderByAggregateInput = {
-    id?: SortOrder
-    booking_id?: SortOrder
-    recipient_email?: SortOrder
-    email_type?: SortOrder
-    sent_at?: SortOrder
-    status?: SortOrder
-    error_message?: SortOrder
-  }
-
-  export type EmailLogMinOrderByAggregateInput = {
-    id?: SortOrder
-    booking_id?: SortOrder
-    recipient_email?: SortOrder
-    email_type?: SortOrder
-    sent_at?: SortOrder
-    status?: SortOrder
-    error_message?: SortOrder
   }
 
   export type ProfileCreateNestedOneWithoutHod_of_departmentInput = {
@@ -30271,13 +28846,6 @@ export namespace Prisma {
     connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
   }
 
-  export type EmailLogCreateNestedManyWithoutBookingInput = {
-    create?: XOR<EmailLogCreateWithoutBookingInput, EmailLogUncheckedCreateWithoutBookingInput> | EmailLogCreateWithoutBookingInput[] | EmailLogUncheckedCreateWithoutBookingInput[]
-    connectOrCreate?: EmailLogCreateOrConnectWithoutBookingInput | EmailLogCreateOrConnectWithoutBookingInput[]
-    createMany?: EmailLogCreateManyBookingInputEnvelope
-    connect?: EmailLogWhereUniqueInput | EmailLogWhereUniqueInput[]
-  }
-
   export type BookingMediaCreateNestedManyWithoutBookingInput = {
     create?: XOR<BookingMediaCreateWithoutBookingInput, BookingMediaUncheckedCreateWithoutBookingInput> | BookingMediaCreateWithoutBookingInput[] | BookingMediaUncheckedCreateWithoutBookingInput[]
     connectOrCreate?: BookingMediaCreateOrConnectWithoutBookingInput | BookingMediaCreateOrConnectWithoutBookingInput[]
@@ -30297,13 +28865,6 @@ export namespace Prisma {
     connectOrCreate?: NotificationCreateOrConnectWithoutRelatedBookingInput | NotificationCreateOrConnectWithoutRelatedBookingInput[]
     createMany?: NotificationCreateManyRelatedBookingInputEnvelope
     connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-  }
-
-  export type EmailLogUncheckedCreateNestedManyWithoutBookingInput = {
-    create?: XOR<EmailLogCreateWithoutBookingInput, EmailLogUncheckedCreateWithoutBookingInput> | EmailLogCreateWithoutBookingInput[] | EmailLogUncheckedCreateWithoutBookingInput[]
-    connectOrCreate?: EmailLogCreateOrConnectWithoutBookingInput | EmailLogCreateOrConnectWithoutBookingInput[]
-    createMany?: EmailLogCreateManyBookingInputEnvelope
-    connect?: EmailLogWhereUniqueInput | EmailLogWhereUniqueInput[]
   }
 
   export type BookingMediaUncheckedCreateNestedManyWithoutBookingInput = {
@@ -30383,20 +28944,6 @@ export namespace Prisma {
     deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
   }
 
-  export type EmailLogUpdateManyWithoutBookingNestedInput = {
-    create?: XOR<EmailLogCreateWithoutBookingInput, EmailLogUncheckedCreateWithoutBookingInput> | EmailLogCreateWithoutBookingInput[] | EmailLogUncheckedCreateWithoutBookingInput[]
-    connectOrCreate?: EmailLogCreateOrConnectWithoutBookingInput | EmailLogCreateOrConnectWithoutBookingInput[]
-    upsert?: EmailLogUpsertWithWhereUniqueWithoutBookingInput | EmailLogUpsertWithWhereUniqueWithoutBookingInput[]
-    createMany?: EmailLogCreateManyBookingInputEnvelope
-    set?: EmailLogWhereUniqueInput | EmailLogWhereUniqueInput[]
-    disconnect?: EmailLogWhereUniqueInput | EmailLogWhereUniqueInput[]
-    delete?: EmailLogWhereUniqueInput | EmailLogWhereUniqueInput[]
-    connect?: EmailLogWhereUniqueInput | EmailLogWhereUniqueInput[]
-    update?: EmailLogUpdateWithWhereUniqueWithoutBookingInput | EmailLogUpdateWithWhereUniqueWithoutBookingInput[]
-    updateMany?: EmailLogUpdateManyWithWhereWithoutBookingInput | EmailLogUpdateManyWithWhereWithoutBookingInput[]
-    deleteMany?: EmailLogScalarWhereInput | EmailLogScalarWhereInput[]
-  }
-
   export type BookingMediaUpdateManyWithoutBookingNestedInput = {
     create?: XOR<BookingMediaCreateWithoutBookingInput, BookingMediaUncheckedCreateWithoutBookingInput> | BookingMediaCreateWithoutBookingInput[] | BookingMediaUncheckedCreateWithoutBookingInput[]
     connectOrCreate?: BookingMediaCreateOrConnectWithoutBookingInput | BookingMediaCreateOrConnectWithoutBookingInput[]
@@ -30437,20 +28984,6 @@ export namespace Prisma {
     update?: NotificationUpdateWithWhereUniqueWithoutRelatedBookingInput | NotificationUpdateWithWhereUniqueWithoutRelatedBookingInput[]
     updateMany?: NotificationUpdateManyWithWhereWithoutRelatedBookingInput | NotificationUpdateManyWithWhereWithoutRelatedBookingInput[]
     deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
-  }
-
-  export type EmailLogUncheckedUpdateManyWithoutBookingNestedInput = {
-    create?: XOR<EmailLogCreateWithoutBookingInput, EmailLogUncheckedCreateWithoutBookingInput> | EmailLogCreateWithoutBookingInput[] | EmailLogUncheckedCreateWithoutBookingInput[]
-    connectOrCreate?: EmailLogCreateOrConnectWithoutBookingInput | EmailLogCreateOrConnectWithoutBookingInput[]
-    upsert?: EmailLogUpsertWithWhereUniqueWithoutBookingInput | EmailLogUpsertWithWhereUniqueWithoutBookingInput[]
-    createMany?: EmailLogCreateManyBookingInputEnvelope
-    set?: EmailLogWhereUniqueInput | EmailLogWhereUniqueInput[]
-    disconnect?: EmailLogWhereUniqueInput | EmailLogWhereUniqueInput[]
-    delete?: EmailLogWhereUniqueInput | EmailLogWhereUniqueInput[]
-    connect?: EmailLogWhereUniqueInput | EmailLogWhereUniqueInput[]
-    update?: EmailLogUpdateWithWhereUniqueWithoutBookingInput | EmailLogUpdateWithWhereUniqueWithoutBookingInput[]
-    updateMany?: EmailLogUpdateManyWithWhereWithoutBookingInput | EmailLogUpdateManyWithWhereWithoutBookingInput[]
-    deleteMany?: EmailLogScalarWhereInput | EmailLogScalarWhereInput[]
   }
 
   export type BookingMediaUncheckedUpdateManyWithoutBookingNestedInput = {
@@ -30797,22 +29330,6 @@ export namespace Prisma {
     delete?: ProfileWhereInput | boolean
     connect?: ProfileWhereUniqueInput
     update?: XOR<XOR<ProfileUpdateToOneWithWhereWithoutMaintenanceRequestsInput, ProfileUpdateWithoutMaintenanceRequestsInput>, ProfileUncheckedUpdateWithoutMaintenanceRequestsInput>
-  }
-
-  export type BookingCreateNestedOneWithoutEmailLogsInput = {
-    create?: XOR<BookingCreateWithoutEmailLogsInput, BookingUncheckedCreateWithoutEmailLogsInput>
-    connectOrCreate?: BookingCreateOrConnectWithoutEmailLogsInput
-    connect?: BookingWhereUniqueInput
-  }
-
-  export type BookingUpdateOneWithoutEmailLogsNestedInput = {
-    create?: XOR<BookingCreateWithoutEmailLogsInput, BookingUncheckedCreateWithoutEmailLogsInput>
-    connectOrCreate?: BookingCreateOrConnectWithoutEmailLogsInput
-    upsert?: BookingUpsertWithoutEmailLogsInput
-    disconnect?: BookingWhereInput | boolean
-    delete?: BookingWhereInput | boolean
-    connect?: BookingWhereUniqueInput
-    update?: XOR<XOR<BookingUpdateToOneWithWhereWithoutEmailLogsInput, BookingUpdateWithoutEmailLogsInput>, BookingUncheckedUpdateWithoutEmailLogsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -31943,7 +30460,6 @@ export namespace Prisma {
     hod?: ProfileCreateNestedOneWithoutHodBookingsInput
     logs?: BookingLogCreateNestedManyWithoutBookingInput
     notifications?: NotificationCreateNestedManyWithoutRelatedBookingInput
-    emailLogs?: EmailLogCreateNestedManyWithoutBookingInput
     media?: BookingMediaCreateNestedManyWithoutBookingInput
   }
 
@@ -31967,7 +30483,6 @@ export namespace Prisma {
     hod_id?: string | null
     logs?: BookingLogUncheckedCreateNestedManyWithoutBookingInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutRelatedBookingInput
-    emailLogs?: EmailLogUncheckedCreateNestedManyWithoutBookingInput
     media?: BookingMediaUncheckedCreateNestedManyWithoutBookingInput
   }
 
@@ -32001,7 +30516,6 @@ export namespace Prisma {
     teacher: ProfileCreateNestedOneWithoutTeacherBookingsInput
     logs?: BookingLogCreateNestedManyWithoutBookingInput
     notifications?: NotificationCreateNestedManyWithoutRelatedBookingInput
-    emailLogs?: EmailLogCreateNestedManyWithoutBookingInput
     media?: BookingMediaCreateNestedManyWithoutBookingInput
   }
 
@@ -32025,7 +30539,6 @@ export namespace Prisma {
     teacher_id: string
     logs?: BookingLogUncheckedCreateNestedManyWithoutBookingInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutRelatedBookingInput
-    emailLogs?: EmailLogUncheckedCreateNestedManyWithoutBookingInput
     media?: BookingMediaUncheckedCreateNestedManyWithoutBookingInput
   }
 
@@ -33090,7 +31603,6 @@ export namespace Prisma {
     hod?: ProfileCreateNestedOneWithoutHodBookingsInput
     logs?: BookingLogCreateNestedManyWithoutBookingInput
     notifications?: NotificationCreateNestedManyWithoutRelatedBookingInput
-    emailLogs?: EmailLogCreateNestedManyWithoutBookingInput
     media?: BookingMediaCreateNestedManyWithoutBookingInput
   }
 
@@ -33114,7 +31626,6 @@ export namespace Prisma {
     hod_id?: string | null
     logs?: BookingLogUncheckedCreateNestedManyWithoutBookingInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutRelatedBookingInput
-    emailLogs?: EmailLogUncheckedCreateNestedManyWithoutBookingInput
     media?: BookingMediaUncheckedCreateNestedManyWithoutBookingInput
   }
 
@@ -34543,34 +33054,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type EmailLogCreateWithoutBookingInput = {
-    id?: string
-    recipient_email: string
-    email_type: string
-    sent_at?: Date | string
-    status?: string
-    error_message?: string | null
-  }
-
-  export type EmailLogUncheckedCreateWithoutBookingInput = {
-    id?: string
-    recipient_email: string
-    email_type: string
-    sent_at?: Date | string
-    status?: string
-    error_message?: string | null
-  }
-
-  export type EmailLogCreateOrConnectWithoutBookingInput = {
-    where: EmailLogWhereUniqueInput
-    create: XOR<EmailLogCreateWithoutBookingInput, EmailLogUncheckedCreateWithoutBookingInput>
-  }
-
-  export type EmailLogCreateManyBookingInputEnvelope = {
-    data: EmailLogCreateManyBookingInput | EmailLogCreateManyBookingInput[]
-    skipDuplicates?: boolean
-  }
-
   export type BookingMediaCreateWithoutBookingInput = {
     id?: string
     url: string
@@ -34802,35 +33285,6 @@ export namespace Prisma {
     data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutRelatedBookingInput>
   }
 
-  export type EmailLogUpsertWithWhereUniqueWithoutBookingInput = {
-    where: EmailLogWhereUniqueInput
-    update: XOR<EmailLogUpdateWithoutBookingInput, EmailLogUncheckedUpdateWithoutBookingInput>
-    create: XOR<EmailLogCreateWithoutBookingInput, EmailLogUncheckedCreateWithoutBookingInput>
-  }
-
-  export type EmailLogUpdateWithWhereUniqueWithoutBookingInput = {
-    where: EmailLogWhereUniqueInput
-    data: XOR<EmailLogUpdateWithoutBookingInput, EmailLogUncheckedUpdateWithoutBookingInput>
-  }
-
-  export type EmailLogUpdateManyWithWhereWithoutBookingInput = {
-    where: EmailLogScalarWhereInput
-    data: XOR<EmailLogUpdateManyMutationInput, EmailLogUncheckedUpdateManyWithoutBookingInput>
-  }
-
-  export type EmailLogScalarWhereInput = {
-    AND?: EmailLogScalarWhereInput | EmailLogScalarWhereInput[]
-    OR?: EmailLogScalarWhereInput[]
-    NOT?: EmailLogScalarWhereInput | EmailLogScalarWhereInput[]
-    id?: StringFilter<"EmailLog"> | string
-    booking_id?: StringNullableFilter<"EmailLog"> | string | null
-    recipient_email?: StringFilter<"EmailLog"> | string
-    email_type?: StringFilter<"EmailLog"> | string
-    sent_at?: DateTimeFilter<"EmailLog"> | Date | string
-    status?: StringFilter<"EmailLog"> | string
-    error_message?: StringNullableFilter<"EmailLog"> | string | null
-  }
-
   export type BookingMediaUpsertWithWhereUniqueWithoutBookingInput = {
     where: BookingMediaWhereUniqueInput
     update: XOR<BookingMediaUpdateWithoutBookingInput, BookingMediaUncheckedUpdateWithoutBookingInput>
@@ -34867,7 +33321,6 @@ export namespace Prisma {
     teacher: ProfileCreateNestedOneWithoutTeacherBookingsInput
     hod?: ProfileCreateNestedOneWithoutHodBookingsInput
     notifications?: NotificationCreateNestedManyWithoutRelatedBookingInput
-    emailLogs?: EmailLogCreateNestedManyWithoutBookingInput
     media?: BookingMediaCreateNestedManyWithoutBookingInput
   }
 
@@ -34891,7 +33344,6 @@ export namespace Prisma {
     teacher_id: string
     hod_id?: string | null
     notifications?: NotificationUncheckedCreateNestedManyWithoutRelatedBookingInput
-    emailLogs?: EmailLogUncheckedCreateNestedManyWithoutBookingInput
     media?: BookingMediaUncheckedCreateNestedManyWithoutBookingInput
   }
 
@@ -34988,7 +33440,6 @@ export namespace Prisma {
     teacher?: ProfileUpdateOneRequiredWithoutTeacherBookingsNestedInput
     hod?: ProfileUpdateOneWithoutHodBookingsNestedInput
     notifications?: NotificationUpdateManyWithoutRelatedBookingNestedInput
-    emailLogs?: EmailLogUpdateManyWithoutBookingNestedInput
     media?: BookingMediaUpdateManyWithoutBookingNestedInput
   }
 
@@ -35012,7 +33463,6 @@ export namespace Prisma {
     teacher_id?: StringFieldUpdateOperationsInput | string
     hod_id?: NullableStringFieldUpdateOperationsInput | string | null
     notifications?: NotificationUncheckedUpdateManyWithoutRelatedBookingNestedInput
-    emailLogs?: EmailLogUncheckedUpdateManyWithoutBookingNestedInput
     media?: BookingMediaUncheckedUpdateManyWithoutBookingNestedInput
   }
 
@@ -35100,7 +33550,6 @@ export namespace Prisma {
     hod?: ProfileCreateNestedOneWithoutHodBookingsInput
     logs?: BookingLogCreateNestedManyWithoutBookingInput
     notifications?: NotificationCreateNestedManyWithoutRelatedBookingInput
-    emailLogs?: EmailLogCreateNestedManyWithoutBookingInput
   }
 
   export type BookingUncheckedCreateWithoutMediaInput = {
@@ -35124,7 +33573,6 @@ export namespace Prisma {
     hod_id?: string | null
     logs?: BookingLogUncheckedCreateNestedManyWithoutBookingInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutRelatedBookingInput
-    emailLogs?: EmailLogUncheckedCreateNestedManyWithoutBookingInput
   }
 
   export type BookingCreateOrConnectWithoutMediaInput = {
@@ -35221,7 +33669,6 @@ export namespace Prisma {
     hod?: ProfileUpdateOneWithoutHodBookingsNestedInput
     logs?: BookingLogUpdateManyWithoutBookingNestedInput
     notifications?: NotificationUpdateManyWithoutRelatedBookingNestedInput
-    emailLogs?: EmailLogUpdateManyWithoutBookingNestedInput
   }
 
   export type BookingUncheckedUpdateWithoutMediaInput = {
@@ -35245,7 +33692,6 @@ export namespace Prisma {
     hod_id?: NullableStringFieldUpdateOperationsInput | string | null
     logs?: BookingLogUncheckedUpdateManyWithoutBookingNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutRelatedBookingNestedInput
-    emailLogs?: EmailLogUncheckedUpdateManyWithoutBookingNestedInput
   }
 
   export type ProfileUpsertWithoutMediaInput = {
@@ -35388,7 +33834,6 @@ export namespace Prisma {
     teacher: ProfileCreateNestedOneWithoutTeacherBookingsInput
     hod?: ProfileCreateNestedOneWithoutHodBookingsInput
     logs?: BookingLogCreateNestedManyWithoutBookingInput
-    emailLogs?: EmailLogCreateNestedManyWithoutBookingInput
     media?: BookingMediaCreateNestedManyWithoutBookingInput
   }
 
@@ -35412,7 +33857,6 @@ export namespace Prisma {
     teacher_id: string
     hod_id?: string | null
     logs?: BookingLogUncheckedCreateNestedManyWithoutBookingInput
-    emailLogs?: EmailLogUncheckedCreateNestedManyWithoutBookingInput
     media?: BookingMediaUncheckedCreateNestedManyWithoutBookingInput
   }
 
@@ -35515,7 +33959,6 @@ export namespace Prisma {
     teacher?: ProfileUpdateOneRequiredWithoutTeacherBookingsNestedInput
     hod?: ProfileUpdateOneWithoutHodBookingsNestedInput
     logs?: BookingLogUpdateManyWithoutBookingNestedInput
-    emailLogs?: EmailLogUpdateManyWithoutBookingNestedInput
     media?: BookingMediaUpdateManyWithoutBookingNestedInput
   }
 
@@ -35539,7 +33982,6 @@ export namespace Prisma {
     teacher_id?: StringFieldUpdateOperationsInput | string
     hod_id?: NullableStringFieldUpdateOperationsInput | string | null
     logs?: BookingLogUncheckedUpdateManyWithoutBookingNestedInput
-    emailLogs?: EmailLogUncheckedUpdateManyWithoutBookingNestedInput
     media?: BookingMediaUncheckedUpdateManyWithoutBookingNestedInput
   }
 
@@ -36417,118 +34859,6 @@ export namespace Prisma {
     media?: BookingMediaUncheckedUpdateManyWithoutUploaderNestedInput
   }
 
-  export type BookingCreateWithoutEmailLogsInput = {
-    id?: string
-    booking_date: Date | string
-    start_time: Date | string
-    end_time: Date | string
-    purpose: string
-    permission_letter_url: string
-    status?: $Enums.BookingStatus
-    approved_at?: Date | string | null
-    rejection_reason?: string | null
-    session_summary?: string | null
-    ai_summary?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: Date | string
-    updated_at?: Date | string
-    expected_participants?: number | null
-    special_requirements?: string | null
-    hall: SeminarHallCreateNestedOneWithoutBookingsInput
-    teacher: ProfileCreateNestedOneWithoutTeacherBookingsInput
-    hod?: ProfileCreateNestedOneWithoutHodBookingsInput
-    logs?: BookingLogCreateNestedManyWithoutBookingInput
-    notifications?: NotificationCreateNestedManyWithoutRelatedBookingInput
-    media?: BookingMediaCreateNestedManyWithoutBookingInput
-  }
-
-  export type BookingUncheckedCreateWithoutEmailLogsInput = {
-    id?: string
-    booking_date: Date | string
-    start_time: Date | string
-    end_time: Date | string
-    purpose: string
-    permission_letter_url: string
-    status?: $Enums.BookingStatus
-    approved_at?: Date | string | null
-    rejection_reason?: string | null
-    session_summary?: string | null
-    ai_summary?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: Date | string
-    updated_at?: Date | string
-    expected_participants?: number | null
-    special_requirements?: string | null
-    hall_id: string
-    teacher_id: string
-    hod_id?: string | null
-    logs?: BookingLogUncheckedCreateNestedManyWithoutBookingInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutRelatedBookingInput
-    media?: BookingMediaUncheckedCreateNestedManyWithoutBookingInput
-  }
-
-  export type BookingCreateOrConnectWithoutEmailLogsInput = {
-    where: BookingWhereUniqueInput
-    create: XOR<BookingCreateWithoutEmailLogsInput, BookingUncheckedCreateWithoutEmailLogsInput>
-  }
-
-  export type BookingUpsertWithoutEmailLogsInput = {
-    update: XOR<BookingUpdateWithoutEmailLogsInput, BookingUncheckedUpdateWithoutEmailLogsInput>
-    create: XOR<BookingCreateWithoutEmailLogsInput, BookingUncheckedCreateWithoutEmailLogsInput>
-    where?: BookingWhereInput
-  }
-
-  export type BookingUpdateToOneWithWhereWithoutEmailLogsInput = {
-    where?: BookingWhereInput
-    data: XOR<BookingUpdateWithoutEmailLogsInput, BookingUncheckedUpdateWithoutEmailLogsInput>
-  }
-
-  export type BookingUpdateWithoutEmailLogsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    booking_date?: DateTimeFieldUpdateOperationsInput | Date | string
-    start_time?: DateTimeFieldUpdateOperationsInput | Date | string
-    end_time?: DateTimeFieldUpdateOperationsInput | Date | string
-    purpose?: StringFieldUpdateOperationsInput | string
-    permission_letter_url?: StringFieldUpdateOperationsInput | string
-    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
-    approved_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    rejection_reason?: NullableStringFieldUpdateOperationsInput | string | null
-    session_summary?: NullableStringFieldUpdateOperationsInput | string | null
-    ai_summary?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    expected_participants?: NullableIntFieldUpdateOperationsInput | number | null
-    special_requirements?: NullableStringFieldUpdateOperationsInput | string | null
-    hall?: SeminarHallUpdateOneRequiredWithoutBookingsNestedInput
-    teacher?: ProfileUpdateOneRequiredWithoutTeacherBookingsNestedInput
-    hod?: ProfileUpdateOneWithoutHodBookingsNestedInput
-    logs?: BookingLogUpdateManyWithoutBookingNestedInput
-    notifications?: NotificationUpdateManyWithoutRelatedBookingNestedInput
-    media?: BookingMediaUpdateManyWithoutBookingNestedInput
-  }
-
-  export type BookingUncheckedUpdateWithoutEmailLogsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    booking_date?: DateTimeFieldUpdateOperationsInput | Date | string
-    start_time?: DateTimeFieldUpdateOperationsInput | Date | string
-    end_time?: DateTimeFieldUpdateOperationsInput | Date | string
-    purpose?: StringFieldUpdateOperationsInput | string
-    permission_letter_url?: StringFieldUpdateOperationsInput | string
-    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
-    approved_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    rejection_reason?: NullableStringFieldUpdateOperationsInput | string | null
-    session_summary?: NullableStringFieldUpdateOperationsInput | string | null
-    ai_summary?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    expected_participants?: NullableIntFieldUpdateOperationsInput | number | null
-    special_requirements?: NullableStringFieldUpdateOperationsInput | string | null
-    hall_id?: StringFieldUpdateOperationsInput | string
-    teacher_id?: StringFieldUpdateOperationsInput | string
-    hod_id?: NullableStringFieldUpdateOperationsInput | string | null
-    logs?: BookingLogUncheckedUpdateManyWithoutBookingNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutRelatedBookingNestedInput
-    media?: BookingMediaUncheckedUpdateManyWithoutBookingNestedInput
-  }
-
   export type ProfileCreateManyDepartmentInput = {
     id?: string
     clerkId: string
@@ -36942,7 +35272,6 @@ export namespace Prisma {
     hod?: ProfileUpdateOneWithoutHodBookingsNestedInput
     logs?: BookingLogUpdateManyWithoutBookingNestedInput
     notifications?: NotificationUpdateManyWithoutRelatedBookingNestedInput
-    emailLogs?: EmailLogUpdateManyWithoutBookingNestedInput
     media?: BookingMediaUpdateManyWithoutBookingNestedInput
   }
 
@@ -36966,7 +35295,6 @@ export namespace Prisma {
     hod_id?: NullableStringFieldUpdateOperationsInput | string | null
     logs?: BookingLogUncheckedUpdateManyWithoutBookingNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutRelatedBookingNestedInput
-    emailLogs?: EmailLogUncheckedUpdateManyWithoutBookingNestedInput
     media?: BookingMediaUncheckedUpdateManyWithoutBookingNestedInput
   }
 
@@ -37010,7 +35338,6 @@ export namespace Prisma {
     teacher?: ProfileUpdateOneRequiredWithoutTeacherBookingsNestedInput
     logs?: BookingLogUpdateManyWithoutBookingNestedInput
     notifications?: NotificationUpdateManyWithoutRelatedBookingNestedInput
-    emailLogs?: EmailLogUpdateManyWithoutBookingNestedInput
     media?: BookingMediaUpdateManyWithoutBookingNestedInput
   }
 
@@ -37034,7 +35361,6 @@ export namespace Prisma {
     teacher_id?: StringFieldUpdateOperationsInput | string
     logs?: BookingLogUncheckedUpdateManyWithoutBookingNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutRelatedBookingNestedInput
-    emailLogs?: EmailLogUncheckedUpdateManyWithoutBookingNestedInput
     media?: BookingMediaUncheckedUpdateManyWithoutBookingNestedInput
   }
 
@@ -37603,7 +35929,6 @@ export namespace Prisma {
     hod?: ProfileUpdateOneWithoutHodBookingsNestedInput
     logs?: BookingLogUpdateManyWithoutBookingNestedInput
     notifications?: NotificationUpdateManyWithoutRelatedBookingNestedInput
-    emailLogs?: EmailLogUpdateManyWithoutBookingNestedInput
     media?: BookingMediaUpdateManyWithoutBookingNestedInput
   }
 
@@ -37627,7 +35952,6 @@ export namespace Prisma {
     hod_id?: NullableStringFieldUpdateOperationsInput | string | null
     logs?: BookingLogUncheckedUpdateManyWithoutBookingNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutRelatedBookingNestedInput
-    emailLogs?: EmailLogUncheckedUpdateManyWithoutBookingNestedInput
     media?: BookingMediaUncheckedUpdateManyWithoutBookingNestedInput
   }
 
@@ -37788,15 +36112,6 @@ export namespace Prisma {
     user_id: string
   }
 
-  export type EmailLogCreateManyBookingInput = {
-    id?: string
-    recipient_email: string
-    email_type: string
-    sent_at?: Date | string
-    status?: string
-    error_message?: string | null
-  }
-
   export type BookingMediaCreateManyBookingInput = {
     id?: string
     url: string
@@ -37865,33 +36180,6 @@ export namespace Prisma {
     read?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     user_id?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type EmailLogUpdateWithoutBookingInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    recipient_email?: StringFieldUpdateOperationsInput | string
-    email_type?: StringFieldUpdateOperationsInput | string
-    sent_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: StringFieldUpdateOperationsInput | string
-    error_message?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type EmailLogUncheckedUpdateWithoutBookingInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    recipient_email?: StringFieldUpdateOperationsInput | string
-    email_type?: StringFieldUpdateOperationsInput | string
-    sent_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: StringFieldUpdateOperationsInput | string
-    error_message?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type EmailLogUncheckedUpdateManyWithoutBookingInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    recipient_email?: StringFieldUpdateOperationsInput | string
-    email_type?: StringFieldUpdateOperationsInput | string
-    sent_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: StringFieldUpdateOperationsInput | string
-    error_message?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BookingMediaUpdateWithoutBookingInput = {

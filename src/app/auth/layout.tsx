@@ -19,7 +19,7 @@ const Layout = async ({ children }: Props) => {
       <div className="w-[600px] ld:w-full flex flex-col items-start p-6">
 
         <h1 className="font-extrabold text-2xl text-teal-400">
-          Seminar Booking System
+          Seminar Hub
         </h1>
 
         {children}

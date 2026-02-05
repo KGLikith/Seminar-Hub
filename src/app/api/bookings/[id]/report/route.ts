@@ -7,15 +7,17 @@ export async function GET(
 ) {
   try {
     const id = (await params).id
+
     const pdfBuffer = await generateBookingPDF(id)
 
-    return new NextResponse(new Uint8Array(pdfBuffer), {
+    return new NextResponse(pdfBuffer, {
       headers: {
         "Content-Type": "application/pdf",
         "Content-Disposition": `attachment; filename="booking-${id}.pdf"`,
       },
     })
   } catch (err: any) {
+    console.log(err, "Error generating PDF")
     return NextResponse.json(
       { error: err.message },
       { status: 400 }

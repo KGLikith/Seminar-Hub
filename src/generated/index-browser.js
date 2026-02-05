@@ -312,16 +312,6 @@ exports.Prisma.MaintenanceRequestScalarFieldEnum = {
   updated_at: 'updated_at'
 };
 
-exports.Prisma.EmailLogScalarFieldEnum = {
-  id: 'id',
-  booking_id: 'booking_id',
-  recipient_email: 'recipient_email',
-  email_type: 'email_type',
-  sent_at: 'sent_at',
-  status: 'status',
-  error_message: 'error_message'
-};
-
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -471,8 +461,7 @@ exports.Prisma.ModelName = {
   Notification: 'Notification',
   HallComponent: 'HallComponent',
   ComponentMaintenanceLog: 'ComponentMaintenanceLog',
-  MaintenanceRequest: 'MaintenanceRequest',
-  EmailLog: 'EmailLog'
+  MaintenanceRequest: 'MaintenanceRequest'
 };
 
 /**

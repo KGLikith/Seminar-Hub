@@ -342,14 +342,23 @@ export async function rejectBooking(
 export async function addBookingSummary(
   bookingId: string,
   summary: string,
-  aiSummary?: any,
 ) {
   const booking = await prisma.booking.update({
     where: { id: bookingId },
     data: {
       session_summary: summary,
-      ai_summary: aiSummary ?? null,
       status: BookingStatus.completed,
+    },
+  })
+
+  return booking
+}
+
+export async function addAiSummary(bookingId: string, aiSummary: any) {
+  const booking = await prisma.booking.update({
+    where: { id: bookingId },
+    data: {
+      ai_summary: aiSummary,
     },
   })
 

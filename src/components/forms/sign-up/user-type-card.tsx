@@ -1,21 +1,28 @@
-"use client";
-import { Card, CardContent, CardDescription } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { UserRole } from "@/generated/enums";
-import { cn } from "@/lib/utils";
-import { User } from "lucide-react";
-import React from "react";
-import { FieldValues, UseFormRegister } from "react-hook-form";
+"use client"
+
+import React from "react"
+import { Card, CardContent, CardDescription } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { UserRole } from "@/generated/enums"
+import { cn } from "@/lib/utils"
+import { User } from "lucide-react"
+import { FieldValues, UseFormRegister } from "react-hook-form"
 
 type Props = {
-  value: UserRole;
-  title: string;
-  text?: string;
-  register: UseFormRegister<FieldValues>;
-  userType: UserRole;
-  setUserType: React.Dispatch<React.SetStateAction<UserRole>>;
-};
+  value: UserRole
+  title: string
+  text?: string
+  register: UseFormRegister<FieldValues>
+  userType: UserRole
+  setUserType: React.Dispatch<React.SetStateAction<UserRole>>
+}
+
+const ROLE_LABELS: Record<UserRole, string> = {
+  [UserRole.teacher]: "Teacher",
+  [UserRole.tech_staff]: "Technical Staff",
+  [UserRole.hod]: "Head of Department",
+}
 
 const UserTypeCard = ({
   register,
@@ -35,6 +42,7 @@ const UserTypeCard = ({
         )}
       >
         <CardContent className="flex justify-between items-center p-0">
+          {/* LEFT SIDE */}
           <div className="flex items-center gap-4">
             <Card
               className={cn(
@@ -51,12 +59,15 @@ const UserTypeCard = ({
             </Card>
 
             <div className="flex flex-col">
+              {/* READABLE ROLE NAME */}
               <CardDescription className="text-teal-300 text-lg font-semibold tracking-wide mb-1">
-                {value}
+                {ROLE_LABELS[value]}
               </CardDescription>
+
               <CardDescription className="text-gray-300 text-sm">
                 {title}
               </CardDescription>
+
               {text && (
                 <CardDescription className="text-gray-500 text-xs">
                   {text}
@@ -65,6 +76,7 @@ const UserTypeCard = ({
             </div>
           </div>
 
+          {/* RIGHT SIDE RADIO */}
           <div className="flex items-center">
             <div
               className={cn(
@@ -75,21 +87,19 @@ const UserTypeCard = ({
               )}
             >
               <Input
-                {...register("type", {
-                  onChange: (event) =>
-                    setUserType(event.target.value as UserRole),
-                })}
+                {...register("type")}
                 value={value}
                 id={value}
-                className="hidden"
                 type="radio"
+                className="hidden"
+                onChange={() => setUserType(value)}
               />
             </div>
           </div>
         </CardContent>
       </Card>
     </Label>
-  );
-};
+  )
+}
 
-export default UserTypeCard;
+export default UserTypeCard
