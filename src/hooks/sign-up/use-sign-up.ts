@@ -12,6 +12,7 @@ import { onCompleteUserRegistration } from "@/actions/auth";
 import { z } from "zod";
 import { toast } from "sonner";
 import { UserRole } from "@/generated/enums";
+import { DepartmentName } from "@/generated";
 
 export const useSignUpForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -21,7 +22,7 @@ export const useSignUpForm = () => {
     resolver: zodResolver(UserRegistrationSchema),
     defaultValues: {
       type: UserRole.teacher,
-      department: "Computer Science",
+      department: DepartmentName.Computer_Science,
       fullname: "",
     email: "",
     password: "",

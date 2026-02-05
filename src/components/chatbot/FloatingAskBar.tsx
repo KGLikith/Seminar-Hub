@@ -3,6 +3,9 @@
 import { useState, useRef, useEffect } from "react"
 import { MessageCircle, X, Send, Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { profile } from "console"
+import { useAuth } from "@clerk/nextjs"
+import { useProfile } from "@/hooks/react-query/useUser"
 
 type ChatMessage = {
   role: "user" | "bot"
@@ -10,9 +13,13 @@ type ChatMessage = {
 }
 
 export default function FloatingAskBar() {
+  const { userId } = useAuth();
+
+  const { data: profile } = useProfile(userId || "");
   const [open, setOpen] = useState(false)
   const [input, setInput] = useState("")
   const [loading, setLoading] = useState(false)
+
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       role: "bot",
@@ -26,12 +33,10 @@ export default function FloatingAskBar() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }
 
-  /* 🔹 Scroll when messages update */
   useEffect(() => {
     scrollToBottom()
   }, [messages])
 
-  /* 🔹 Scroll immediately when chat opens */
   useEffect(() => {
     if (open) {
       setTimeout(scrollToBottom, 50)
@@ -54,7 +59,7 @@ export default function FloatingAskBar() {
       const res = await fetch("/api/chatbot", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMessage.content }),
+        body: JSON.stringify({ message: userMessage.content, profileId: profile?.id }),
       })
 
       const data = await res.json()

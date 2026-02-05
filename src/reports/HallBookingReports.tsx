@@ -7,137 +7,50 @@ import {
 } from "@react-pdf/renderer"
 
 const styles = StyleSheet.create({
-  page: {
-    padding: 40,
-    fontSize: 9,
-    fontFamily: "Helvetica",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 20,
-    borderBottomWidth: 2,
-    borderBottomColor: "#2563eb",
-    paddingBottom: 10,
-  },
-  section: {
-    marginBottom: 20,
-  },
-  hallDetailsContainer: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 8,
-    paddingBottom: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: "#e5e7eb",
-  },
-  detailRow: {
-    flexDirection: "row",
-    marginBottom: 6,
-  },
-  detailLabel: {
-    width: "30%",
-    fontWeight: "bold",
-    color: "#374151",
-  },
-  detailValue: {
-    width: "70%",
-    color: "#1f2937",
-  },
-  label: {
-    fontSize: 12,
-    fontWeight: "bold",
-    marginBottom: 12,
-    color: "#1d4ed8",
-  },
-  tableContainer: {
-    width: "100%",
-    borderWidth: 1,
-    borderColor: "#d1d5db",
-  },
+  page: { padding: 40, fontSize: 9, fontFamily: "Helvetica" },
+  title: { fontSize: 20, fontWeight: "bold", marginBottom: 20 },
+  section: { marginBottom: 20 },
+  label: { fontSize: 12, fontWeight: "bold", marginBottom: 12 },
+  detailRow: { flexDirection: "row", marginBottom: 6 },
+  detailLabel: { width: "30%", fontWeight: "bold" },
+  detailValue: { width: "70%" },
   tableHeader: {
     flexDirection: "row",
     borderBottomWidth: 2,
-    borderBottomColor: "#1f2937",
+    paddingVertical: 6,
     fontWeight: "bold",
-    backgroundColor: "#f3f4f6",
-    paddingVertical: 8,
   },
   tableRow: {
     flexDirection: "row",
     borderBottomWidth: 1,
-    borderBottomColor: "#e5e7eb",
-    minHeight: 45,
-    paddingVertical: 8,
-  },
-  colDate: {
-    width: "12%",
-    paddingHorizontal: 6,
-    paddingVertical: 6,
-    borderRightWidth: 1,
-    borderRightColor: "#e5e7eb",
-  },
-  colTime: {
-    width: "15%",
-    paddingHorizontal: 6,
-    paddingVertical: 6,
-    borderRightWidth: 1,
-    borderRightColor: "#e5e7eb",
-  },
-  colTeacher: {
-    width: "16%",
-    paddingHorizontal: 6,
-    paddingVertical: 6,
-    borderRightWidth: 1,
-    borderRightColor: "#e5e7eb",
-  },
-  colEmail: {
-    width: "20%",
-    paddingHorizontal: 6,
-    paddingVertical: 6,
-    borderRightWidth: 1,
-    borderRightColor: "#e5e7eb",
-  },
-  colStatus: {
-    width: "12%",
-    paddingHorizontal: 6,
-    paddingVertical: 6,
-    borderRightWidth: 1,
-    borderRightColor: "#e5e7eb",
-  },
-  colPurpose: {
-    width: "25%",
-    paddingHorizontal: 6,
     paddingVertical: 6,
   },
-  cellText: {
-    fontSize: 8,
-    color: "#374151",
-    lineHeight: 1.3,
-  },
-  headerText: {
-    fontSize: 9,
-    fontWeight: "bold",
-    color: "#1f2937",
-  },
-  emptyState: {
-    marginTop: 12,
-    paddingVertical: 16,
-    textAlign: "center",
-    color: "#6b7280",
-  },
-  footer: {
-    marginTop: 40,
-    fontSize: 8,
-    textAlign: "center",
-    color: "#6b7280",
-    borderTopWidth: 1,
-    borderTopColor: "#e5e7eb",
-    paddingTop: 12,
-  },
+  colDate: { width: "12%" },
+  colTime: { width: "15%" },
+  colTeacher: { width: "16%" },
+  colEmail: { width: "20%" },
+  colStatus: { width: "12%" },
+  colPurpose: { width: "25%" },
+  cellText: { fontSize: 8 },
+  footer: { marginTop: 30, fontSize: 8, textAlign: "center" },
 })
 
+const safe = (v: any) => (v === null || v === undefined ? "—" : String(v))
+
+const formatDate = (iso?: string | null) =>
+  iso ? new Date(iso).toLocaleDateString() : "—"
+
+const formatTime = (iso?: string | null) =>
+  iso
+    ? new Date(iso).toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+    : "—"
+
 export default function HallBookingReportPDF({ hall }: { hall: any }) {
+  const bookings = hall.bookings ?? []
+
   return (
     <Document>
       <Page style={styles.page}>
@@ -146,85 +59,67 @@ export default function HallBookingReportPDF({ hall }: { hall: any }) {
         {/* Hall Info */}
         <View style={styles.section}>
           <Text style={styles.label}>Hall Details</Text>
-          <View style={styles.hallDetailsContainer}>
-            <View style={styles.detailRow}>
-              <Text style={styles.detailLabel}>Name:</Text>
-              <Text style={styles.detailValue}>{hall.name}</Text>
-            </View>
-            <View style={styles.detailRow}>
-              <Text style={styles.detailLabel}>Location:</Text>
-              <Text style={styles.detailValue}>{hall.location}</Text>
-            </View>
-            <View style={styles.detailRow}>
-              <Text style={styles.detailLabel}>Department:</Text>
-              <Text style={styles.detailValue}>{hall.department?.name}</Text>
-            </View>
-            <View style={styles.detailRow}>
-              <Text style={styles.detailLabel}>Seating Capacity:</Text>
-              <Text style={styles.detailValue}>{hall.seating_capacity}</Text>
-            </View>
+
+          <View style={styles.detailRow}>
+            <Text style={styles.detailLabel}>Name:</Text>
+            <Text style={styles.detailValue}>{safe(hall.name)}</Text>
+          </View>
+
+          <View style={styles.detailRow}>
+            <Text style={styles.detailLabel}>Location:</Text>
+            <Text style={styles.detailValue}>{safe(hall.location)}</Text>
+          </View>
+
+          <View style={styles.detailRow}>
+            <Text style={styles.detailLabel}>Department:</Text>
+            <Text style={styles.detailValue}>
+              {safe(hall.department?.name)}
+            </Text>
+          </View>
+
+          <View style={styles.detailRow}>
+            <Text style={styles.detailLabel}>Capacity:</Text>
+            <Text style={styles.detailValue}>
+              {safe(hall.seating_capacity)}
+            </Text>
           </View>
         </View>
 
-        {/* Booking Table */}
+        {/* Bookings */}
         <View style={styles.section}>
           <Text style={styles.label}>Booking History</Text>
 
-          <View style={styles.tableContainer}>
-            <View style={styles.tableHeader}>
-              <Text style={[styles.colDate, styles.headerText]}>Date</Text>
-              <Text style={[styles.colTime, styles.headerText]}>Time</Text>
-              <Text style={[styles.colTeacher, styles.headerText]}>
-                Teacher
-              </Text>
-              <Text style={[styles.colEmail, styles.headerText]}>Email</Text>
-              <Text style={[styles.colStatus, styles.headerText]}>Status</Text>
-              <Text style={[styles.colPurpose, styles.headerText]}>
-                Purpose
-              </Text>
-            </View>
-
-            {hall.bookings.length === 0 && (
-              <Text style={styles.emptyState}>
-                No bookings found for this hall.
-              </Text>
-            )}
-
-            {hall.bookings.map((b: any) => (
-              <View key={b.id} style={styles.tableRow}>
-                <View style={styles.colDate}>
-                  <Text style={styles.cellText}>
-                    {new Date(b.booking_date).toLocaleDateString()}
-                  </Text>
-                </View>
-                <View style={styles.colTime}>
-                  <Text style={styles.cellText}>
-                    {new Date(b.start_time).toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}{" "}
-                    –{" "}
-                    {new Date(b.end_time).toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </Text>
-                </View>
-                <View style={styles.colTeacher}>
-                  <Text style={styles.cellText}>{b.teacher.name}</Text>
-                </View>
-                <View style={styles.colEmail}>
-                  <Text style={styles.cellText}>{b.teacher.email}</Text>
-                </View>
-                <View style={styles.colStatus}>
-                  <Text style={styles.cellText}>{b.status}</Text>
-                </View>
-                <View style={styles.colPurpose}>
-                  <Text style={styles.cellText}>{b.purpose}</Text>
-                </View>
-              </View>
-            ))}
+          <View style={styles.tableHeader}>
+            <Text style={styles.colDate}>Date</Text>
+            <Text style={styles.colTime}>Time</Text>
+            <Text style={styles.colTeacher}>Teacher</Text>
+            <Text style={styles.colEmail}>Email</Text>
+            <Text style={styles.colStatus}>Status</Text>
+            <Text style={styles.colPurpose}>Purpose</Text>
           </View>
+
+          {bookings.length === 0 && (
+            <Text style={styles.cellText}>No bookings found.</Text>
+          )}
+
+          {bookings.map((b: any) => (
+            <View key={b.id} style={styles.tableRow}>
+              <Text style={styles.colDate}>
+                {formatDate(b.booking_date)}
+              </Text>
+              <Text style={styles.colTime}>
+                {formatTime(b.start_time)} – {formatTime(b.end_time)}
+              </Text>
+              <Text style={styles.colTeacher}>
+                {safe(b.teacher?.name)}
+              </Text>
+              <Text style={styles.colEmail}>
+                {safe(b.teacher?.email)}
+              </Text>
+              <Text style={styles.colStatus}>{safe(b.status)}</Text>
+              <Text style={styles.colPurpose}>{safe(b.purpose)}</Text>
+            </View>
+          ))}
         </View>
 
         <Text style={styles.footer}>

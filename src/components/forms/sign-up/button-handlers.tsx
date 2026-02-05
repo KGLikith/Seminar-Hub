@@ -1,11 +1,14 @@
 "use client";
+import { checkDepartmentHod } from "@/actions/auth/chech-hod";
 import { Button } from "@/components/ui/button";
 import { useAuthContextHook } from "@/context/use-auth-context";
+import { UserRole } from "@/generated/enums";
 import { useSignUpForm } from "@/hooks/sign-up/use-sign-up";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
+import { toast } from "sonner";
 
 const ButtonHandler = () => {
   const { setCurrentStep, currentStep } = useAuthContextHook();
@@ -79,7 +82,25 @@ const ButtonHandler = () => {
       <Button
         type="submit"
         className="w-full bg-white text-black hover:bg-gray-300 cursor-pointer"
-        onClick={() => setCurrentStep((prev: number) => prev + 1)}
+        onClick={async () => {
+          const role = getValues("type")
+          const department = getValues("department")
+
+          if (role === UserRole.hod) {
+            if (!department) {
+              toast.error("Please select a department")
+              return
+            }
+
+            const res = await checkDepartmentHod(department)
+            if (!res.ok) {
+              toast.error(res.message)
+              return
+            }
+          }
+
+          setCurrentStep((prev) => prev + 1)
+        }}
       >
         Continue
       </Button>

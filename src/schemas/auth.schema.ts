@@ -1,10 +1,10 @@
-import { UserRole } from "@/generated/enums";
+import { DepartmentName, UserRole } from "@/generated/enums";
 import { X } from "lucide-react";
 import { ZodType, z } from "zod";
 
 export const UserRegistrationSchema = z.object({
   type: z.enum(UserRole),
-  department: z.enum(['Computer Science', 'Mechanical Engineering', 'Electrical Engineering', 'Civil Engineering', 'Business Administration', 'Mathematics', 'Physics', 'Chemistry']),
+  department: z.nativeEnum(DepartmentName),
   fullname: z
     .string()
     .min(4, { message: "your full name must be atleast 4 characters long" }),

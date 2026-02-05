@@ -38,27 +38,26 @@ const TypeSelectionForm = ({ register, setUserType, userType }: Props) => {
         register={register}
         setUserType={setUserType}
         userType={userType}
-        value={UserRole.teacher}
-        title="To book the seminar halls"
+        value={UserRole.hod}
+        title="To manage department bookings"
       />
 
-      {/* <UserTypeCard
+      <UserTypeCard
         register={register}
         setUserType={setUserType}
         userType={userType}
-        value={UserRole.hod}
-        title="To manage department bookings"
-      /> */}
+        value={UserRole.teacher}
+        title="To book the seminar halls"
+      />
 
       <UserTypeCard
         register={register}
         setUserType={setUserType}
         userType={userType}
         value={UserRole.tech_staff}
-        title="To manage technical support"
+        title="To provide technical support"
       />
 
-      {/* ---------- DEPARTMENT SELECTION ---------- */}
       <div className="mt-2">
         <p className="text-gray-400 mb-2 font-medium">
           Select Your Department

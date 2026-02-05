@@ -302,6 +302,7 @@ const HallAnalyticsPage = () => {
                   <th className="text-left py-3 px-4 font-semibold">Teacher</th>
                   <th className="text-left py-3 px-4 font-semibold">Status</th>
                   <th className="text-left py-3 px-4 font-semibold">Purpose</th>
+                  <th className="text-left py-3 px-4 font-semibold">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -325,6 +326,19 @@ const HallAnalyticsPage = () => {
                       </span>
                     </td>
                     <td className="py-3 px-4">{b.purpose}</td>
+                    <td className="py-3 px-4">
+                      <Button
+                        variant="link"
+                        size="sm"
+                        className="px-0 cursor-pointer"
+                        onClick={() =>
+                          router.push(`/dashboard/bookings/${b.id}`)
+                        }
+                      >
+                        View
+                        <ArrowUpRight className="ml-1 h-4 w-4" />
+                      </Button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
