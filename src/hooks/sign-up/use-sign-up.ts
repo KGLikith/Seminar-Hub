@@ -65,6 +65,7 @@ export const useSignUpForm = () => {
       setLoading(true);
       if (!values.otp || values.otp.trim() === "") {
         toast.error("Please enter the OTP");
+        setLoading(false)
         return;
       }
       try {
