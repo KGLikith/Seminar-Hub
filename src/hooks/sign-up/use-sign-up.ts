@@ -12,7 +12,7 @@ import { onCompleteUserRegistration } from "@/actions/auth";
 import { z } from "zod";
 import { toast } from "sonner";
 import { UserRole } from "@/generated/enums";
-import { DepartmentName } from "@/generated";
+import { DepartmentName } from "@/schemas/department";
 
 export const useSignUpForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -24,10 +24,10 @@ export const useSignUpForm = () => {
       type: UserRole.teacher,
       department: DepartmentName.Computer_Science,
       fullname: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    otp: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      otp: "",
     },
     mode: "onSubmit",
     reValidateMode: "onChange",
@@ -53,8 +53,9 @@ export const useSignUpForm = () => {
       onNext((prev) => prev + 1);
     } catch (error: any) {
       setLoading(false);
+      console.log("OTP Generation Error:", error);
       const msg = error?.errors?.[0]?.longMessage || "Something went wrong";
-      toast.error(msg);
+      // toast.error(msg);
     }
   };
 
@@ -62,6 +63,10 @@ export const useSignUpForm = () => {
     async (values: UserRegistrationProps) => {
       if (!isLoaded) return;
       setLoading(true);
+      if (!values.otp || values.otp.trim() === "") {
+        toast.error("Please enter the OTP");
+        return;
+      }
       try {
         const completeSignUp = await signUp.attemptEmailAddressVerification({
           code: values.otp as string,

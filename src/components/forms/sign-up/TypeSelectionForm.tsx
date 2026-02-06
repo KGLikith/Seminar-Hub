@@ -3,7 +3,8 @@
 import React from "react"
 import { FieldValues, UseFormRegister } from "react-hook-form"
 import UserTypeCard from "./user-type-card"
-import { UserRole, DepartmentName } from "@/generated/enums"
+import { DepartmentName } from "@/schemas/department"
+import { UserRole } from "@/generated/enums"
 
 type Props = {
   register: UseFormRegister<FieldValues>
@@ -14,12 +15,11 @@ type Props = {
 /* ---------- DEPARTMENT LABEL MAP ---------- */
 const DEPARTMENT_LABELS: Record<DepartmentName, string> = {
   [DepartmentName.Computer_Science]: "Computer Science",
-  [DepartmentName.Electrical_Engineering]: "Electrical Engineering",
-  [DepartmentName.Mechanical_Engineering]: "Mechanical Engineering",
-  [DepartmentName.Civil_Engineering]: "Civil Engineering",
-  [DepartmentName.Chemistry]: "Chemistry",
-  [DepartmentName.Physics]: "Physics",
-  [DepartmentName.IEM]: "Industrial Engineering & Management",
+  [DepartmentName.Electrical]: "Electrical Engineering",
+  [DepartmentName.Electronics]: "Electronics Engineering",
+  [DepartmentName.Mechanical]: "Mechanical Engineering",
+  [DepartmentName.Civil]: "Civil Engineering",
+  [DepartmentName.Information_Science]: "Industrial Engineering & Management",
 }
 
 const TypeSelectionForm = ({ register, setUserType, userType }: Props) => {

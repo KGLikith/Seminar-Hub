@@ -31,6 +31,10 @@ const RegistrationFormStep = () => {
     setValue("otp", onOTP);
   }, [onOTP, setValue]);
 
+  useEffect(() => {
+    setValue("type", onUserType);
+  })
+
   switch (currentStep) {
     case 1:
       return (

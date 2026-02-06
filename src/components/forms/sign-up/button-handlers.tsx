@@ -86,11 +86,16 @@ const ButtonHandler = () => {
           const role = getValues("type")
           const department = getValues("department")
 
+          console.log("Role selected:", role);
+
+          const isValid = await trigger("type");
           if (role === UserRole.hod) {
             if (!department) {
               toast.error("Please select a department")
               return
             }
+
+            console.log("Checking HOD for department:", department);
 
             const res = await checkDepartmentHod(department)
             if (!res.ok) {

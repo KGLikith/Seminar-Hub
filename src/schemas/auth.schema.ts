@@ -1,14 +1,15 @@
-import { DepartmentName, UserRole } from "@/generated/enums";
+import {  UserRole } from "@/generated/enums";
 import { X } from "lucide-react";
 import { ZodType, z } from "zod";
+import { DepartmentName } from "./department";
 
 export const UserRegistrationSchema = z.object({
   type: z.enum(UserRole),
-  department: z.nativeEnum(DepartmentName),
+  department: z.enum(DepartmentName),
   fullname: z
     .string()
     .min(4, { message: "your full name must be atleast 4 characters long" }),
-  email: z.string().email("Incorrect email format"),
+  email: z.email("Incorrect email format"),
   password: z
     .string()
     .min(8, { message: "Your password must be atleast 8 characters long" })
